@@ -2,6 +2,12 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lagoo.Api", "Lagoo.Api\Lagoo.Api.csproj", "{B49D9058-B810-49DE-9875-00F75B914A49}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lagoo.Domain", "Lagoo.Domain\Lagoo.Domain.csproj", "{3AB418A5-E3A2-4583-84F5-996219A73B5B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lagoo.BusinessLogic", "Lagoo.BusinessLogic\Lagoo.BusinessLogic.csproj", "{B67F318F-1C2A-45FC-A7B6-EA47D0498CE2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lagoo.Infrastructure", "Lagoo.Infrastructure\Lagoo.Infrastructure.csproj", "{7A46E8DC-7255-4A2C-B1E0-4FCB09D6AABD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +18,17 @@ Global
 		{B49D9058-B810-49DE-9875-00F75B914A49}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B49D9058-B810-49DE-9875-00F75B914A49}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B49D9058-B810-49DE-9875-00F75B914A49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AB418A5-E3A2-4583-84F5-996219A73B5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AB418A5-E3A2-4583-84F5-996219A73B5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AB418A5-E3A2-4583-84F5-996219A73B5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AB418A5-E3A2-4583-84F5-996219A73B5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B67F318F-1C2A-45FC-A7B6-EA47D0498CE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B67F318F-1C2A-45FC-A7B6-EA47D0498CE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B67F318F-1C2A-45FC-A7B6-EA47D0498CE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B67F318F-1C2A-45FC-A7B6-EA47D0498CE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A46E8DC-7255-4A2C-B1E0-4FCB09D6AABD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A46E8DC-7255-4A2C-B1E0-4FCB09D6AABD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A46E8DC-7255-4A2C-B1E0-4FCB09D6AABD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A46E8DC-7255-4A2C-B1E0-4FCB09D6AABD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

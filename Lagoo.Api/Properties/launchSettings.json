@@ -4,27 +4,36 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:58416",
+      "applicationUrl": "http://localhost:5000",
       "sslPort": 44388
     }
   },
   "profiles": {
-    "Lagoo.Api": {
-      "commandName": "Project",
-      "dotnetRunMessages": true,
+    "IIS Express": {
+      "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7266;http://localhost:5266",
+      "launchUrl": "api/index.html?url=/api/specification.json",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "IIS Express": {
-      "commandName": "IISExpress",
+    "Lagoo.Api.Development": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
       "launchBrowser": true,
-      "launchUrl": "swagger",
+      "launchUrl": "api/index.html?url=/api/specification.json",
+      "applicationUrl": "http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "Lagoo.Api.Production": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "api/index.html?url=/api/specification.json",
+      "applicationUrl": "https://www.lagoo.com/",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
       }
     }
   }
