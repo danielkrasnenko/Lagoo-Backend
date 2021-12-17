@@ -1,13 +1,19 @@
 using Lagoo.Api.Common.Extensions;
 using Lagoo.BusinessLogic;
+using Lagoo.BusinessLogic.Common.Extensions;
+using Lagoo.BusinessLogic.Common.Helpers;
+using Lagoo.Domain.Enums;
 using Lagoo.Infrastructure;
 using Lagoo.Infrastructure.Persistence;
+using Microsoft.AspNetCore.Localization;
 
 namespace Lagoo.Api;
 
 public class Startup
 {
     private const string SpecificationRoute = "/api/specification.json";
+
+    private const string ResourcesPath = "Resources";
 
     public Startup(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
     {
@@ -22,6 +28,8 @@ public class Startup
     // Add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddLocalization(options => options.ResourcesPath = ResourcesPath);
+        
         services.AddControllers();
         
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -56,6 +64,14 @@ public class Startup
         }
 
         app.UseCors("EnableCORS");
+
+        var supportedCultures = CultureHelper.GetSupportedCulturesInfo();
+        app.UseRequestLocalization(new RequestLocalizationOptions
+        {
+            DefaultRequestCulture = new RequestCulture(Culture.En.GetEnumDescription()),
+            SupportedCultures = supportedCultures,
+            SupportedUICultures = supportedCultures
+        });
         
         app.UseCustomExceptionHandler();
         

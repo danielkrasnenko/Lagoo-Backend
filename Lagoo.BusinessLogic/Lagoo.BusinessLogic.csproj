@@ -23,6 +23,8 @@
     <ItemGroup>
       <Folder Include="CommandsAndQueries" />
       <Folder Include="Common\Services" />
+      <Folder Include="Resources\CommandsAndQueries" />
+      <Folder Include="Resources\Common" />
     </ItemGroup>
 
 </Project>
