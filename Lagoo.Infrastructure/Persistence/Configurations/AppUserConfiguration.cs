@@ -24,7 +24,7 @@ public class AppUserConfiguration : IEntityTypeConfiguration<AppUser>
             .HasMaxLength(255);
 
         builder
-            .Property(u => u.RegistrationData)
+            .Property(u => u.RegistrationUtcDate)
             .HasDefaultValueSql("getutcdate()");
     }
 }

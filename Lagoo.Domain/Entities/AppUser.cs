@@ -10,5 +10,5 @@ public class AppUser : IdentityUser<Guid>
     
     public string? Address { get; set; }
     
-    public DateTimeOffset RegistrationData { get; set; }
+    public DateTimeOffset RegistrationUtcDate { get; set; }
 }

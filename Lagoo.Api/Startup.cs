@@ -9,24 +9,20 @@ using Microsoft.AspNetCore.Localization;
 
 namespace Lagoo.Api;
 
-public class Startup
+public static class Startup
 {
+    private const string SpecificationInternalUiRout = "/api";
+    
     private const string SpecificationRoute = "/api/specification.json";
+
+    private const string HealthCheckRoute = "/health";
 
     private const string ResourcesPath = "Resources";
 
-    public Startup(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
-    {
-        Configuration = configuration;
-        WebHostEnvironment = webHostEnvironment;
-    }
-
-    public IConfiguration Configuration { get; }
-
-    public IWebHostEnvironment WebHostEnvironment { get; }
+    private const string CorsPolicyName = "EnableCORS";
 
     // Add services to the container.
-    public void ConfigureServices(IServiceCollection services)
+    public static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {
         services.AddLocalization(options => options.ResourcesPath = ResourcesPath);
         
@@ -35,7 +31,7 @@ public class Startup
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         // services.AddEndpointsApiExplorer();
 
-        services.AddInfrastructure(Configuration);
+        services.AddInfrastructure(configuration);
 
         services.AddBusinessLogic();
 
@@ -50,9 +46,9 @@ public class Startup
     }
 
     // Configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment environment)
+    public static void Configure(WebApplication app)
     {
-        if (environment.IsDevelopment())
+        if (app.Environment.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
             app.UseMigrationsEndPoint();
@@ -63,7 +59,7 @@ public class Startup
             app.UseHttpsRedirection();
         }
 
-        app.UseCors("EnableCORS");
+        app.UseCors(CorsPolicyName);
 
         var supportedCultures = CultureHelper.GetSupportedCulturesInfo();
         app.UseRequestLocalization(new RequestLocalizationOptions
@@ -75,13 +71,13 @@ public class Startup
         
         app.UseCustomExceptionHandler();
         
-        app.UseHealthChecks("/health");
+        app.UseHealthChecks(HealthCheckRoute);
 
         app.UseOpenApi(settings => settings.Path = SpecificationRoute);
 
         app.UseReDoc(settings =>
         {
-            settings.Path = "/api";
+            settings.Path = SpecificationInternalUiRout;
             settings.DocumentPath = SpecificationRoute;
         });
         
