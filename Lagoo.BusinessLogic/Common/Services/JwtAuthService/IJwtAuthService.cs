@@ -5,7 +5,7 @@ namespace Lagoo.BusinessLogic.Common.Services.JwtAuthService;
 
 public interface IJwtAuthService
 {
-    public Task<string> GenerateAccessToken(AppUser user);
+    public Task<string> GenerateAccessToken(AppUser user, string? userRole = null);
 
     public RefreshToken GenerateRefreshToken(Guid ownerId);
 

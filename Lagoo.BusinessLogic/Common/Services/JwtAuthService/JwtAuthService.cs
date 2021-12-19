@@ -27,16 +27,16 @@ public class JwtAuthService : IJwtAuthService
         _userManager = userManager;
     }
 
-    public async Task<string> GenerateAccessToken(AppUser user)
+    public async Task<string> GenerateAccessToken(AppUser user, string? userRole = null)
     {
-        var userRoles = await _userManager.GetRolesAsync(user);
+        userRole ??= (await _userManager.GetRolesAsync(user)).FirstOrDefault(); 
 
-        if (userRoles is null || !userRoles.Any())
+        if (userRole is null)
         {
             throw new BaseArgumentException($"{nameof(user)} has to have a role");
         }
 
-        var claims = BuildUserClaims(user, userRoles.First());
+        var claims = BuildUserClaims(user, userRole);
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
