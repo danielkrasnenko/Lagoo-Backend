@@ -1,5 +1,8 @@
 namespace Lagoo.Domain.Types;
 
+/// <summary>
+///  Roles for users in the application
+/// </summary>
 public static class AppUserRole
 {
     public const string User = "User";

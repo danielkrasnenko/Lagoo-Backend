@@ -13,6 +13,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Lagoo.BusinessLogic;
 
+/// <summary>
+///  Adding all business logic services to DI Container
+/// </summary>
 public static class DependencyInjection
 {
     public static void AddBusinessLogic(this IServiceCollection services, IConfiguration configuration)

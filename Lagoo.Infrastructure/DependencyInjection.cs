@@ -11,6 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Lagoo.Infrastructure;
 
+/// <summary>
+///  Adding all infrastructure services to DI Container
+/// </summary>
 public static class DependencyInjection
 {
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)

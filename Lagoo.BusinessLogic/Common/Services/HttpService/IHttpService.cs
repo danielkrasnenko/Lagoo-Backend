@@ -1,5 +1,8 @@
 namespace Lagoo.BusinessLogic.Common.Services.HttpService;
 
+/// <summary>
+///  An interface for needed Http functionality
+/// </summary>
 public interface IHttpService
 {
     Task<Stream> GetStreamAsync(string url);

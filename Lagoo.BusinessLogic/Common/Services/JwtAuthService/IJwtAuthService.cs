@@ -3,6 +3,9 @@ using Lagoo.Domain.Entities;
 
 namespace Lagoo.BusinessLogic.Common.Services.JwtAuthService;
 
+/// <summary>
+///  An interface for declaring needed functionality to work with JWT Authentication and Authorization
+/// </summary>
 public interface IJwtAuthService
 {
     public Task<string> GenerateAccessToken(AppUser user, string? userRole = null);

@@ -2,6 +2,9 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Lagoo.Domain.Entities;
 
+/// <summary>
+///  A model of the application user
+/// </summary>
 public class AppUser : IdentityUser<Guid>
 {
     public string FirstName { get; set; } = string.Empty;

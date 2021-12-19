@@ -1,5 +1,8 @@
 namespace Lagoo.BusinessLogic.Common.Helpers;
 
+/// <summary>
+///  A helper for working with <see cref="Enum"/>
+/// </summary>
 public static class EnumHelper
 {
     public static List<TEnum> GetAllMemberValues<TEnum>()

@@ -1,11 +1,12 @@
 using Lagoo.BusinessLogic.Common.AppOptions.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Lagoo.BusinessLogic.Common.AppOptions;
 
 /// <summary>
-///  Adding IOptions from appsettings to DI Container
+///  Adding <see cref="IOptions{TOptions}"/> configs from appsettings to DI Container
 /// </summary>
 public static class AppOptionsDependencyInjection
 {

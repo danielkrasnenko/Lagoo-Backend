@@ -1,7 +1,7 @@
 namespace Lagoo.Domain.Entities;
 
 /// <summary>
-///  Refresh Token
+///  Refresh Token model for refreshing Access token
 /// </summary>
 public class RefreshToken
 {

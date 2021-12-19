@@ -4,6 +4,9 @@ using Lagoo.Domain.Enums;
 
 namespace Lagoo.BusinessLogic.Common.Helpers;
 
+/// <summary>
+///  A helper for working with <see cref="Culture"/> and <see cref="CultureInfo"/>
+/// </summary>
 public static class CultureHelper
 {
     public static CultureInfo[] GetSupportedCulturesInfo()
