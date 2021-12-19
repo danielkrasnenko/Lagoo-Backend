@@ -13,6 +13,8 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }
+
+    public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
     
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {

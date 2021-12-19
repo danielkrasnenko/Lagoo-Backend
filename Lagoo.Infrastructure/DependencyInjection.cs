@@ -1,4 +1,5 @@
 using Lagoo.BusinessLogic.Common.ExternalServices.Database;
+using Lagoo.BusinessLogic.Common.UserSecrets;
 using Lagoo.Domain.Entities;
 using Lagoo.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
@@ -14,29 +15,14 @@ public static class DependencyInjection
 {
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddContext(configuration);
+        services.AddDbContext<AppDbContext>(options => options.UseSqlServer(BuildDbConnectionString(configuration),
+            builder => builder.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)));
 
         services.AddAspIdentity();
         
         services.AddScoped<IAppDbContext>(provider => provider.GetService<AppDbContext>() ?? throw new InvalidOperationException("DB context is not provided."));
     }
 
-    private static void AddContext(this IServiceCollection services, IConfiguration configuration)
-    {
-        services.AddDbContext<AppDbContext>(options =>
-        {
-            var sqlConStrBuilder = new SqlConnectionStringBuilder(configuration.GetConnectionString("DefaultConnection"))
-            {
-                Password = configuration["DbPassword"]
-            };
-
-            options.UseSqlServer(
-                sqlConStrBuilder.ConnectionString,
-                builder => builder.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)
-            );
-        });
-    }
-    
     private static void AddAspIdentity(this IServiceCollection services)
     {
         services
@@ -45,5 +31,15 @@ public static class DependencyInjection
             .AddUserStore<UserStore<AppUser, IdentityRole<Guid>, AppDbContext, Guid>>()
             .AddRoleStore<RoleStore<IdentityRole<Guid>, AppDbContext, Guid>>()
             .AddDefaultTokenProviders();
+    }
+
+    private static string BuildDbConnectionString(IConfiguration configuration)
+    {
+        var sqlConStrBuilder = new SqlConnectionStringBuilder(configuration.GetConnectionString("DefaultConnection"))
+        {
+            Password = configuration[UserSecrets.DatabasePassword]
+        };
+
+        return sqlConStrBuilder.ConnectionString;
     }
 }

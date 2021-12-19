@@ -5,14 +5,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 Startup.ConfigureServices(builder.Services, builder.Configuration);
 
-// builder.Logging.ClearProviders();
-//
-// builder.Logging.AddConsole();
-
 var app = builder.Build();
 
 Startup.Configure(app);
 
-await AppDbInitializer.InitializeAsync(app.Services);
+var dbInitializer = new AppDbInitializer(app);
+await dbInitializer.InitializeAsync();
 
 app.Run();

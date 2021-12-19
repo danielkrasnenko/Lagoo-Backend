@@ -33,7 +33,9 @@ public static class Startup
 
         services.AddInfrastructure(configuration);
 
-        services.AddBusinessLogic();
+        services.AddBusinessLogic(configuration);
+        
+        services.AddAuth(configuration);
 
         services.AddConfiguredCors();
         

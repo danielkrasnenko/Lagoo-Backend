@@ -3,13 +3,13 @@ namespace Lagoo.BusinessLogic.Common.Exceptions.Base;
 /// <summary>
 ///  Exception gets thrown if one or more passed arguments is invalid.
 /// </summary>
-public class ArgumentException : BaseException
+public class BaseArgumentException : BaseException
 {
-    public ArgumentException()
+    public BaseArgumentException()
     {
     }
 
-    public ArgumentException(string message) : base(message)
+    public BaseArgumentException(string message) : base(message)
     {
     }
 }

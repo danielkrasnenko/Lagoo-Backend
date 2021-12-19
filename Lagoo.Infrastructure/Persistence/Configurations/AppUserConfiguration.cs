@@ -10,18 +10,15 @@ public class AppUserConfiguration : IEntityTypeConfiguration<AppUser>
     {
         builder
             .Property(u => u.FirstName)
-            .HasColumnType("nvarchar")
-            .HasMaxLength(255);
+            .HasMaxLength(256);
 
         builder
             .Property(u => u.LastName)
-            .HasColumnType("nvarchar")
-            .HasMaxLength(255);
+            .HasMaxLength(256);
 
         builder
             .Property(u => u.Address)
-            .HasColumnType("nvarchar")
-            .HasMaxLength(255);
+            .HasMaxLength(256);
 
         builder
             .Property(u => u.RegistrationUtcDate)
