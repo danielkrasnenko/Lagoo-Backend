@@ -5,6 +5,7 @@ using Lagoo.BusinessLogic.Common.Extensions;
 using Lagoo.BusinessLogic.Common.Mappings;
 using Lagoo.BusinessLogic.Common.Services;
 using Lagoo.BusinessLogic.Common.Services.HttpService;
+using Lagoo.BusinessLogic.Common.UserAccessor;
 using MediatR;
 using MediatR.Extensions.FluentValidation.AspNetCore;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +27,8 @@ public static class DependencyInjection
         services.AddFluentValidation(new []{ currentAssembly });
 
         services.AddHttpContextAccessor();
+
+        services.AddScoped<IUserAccessor, UserAccessor>();
 
         services.AddPropertyValidatorsFromAssembly();
         
