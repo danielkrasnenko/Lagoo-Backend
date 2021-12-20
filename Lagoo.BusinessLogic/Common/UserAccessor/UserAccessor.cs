@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 namespace Lagoo.BusinessLogic.Common.UserAccessor;
 
 /// <summary>
-///  Accessor for retrieving User information from JWT Bearer token
+///  Accessor for retrieving User information from JWT
 /// </summary>
 public class UserAccessor : IUserAccessor
 {
