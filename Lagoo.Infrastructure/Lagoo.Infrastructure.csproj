@@ -18,7 +18,6 @@
     <ItemGroup>
       <Folder Include="Persistence\Extensions" />
       <Folder Include="Persistence\Migrations" />
-      <Folder Include="Services" />
     </ItemGroup>
 
 </Project>
