@@ -1,3 +1,5 @@
+using Lagoo.Domain.Extensions;
+
 namespace Lagoo.Domain.Entities;
 
 /// <summary>
@@ -7,9 +9,19 @@ public class RefreshToken
 {
     public string Value { get; set; } = string.Empty;
 
-    public DateTimeOffset ExpirationUtcDate { get; set; }
+    public DateTime ExpiresAt
+    {
+        get => _expiresAtBackingField;
+        set => _expiresAtBackingField = value.ConvertToUtc();
+    }
+    private DateTime _expiresAtBackingField;
 
-    public DateTimeOffset? LastModifiedUtcDate { get; set; }
+    public DateTime? LastModifiedAt
+    {
+        get => _lastModifiedAtBackingField;
+        set => _lastModifiedAtBackingField = value?.ConvertToUtc();
+    }
+    private DateTime? _lastModifiedAtBackingField;
 
     public AppUser? Owner { get; set; }
     public Guid OwnerId { get; set; }

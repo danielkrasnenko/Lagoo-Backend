@@ -57,15 +57,15 @@ public class JwtAuthService : IJwtAuthService
     public RefreshToken GenerateRefreshToken(Guid ownerId) => new()
     {
         Value = GenerateRefreshTokenValue(),
-        ExpirationUtcDate = DateTimeOffset.UtcNow.AddMinutes(_authOptions.RefreshTokenExpirationInMin),
+        ExpiresAt = DateTime.UtcNow.AddMinutes(_authOptions.RefreshTokenExpirationInMin),
         OwnerId = ownerId
     };
 
     public RefreshToken UpdateRefreshToken(RefreshToken refreshToken)
     {
         refreshToken.Value = GenerateRefreshTokenValue();
-        refreshToken.ExpirationUtcDate = DateTimeOffset.UtcNow.AddMinutes(_authOptions.RefreshTokenExpirationInMin);
-        refreshToken.LastModifiedUtcDate = DateTimeOffset.UtcNow;
+        refreshToken.ExpiresAt = DateTime.UtcNow.AddMinutes(_authOptions.RefreshTokenExpirationInMin);
+        refreshToken.LastModifiedAt = DateTime.UtcNow;
 
         return refreshToken;
     }

@@ -1,3 +1,4 @@
+using Lagoo.Domain.Extensions;
 using Microsoft.AspNetCore.Identity;
 
 namespace Lagoo.Domain.Entities;
@@ -13,5 +14,10 @@ public class AppUser : IdentityUser<Guid>
     
     public string? Address { get; set; }
     
-    public DateTimeOffset RegistrationUtcDate { get; set; }
+    public DateTime RegisteredAt
+    {
+        get => _registeredAtBackingField;
+        set => _registeredAtBackingField = value.ConvertToUtc();
+    }
+    private DateTime _registeredAtBackingField;
 }

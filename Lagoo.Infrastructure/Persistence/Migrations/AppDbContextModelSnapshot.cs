@@ -79,9 +79,9 @@ namespace Lagoo.Infrastructure.Persistence.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<DateTimeOffset>("RegistrationUtcDate")
+                    b.Property<DateTime>("RegisteredAt")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetimeoffset")
+                        .HasColumnType("datetime2")
                         .HasDefaultValueSql("getutcdate()");
 
                     b.Property<string>("SecurityStamp")
@@ -113,11 +113,11 @@ namespace Lagoo.Infrastructure.Persistence.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("char(40)");
 
-                    b.Property<DateTimeOffset>("ExpirationUtcDate")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("datetime2");
 
-                    b.Property<DateTimeOffset?>("LastModifiedUtcDate")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("OwnerId")
                         .HasColumnType("uniqueidentifier");

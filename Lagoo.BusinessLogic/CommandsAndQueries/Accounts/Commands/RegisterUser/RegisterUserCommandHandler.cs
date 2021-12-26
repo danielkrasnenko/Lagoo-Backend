@@ -60,9 +60,9 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, R
         return new RegisterUserResponseDto
         {
             AccessToken = accessToken,
-            AccessTokenExpirationUtcDate = accessTokenExpirationDate,
+            AccessTokenExpiresAt = accessTokenExpirationDate,
             RefreshTokenValue = refreshToken.Value,
-            RefreshTokenExpirationUtcDate = refreshToken.ExpirationUtcDate.DateTime
+            RefreshTokenExpiresAt = refreshToken.ExpiresAt
         };
     }
 
