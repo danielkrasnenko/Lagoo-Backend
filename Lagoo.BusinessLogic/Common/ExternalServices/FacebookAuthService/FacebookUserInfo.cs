@@ -17,4 +17,6 @@ public class FacebookUserInfo : IExternalAuthServiceUserInfo
     public string LastName { get; set; } = string.Empty;
     
     public string Email { get; set; } = string.Empty;
+    
+    public override string ToString() => $"{FirstName} {LastName}";
 }

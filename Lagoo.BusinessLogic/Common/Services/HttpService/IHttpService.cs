@@ -9,5 +9,7 @@ public interface IHttpService
 
     Task<TItem> GetAsync<TItem>(string url, IDictionary<string, string>? queryParams = null);
 
+    Task<TItem> PostAsync<TItem>(string url, HttpContent content);
+
     void SetBearerToken(string token);
 }

@@ -1,3 +1,4 @@
+using Lagoo.BusinessLogic.Common.AppOptions.Databases;
 using Lagoo.BusinessLogic.Common.ExternalServices.Database;
 using Lagoo.BusinessLogic.Common.UserSecrets;
 using Lagoo.Domain.Entities;
@@ -41,9 +42,9 @@ public static class DependencyInjection
 
     private static string BuildDbConnectionString(IConfiguration configuration)
     {
-        var sqlConStrBuilder = new SqlConnectionStringBuilder(configuration.GetConnectionString("DefaultConnection"))
+        var sqlConStrBuilder = new SqlConnectionStringBuilder(configuration.GetConnectionString(MainDatabaseOptions.MainDatabaseConnection))
         {
-            Password = configuration[UserSecrets.DatabasePassword]
+            Password = configuration[UserSecrets.MainDatabasePassword]
         };
 
         return sqlConStrBuilder.ConnectionString;

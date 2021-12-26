@@ -17,7 +17,7 @@ public class FacebookAuthService : IFacebookAuthService
         _httpService = httpService;
     }
     
-    public Task<FacebookUserInfo> GetUserInfo(string accessToken)
+    public Task<FacebookUserInfo> GetUserInfoAsync(string accessToken)
     {
         _httpService.SetBearerToken(accessToken);
 

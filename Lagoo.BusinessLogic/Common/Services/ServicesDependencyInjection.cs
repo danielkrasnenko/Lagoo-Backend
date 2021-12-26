@@ -1,3 +1,4 @@
+using Lagoo.BusinessLogic.Common.Services.ExternalAuthServicesManager;
 using Lagoo.BusinessLogic.Common.Services.HttpService;
 using Lagoo.BusinessLogic.Common.Services.JwtAuthService;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,5 +15,7 @@ public static class ServicesDependencyInjection
         services.AddHttpClient<IHttpService, HttpService.HttpService>();
 
         services.AddScoped<IJwtAuthService, JwtAuthService.JwtAuthService>();
+
+        services.AddScoped<IExternalAuthServicesManager, ExternalAuthServicesManager.ExternalAuthServicesManager>();
     }
 }

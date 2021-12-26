@@ -29,6 +29,13 @@ public class HttpService : IHttpService
         return await DeserializeHttpResponseAsync<TItem>(response);
     }
 
+    public async Task<TItem> PostAsync<TItem>(string url, HttpContent content)
+    {
+        var response = await _httpClient.PostAsync(url, content);
+
+        return await DeserializeHttpResponseAsync<TItem>(response);
+    }
+
     public void SetBearerToken(string token) => _httpClient.DefaultRequestHeaders.Authorization =
         new AuthenticationHeaderValue("Bearer", token);
 

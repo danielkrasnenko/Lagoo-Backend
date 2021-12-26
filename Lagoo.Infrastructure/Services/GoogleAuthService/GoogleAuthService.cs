@@ -17,7 +17,7 @@ public class GoogleAuthService : IGoogleAuthService
         _httpService = httpService;
     }
     
-    public Task<GoogleUserInfo> GetUserInfo(string accessToken)
+    public Task<GoogleUserInfo> GetUserInfoAsync(string accessToken)
     {
         _httpService.SetBearerToken(accessToken);
 

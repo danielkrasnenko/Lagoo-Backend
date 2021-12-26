@@ -5,5 +5,5 @@ namespace Lagoo.BusinessLogic.Common.ExternalServices.GoogleAuthService;
 /// </summary>
 public interface IGoogleAuthService
 {
-    Task<GoogleUserInfo> GetUserInfo(string accessToken);
+    Task<GoogleUserInfo> GetUserInfoAsync(string accessToken);
 }

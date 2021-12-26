@@ -19,4 +19,5 @@ public class GoogleUserInfo : IExternalAuthServiceUserInfo
     
     public string Email { get; set; } = string.Empty;
     
+    public override string ToString() => $"{FirstName} {LastName}";
 }

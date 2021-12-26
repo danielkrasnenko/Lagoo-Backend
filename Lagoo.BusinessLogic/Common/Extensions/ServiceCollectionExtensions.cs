@@ -13,7 +13,7 @@ public static class ServiceCollectionExtensions
     /// <summary>
     ///  Add property validators to the app
     /// </summary>
-    /// <param name="services">Service collection</param>
+    /// <param name="services"><see cref="IServiceCollection"/></param>
     public static void AddPropertyValidatorsFromAssembly(this IServiceCollection services)
     {
         var validators = Assembly.GetExecutingAssembly().GetExportedTypes()

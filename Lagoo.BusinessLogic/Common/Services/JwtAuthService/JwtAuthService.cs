@@ -13,7 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 namespace Lagoo.BusinessLogic.Common.Services.JwtAuthService;
 
 /// <summary>
-///  Service for managing JWT in the app
+/// Service for dealing with JWT in the app
 /// </summary>
 public class JwtAuthService : IJwtAuthService
 {
@@ -27,7 +27,7 @@ public class JwtAuthService : IJwtAuthService
         _userManager = userManager;
     }
 
-    public async Task<string> GenerateAccessToken(AppUser user, string? userRole = null)
+    public async Task<(string, DateTime)> GenerateAccessTokenAsync(AppUser user, string? userRole = null)
     {
         userRole ??= (await _userManager.GetRolesAsync(user)).FirstOrDefault(); 
 
@@ -49,8 +49,9 @@ public class JwtAuthService : IJwtAuthService
 
         var tokenHandler = new JwtSecurityTokenHandler();
         var newToken = tokenHandler.CreateToken(tokenDescriptor);
+        var serializedToken = tokenHandler.WriteToken(newToken);
         
-        return tokenHandler.WriteToken(newToken);
+        return (serializedToken, newToken.ValidTo);
     }
 
     public RefreshToken GenerateRefreshToken(Guid ownerId) => new()

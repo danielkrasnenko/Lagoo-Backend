@@ -33,7 +33,7 @@ public static class AuthServiceCollectionExtensions
                     ValidAudience = jwtAuthConfig.Audience,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = JwtAuthService.GetSymmetricSecurityKey(configuration[UserSecrets.JwtSecret]),
+                    IssuerSigningKey = JwtAuthService.GetSymmetricSecurityKey(jwtAuthConfig.Secret),
                     ClockSkew = TimeSpan.Zero,
                     NameClaimType = ClaimTypes.NameIdentifier
                 };

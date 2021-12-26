@@ -29,5 +29,12 @@
              A middleware for appropriate handling of thrown custom exceptions in the app
             </summary>
         </member>
+        <member name="M:Lagoo.Api.Controllers.AccountsController.RegisterUser(Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Auth.Commands.RegisterUser.RegisterUserCommand)">
+            <summary>
+            Register a user in the app optionally via an external authentication
+            </summary>
+            <param name="command">User data for registration</param>
+            <returns>Access and Refresh tokens, and their expiration dates</returns>
+        </member>
     </members>
 </doc>

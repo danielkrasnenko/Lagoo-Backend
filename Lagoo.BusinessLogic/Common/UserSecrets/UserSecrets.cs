@@ -1,11 +1,9 @@
 namespace Lagoo.BusinessLogic.Common.UserSecrets;
 
 /// <summary>
-///  Keys to User secrets that are kept outside of Solution
+///  Keys to some User secrets that are kept outside of Solution and are not mapped to App Options
 /// </summary>
 public static class UserSecrets
 {
-    public const string DatabasePassword = "DbPassword";
-
-    public const string JwtSecret = "JwtSecret";
+    public const string MainDatabasePassword = "MainDbPassword";
 }

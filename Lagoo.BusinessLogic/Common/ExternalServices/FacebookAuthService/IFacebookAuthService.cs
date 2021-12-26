@@ -5,5 +5,5 @@ namespace Lagoo.BusinessLogic.Common.ExternalServices.FacebookAuthService;
 /// </summary>
 public interface IFacebookAuthService
 {
-    Task<FacebookUserInfo> GetUserInfo(string accessToken);
+    Task<FacebookUserInfo> GetUserInfoAsync(string accessToken);
 }

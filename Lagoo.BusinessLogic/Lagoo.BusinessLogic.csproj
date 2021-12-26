@@ -23,10 +23,22 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="CommandsAndQueries\Accounts\Auth" />
-      <Folder Include="CommandsAndQueries\Accounts\External-services" />
-      <Folder Include="Resources\CommandsAndQueries" />
       <Folder Include="Resources\Common" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Resources\CommandsAndQueries\AccountResources.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>AccountResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Resources\CommandsAndQueries\AccountResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>AccountResources.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>

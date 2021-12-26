@@ -15,15 +15,5 @@ public static class AppOptionsDependencyInjection
         services.AddOptions();
 
         services.Configure<JwtAuthOptions>(configuration.GetSection(JwtAuthOptions.JwtAuth));
-        
-        services.PopulateConfiguredOptionsWithUserSecretsData(configuration);
-    }
-
-    private static void PopulateConfiguredOptionsWithUserSecretsData(this IServiceCollection services, IConfiguration configuration)
-    {
-        services.PostConfigure<JwtAuthOptions>(options =>
-        {
-            options.Secret = configuration[UserSecrets.UserSecrets.JwtSecret];
-        });
     }
 }
