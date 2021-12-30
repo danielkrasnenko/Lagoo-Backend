@@ -70,6 +70,15 @@ namespace Lagoo.BusinessLogic.Resources.CommandsAndQueries {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Account with the given email was not found.
+        /// </summary>
+        public static string AccountWasNotFoundByEmail {
+            get {
+                return ResourceManager.GetString("AccountWasNotFoundByEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm password does not match password.
         /// </summary>
         public static string ConfirmPasswordDoesNotMatchPassword {
@@ -151,6 +160,15 @@ namespace Lagoo.BusinessLogic.Resources.CommandsAndQueries {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The given password is not valid.
+        /// </summary>
+        public static string InvalidPassword {
+            get {
+                return ResourceManager.GetString("InvalidPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Last name cannot be empty.
         /// </summary>
         public static string LastNameIsEmpty {
@@ -219,6 +237,24 @@ namespace Lagoo.BusinessLogic.Resources.CommandsAndQueries {
         public static string PasswordWithoutUppercaseLetters {
             get {
                 return ResourceManager.GetString("PasswordWithoutUppercaseLetters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh token value is not provided.
+        /// </summary>
+        public static string RefreshTokenValueIsEmpty {
+            get {
+                return ResourceManager.GetString("RefreshTokenValueIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh token with specified value was not found.
+        /// </summary>
+        public static string RefreshTokenWasNotFound {
+            get {
+                return ResourceManager.GetString("RefreshTokenWasNotFound", resourceCulture);
             }
         }
         

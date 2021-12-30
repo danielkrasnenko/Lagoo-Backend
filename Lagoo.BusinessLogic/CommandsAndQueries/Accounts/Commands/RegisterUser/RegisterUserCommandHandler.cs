@@ -1,4 +1,5 @@
 using Lagoo.BusinessLogic.Common.Exceptions.Api;
+using Lagoo.BusinessLogic.Common.ExternalServices.Database;
 using Lagoo.BusinessLogic.Common.Services.ExternalAuthServicesManager;
 using Lagoo.BusinessLogic.Common.Services.JwtAuthService;
 using Lagoo.BusinessLogic.Resources.CommandsAndQueries;
@@ -16,6 +17,8 @@ namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.RegisterUser;
 /// </summary>
 public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, RegisterUserResponseDto>
 {
+    private readonly IAppDbContext _context;
+    
     private readonly UserManager<AppUser> _userManager;
 
     private readonly IJwtAuthService _jwtAuthService;
@@ -24,8 +27,9 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, R
 
     private readonly IStringLocalizer<AccountResources> _accountLocalizer;
 
-    public RegisterUserCommandHandler(UserManager<AppUser> userManager, IJwtAuthService jwtAuthService, IExternalAuthServicesManager externalAuthServicesManager, IStringLocalizer<AccountResources> accountLocalizer)
+    public RegisterUserCommandHandler(IAppDbContext context, UserManager<AppUser> userManager, IJwtAuthService jwtAuthService, IExternalAuthServicesManager externalAuthServicesManager, IStringLocalizer<AccountResources> accountLocalizer)
     {
+        _context = context;
         _userManager = userManager;
         _jwtAuthService = jwtAuthService;
         _externalAuthServicesManager = externalAuthServicesManager;
@@ -57,6 +61,9 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, R
         var (accessToken, accessTokenExpirationDate) = await _jwtAuthService.GenerateAccessTokenAsync(user, AppUserRole.User);
         var refreshToken = _jwtAuthService.GenerateRefreshToken(user.Id);
 
+        _context.RefreshTokens.Add(refreshToken);
+        await _context.SaveChangesAsync(CancellationToken.None);
+        
         return new RegisterUserResponseDto
         {
             AccessToken = accessToken,

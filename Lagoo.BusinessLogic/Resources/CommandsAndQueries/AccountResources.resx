@@ -69,6 +69,12 @@
     <data name="AccessTokenIsEmpty" xml:space="preserve">
         <value>Access token is not provided</value>
     </data>
+    <data name="RefreshTokenValueIsEmpty" xml:space="preserve">
+        <value>Refresh token value is not provided</value>
+    </data>
+    <data name="RefreshTokenWasNotFound" xml:space="preserve">
+        <value>Refresh token with specified value was not found</value>
+    </data>
     <data name="UserDoesNotHaveExternalLogins" xml:space="preserve">
         <value>You do not have external logins</value>
     </data>
@@ -77,5 +83,11 @@
     </data>
     <data name="InvalidData" xml:space="preserve">
         <value>Provide valid data for creating an account</value>
+    </data>
+    <data name="AccountWasNotFoundByEmail" xml:space="preserve">
+        <value>Account with the given email was not found</value>
+    </data>
+    <data name="InvalidPassword" xml:space="preserve">
+        <value>The given password is not valid</value>
     </data>
 </root>
