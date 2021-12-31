@@ -1,6 +1,6 @@
-namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.LoginUser;
+namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Common.Dtos;
 
-public class LoginUserResponseDto
+public class AuthenticationTokensDto
 {
     public string AccessToken { get; set; } = string.Empty;
     

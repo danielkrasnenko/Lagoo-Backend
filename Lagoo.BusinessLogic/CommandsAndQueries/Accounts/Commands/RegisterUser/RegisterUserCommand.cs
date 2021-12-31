@@ -1,3 +1,4 @@
+using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Common.Dtos;
 using Lagoo.Domain.Enums;
 using MediatR;
 
@@ -8,7 +9,7 @@ namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.RegisterUser;
 /// If an external authentication service has been specified, created account will be bound to it.
 /// Will throw an exception, if a connection to an external authentication service has failed. 
 /// </summary>
-public class RegisterUserCommand : IRequest<RegisterUserResponseDto>
+public class RegisterUserCommand : IRequest<AuthenticationTokensDto>
 {
     /// <summary>
     /// First name
@@ -43,5 +44,5 @@ public class RegisterUserCommand : IRequest<RegisterUserResponseDto>
     /// <summary>
     /// Access token for getting needed user information from other platforms 
     /// </summary>
-    public string? AccessToken { get; set; }
+    public string? ExternalAuthServiceAccessToken { get; set; }
 }

@@ -1,36 +1,35 @@
+using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.CreateAuthTokens;
+using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Common.Dtos;
 using Lagoo.BusinessLogic.Common.Exceptions.Api;
-using Lagoo.BusinessLogic.Common.ExternalServices.Database;
-using Lagoo.BusinessLogic.Common.Services.JwtAuthService;
 using Lagoo.BusinessLogic.Resources.CommandsAndQueries;
 using Lagoo.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 
 namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.LoginUser;
 
-public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, LoginUserResponseDto>
+/// <summary>
+/// Request handler for <see cref="LoginUserCommand"/>
+/// </summary>
+public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, AuthenticationTokensDto>
 {
-    private readonly IAppDbContext _context;
-
     private readonly UserManager<AppUser> _userManager;
 
-    private readonly IJwtAuthService _jwtAuthService;
+    private readonly IMediator _mediator;
 
     private readonly IStringLocalizer<AccountResources> _accountLocalizer;
 
-    public LoginUserCommandHandler(IAppDbContext context, UserManager<AppUser> userManager, IJwtAuthService jwtAuthService, IStringLocalizer<AccountResources> accountLocalizer)
+    public LoginUserCommandHandler(UserManager<AppUser> userManager, IMediator mediator, IStringLocalizer<AccountResources> accountLocalizer)
     {
-        _context = context;
         _userManager = userManager;
-        _jwtAuthService = jwtAuthService;
+        _mediator = mediator;
         _accountLocalizer = accountLocalizer;
     }
     
-    public async Task<LoginUserResponseDto> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+    public async Task<AuthenticationTokensDto> Handle(LoginUserCommand request, CancellationToken cancellationToken)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email, cancellationToken);
+        var user = await _userManager.FindByEmailAsync(request.Email);
 
         if (user is null)
         {
@@ -39,18 +38,8 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, LoginUs
         
         await ValidateUserDataAsync(user, request.Password);
         
-        var (accessToken, accessTokenExpirationDate) = await _jwtAuthService.GenerateAccessTokenAsync(user);
-        var refreshToken = await GetRefreshTokenAsync(user.Id, request.RefreshTokenValue, cancellationToken);
-
-        await _context.SaveChangesAsync(CancellationToken.None);
-        
-        return new LoginUserResponseDto
-        {
-            AccessToken = accessToken,
-            AccessTokenExpiresAt = accessTokenExpirationDate,
-            RefreshTokenValue = refreshToken.Value,
-            RefreshTokenExpiresAt = refreshToken.ExpiresAt
-        };
+        return await _mediator.Send(new CreateAuthTokensCommand(user) { RefreshTokenValue = request.RefreshTokenValue },
+            cancellationToken);
     }
 
     private async Task ValidateUserDataAsync(AppUser user, string password)
@@ -61,27 +50,5 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, LoginUs
         {
             throw new BadRequestException(_accountLocalizer["InvalidPassword"]);
         }
-    }
-
-    private async Task<RefreshToken> GetRefreshTokenAsync(Guid userId, string? refreshTokenValue, CancellationToken cancellationToken)
-    {
-        if (refreshTokenValue is null)
-        {
-            var refreshToken = _jwtAuthService.GenerateRefreshToken(userId);
-            _context.RefreshTokens.Add(refreshToken);
-
-            return refreshToken;
-        }
-        
-        var outdatedRefreshToken =
-            await _context.RefreshTokens.FirstOrDefaultAsync(rt => rt.Value == refreshTokenValue,
-                cancellationToken);
-
-        if (outdatedRefreshToken is null)
-        {
-            throw new BadRequestException(_accountLocalizer["RefreshTokenWasNotFound"]);
-        }
-
-        return _jwtAuthService.UpdateRefreshToken(outdatedRefreshToken);
     }
 }

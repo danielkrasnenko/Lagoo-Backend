@@ -40,7 +40,7 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
             .Must(p => p.Any(char.IsNumber)).WithMessage(accountLocalizer["PasswordWithoutNumericCharacters"])
             .Must(p => Regex.IsMatch(p, RegexConstants.SpecialCharacters)).WithMessage(accountLocalizer["PasswordWithoutSpecialCharacters"])
             .When(ruc =>
-                ruc.ExternalAuthService is null && ruc.AccessToken is null);
+                ruc.ExternalAuthService is null && ruc.ExternalAuthServiceAccessToken is null);
         
         RuleFor(ruc => ruc.ConfirmPassword)
             .Equal(ruc => ruc.Password).WithMessage(accountLocalizer["ConfirmPasswordDoesNotMatchPassword"])
@@ -49,9 +49,9 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
         RuleFor(ruc => ruc.ExternalAuthService)
             .NotNull().WithMessage(accountLocalizer["ExternalAuthServiceNotSpecified"])
             .IsInEnum().WithMessage(accountLocalizer["InvalidExternalAuthService"])
-            .When(ruc => ruc.AccessToken is not null);
+            .When(ruc => ruc.ExternalAuthServiceAccessToken is not null);
 
-        RuleFor(ruc => ruc.AccessToken)
+        RuleFor(ruc => ruc.ExternalAuthServiceAccessToken)
             .NotEmpty().WithMessage(accountLocalizer["AccessTokenIsEmpty"])
             .When(ruc => ruc.ExternalAuthService is not null);
     }

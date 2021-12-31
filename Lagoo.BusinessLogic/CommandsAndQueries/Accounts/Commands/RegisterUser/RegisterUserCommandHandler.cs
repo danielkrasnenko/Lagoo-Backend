@@ -1,11 +1,10 @@
+using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.CreateAuthTokens;
+using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Common.Dtos;
 using Lagoo.BusinessLogic.Common.Exceptions.Api;
-using Lagoo.BusinessLogic.Common.ExternalServices.Database;
 using Lagoo.BusinessLogic.Common.Services.ExternalAuthServicesManager;
-using Lagoo.BusinessLogic.Common.Services.JwtAuthService;
 using Lagoo.BusinessLogic.Resources.CommandsAndQueries;
 using Lagoo.Domain.Entities;
 using Lagoo.Domain.Enums;
-using Lagoo.Domain.Types;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
@@ -15,28 +14,25 @@ namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.RegisterUser;
 /// <summary>
 /// Request handler for <see cref="RegisterUserCommand"/>
 /// </summary>
-public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, RegisterUserResponseDto>
+public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, AuthenticationTokensDto>
 {
-    private readonly IAppDbContext _context;
-    
     private readonly UserManager<AppUser> _userManager;
 
-    private readonly IJwtAuthService _jwtAuthService;
+    private readonly IMediator _mediator;
 
     private readonly IExternalAuthServicesManager _externalAuthServicesManager;
 
     private readonly IStringLocalizer<AccountResources> _accountLocalizer;
 
-    public RegisterUserCommandHandler(IAppDbContext context, UserManager<AppUser> userManager, IJwtAuthService jwtAuthService, IExternalAuthServicesManager externalAuthServicesManager, IStringLocalizer<AccountResources> accountLocalizer)
+    public RegisterUserCommandHandler(UserManager<AppUser> userManager, IMediator mediator, IExternalAuthServicesManager externalAuthServicesManager, IStringLocalizer<AccountResources> accountLocalizer)
     {
-        _context = context;
         _userManager = userManager;
-        _jwtAuthService = jwtAuthService;
+        _mediator = mediator;
         _externalAuthServicesManager = externalAuthServicesManager;
         _accountLocalizer = accountLocalizer;
     }
 
-    public async Task<RegisterUserResponseDto> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+    public async Task<AuthenticationTokensDto> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
         var user = new AppUser
         {
@@ -45,9 +41,9 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, R
             Email = request.Email
         };
 
-        if (request.ExternalAuthService is not null && request.AccessToken is not null)
+        if (request.ExternalAuthService is not null && request.ExternalAuthServiceAccessToken is not null)
         {
-            await CreateAccountWithExternalLogin(user, request.ExternalAuthService.Value, request.AccessToken);
+            await CreateAccountWithExternalLogin(user, request.ExternalAuthService.Value, request.ExternalAuthServiceAccessToken);
         }
         else if (request.Password is not null)
         {
@@ -58,19 +54,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, R
             throw new BadRequestException(_accountLocalizer["InvalidData"]);
         }
 
-        var (accessToken, accessTokenExpirationDate) = await _jwtAuthService.GenerateAccessTokenAsync(user, AppUserRole.User);
-        var refreshToken = _jwtAuthService.GenerateRefreshToken(user.Id);
-
-        _context.RefreshTokens.Add(refreshToken);
-        await _context.SaveChangesAsync(CancellationToken.None);
-        
-        return new RegisterUserResponseDto
-        {
-            AccessToken = accessToken,
-            AccessTokenExpiresAt = accessTokenExpirationDate,
-            RefreshTokenValue = refreshToken.Value,
-            RefreshTokenExpiresAt = refreshToken.ExpiresAt
-        };
+        return await _mediator.Send(new CreateAuthTokensCommand(user), cancellationToken);
     }
 
     private async Task CreateAccount(AppUser user, string password)

@@ -1,3 +1,4 @@
+using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Common.Dtos;
 using MediatR;
 
 namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.LoginUser;
@@ -5,7 +6,7 @@ namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.LoginUser;
 /// <summary>
 /// Command to login user in the app via his/her credentials of a local account
 /// </summary>
-public class LoginUserCommand : IRequest<LoginUserResponseDto>
+public class LoginUserCommand : IRequest<AuthenticationTokensDto>
 {
     /// <summary>
     /// User email

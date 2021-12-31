@@ -1,5 +1,7 @@
 using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.LoginUser;
+using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.LoginUserViaExternalService;
 using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.RegisterUser;
+using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Common.Dtos;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,12 +13,12 @@ public class AccountsController : ApiController
     public AccountsController(IMediator mediator) : base(mediator) { }
 
     /// <summary>
-    /// Register a user in the app optionally via an external authentication
+    /// Register a user in the app, optionally via an external authentication
     /// </summary>
     /// <param name="command">User data for registration</param>
     /// <returns>Access and Refresh tokens, and their expiration dates</returns>
     [HttpPost("auth/register")]
-    public Task<RegisterUserResponseDto> RegisterUser([FromBody] RegisterUserCommand command) => Mediator.Send(command);
+    public Task<AuthenticationTokensDto> RegisterUser([FromBody] RegisterUserCommand command) => Mediator.Send(command);
 
     /// <summary>
     /// Login a user in the app
@@ -24,5 +26,14 @@ public class AccountsController : ApiController
     /// <param name="command">User data to login in the app</param>
     /// <returns>Access and Refresh tokens, and their expiration dates</returns>
     [HttpPost("auth/login")]
-    public Task<LoginUserResponseDto> LoginUser([FromBody] LoginUserCommand command) => Mediator.Send(command);
+    public Task<AuthenticationTokensDto> LoginUser([FromBody] LoginUserCommand command) => Mediator.Send(command);
+
+    /// <summary>
+    /// Login a user via any External authentication service
+    /// </summary>
+    /// <param name="command">External authentication service, its access token and an optional refresh token if exists on a device</param>
+    /// <returns>Access and Refresh tokens, and their expiration dates</returns>
+    [HttpPost("auth/login/external-service")]
+    public Task<AuthenticationTokensDto> LoginUserViaFacebook([FromBody] LoginUserViaExternalServiceCommand command) =>
+        Mediator.Send(command);
 }

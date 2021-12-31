@@ -79,6 +79,15 @@ namespace Lagoo.BusinessLogic.Resources.CommandsAndQueries {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Account with the data received from external authentication service was not found.
+        /// </summary>
+        public static string AccountWasNotFoundByExternalAuthServiceData {
+            get {
+                return ResourceManager.GetString("AccountWasNotFoundByExternalAuthServiceData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm password does not match password.
         /// </summary>
         public static string ConfirmPasswordDoesNotMatchPassword {

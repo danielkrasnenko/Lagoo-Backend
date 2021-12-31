@@ -87,6 +87,9 @@
     <data name="AccountWasNotFoundByEmail" xml:space="preserve">
         <value>Account with the given email was not found</value>
     </data>
+    <data name="AccountWasNotFoundByExternalAuthServiceData" xml:space="preserve">
+        <value>Account with the data received from external authentication service was not found</value>
+    </data>
     <data name="InvalidPassword" xml:space="preserve">
         <value>The given password is not valid</value>
     </data>
