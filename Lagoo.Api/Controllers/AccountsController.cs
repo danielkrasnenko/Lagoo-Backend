@@ -29,7 +29,7 @@ public class AccountsController : ApiController
     public Task<AuthenticationTokensDto> LoginUser([FromBody] LoginUserCommand command) => Mediator.Send(command);
 
     /// <summary>
-    /// Login a user via any External authentication service
+    /// Login a user via any supported external authentication service
     /// </summary>
     /// <param name="command">External authentication service, its access token and an optional refresh token if exists on a device</param>
     /// <returns>Access and Refresh tokens, and their expiration dates</returns>

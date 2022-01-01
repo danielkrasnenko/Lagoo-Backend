@@ -9,9 +9,19 @@ namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.LoginUserViaE
 /// </summary>
 public class LoginUserViaExternalServiceCommand : IRequest<AuthenticationTokensDto>
 {
+    /// <summary>
+    /// External authentication service
+    /// </summary>
     public ExternalAuthService ExternalAuthService { get; set; }
 
+    /// <summary>
+    /// Access token for getting needed user information from other platforms
+    /// </summary>
     public string ExternalServiceAccessToken { get; set; } = string.Empty;
     
+    /// <summary>
+    /// Refresh token value for updating Refresh token if it exists on a device,
+    /// otherwise create a new one
+    /// </summary>
     public string? RefreshTokenValue { get; set; }
 }

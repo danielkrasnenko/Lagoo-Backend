@@ -31,9 +31,23 @@
         </member>
         <member name="M:Lagoo.Api.Controllers.AccountsController.RegisterUser(Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.RegisterUser.RegisterUserCommand)">
             <summary>
-            Register a user in the app optionally via an external authentication
+            Register a user in the app, optionally via an external authentication
             </summary>
             <param name="command">User data for registration</param>
+            <returns>Access and Refresh tokens, and their expiration dates</returns>
+        </member>
+        <member name="M:Lagoo.Api.Controllers.AccountsController.LoginUser(Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.LoginUser.LoginUserCommand)">
+            <summary>
+            Login a user in the app
+            </summary>
+            <param name="command">User data to login in the app</param>
+            <returns>Access and Refresh tokens, and their expiration dates</returns>
+        </member>
+        <member name="M:Lagoo.Api.Controllers.AccountsController.LoginUserViaFacebook(Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.LoginUserViaExternalService.LoginUserViaExternalServiceCommand)">
+            <summary>
+            Login a user via any supported external authentication service
+            </summary>
+            <param name="command">External authentication service, its access token and an optional refresh token if exists on a device</param>
             <returns>Access and Refresh tokens, and their expiration dates</returns>
         </member>
     </members>

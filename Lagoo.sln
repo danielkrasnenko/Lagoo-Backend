@@ -8,6 +8,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lagoo.BusinessLogic", "Lago
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lagoo.Infrastructure", "Lagoo.Infrastructure\Lagoo.Infrastructure.csproj", "{7A46E8DC-7255-4A2C-B1E0-4FCB09D6AABD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{EABE411B-51FF-4A97-940A-D477AF3D69FA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lagoo.BusinessLogic.UnitTests", "Lagoo.BusinessLogic.UnitTests\Lagoo.BusinessLogic.UnitTests.csproj", "{97760708-15C3-483C-BA97-1F102ECA1572}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +34,12 @@ Global
 		{7A46E8DC-7255-4A2C-B1E0-4FCB09D6AABD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A46E8DC-7255-4A2C-B1E0-4FCB09D6AABD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A46E8DC-7255-4A2C-B1E0-4FCB09D6AABD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97760708-15C3-483C-BA97-1F102ECA1572}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97760708-15C3-483C-BA97-1F102ECA1572}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97760708-15C3-483C-BA97-1F102ECA1572}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97760708-15C3-483C-BA97-1F102ECA1572}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{97760708-15C3-483C-BA97-1F102ECA1572} = {EABE411B-51FF-4A97-940A-D477AF3D69FA}
 	EndGlobalSection
 EndGlobal
