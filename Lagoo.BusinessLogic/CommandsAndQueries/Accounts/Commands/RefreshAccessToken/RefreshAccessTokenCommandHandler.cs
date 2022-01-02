@@ -2,8 +2,10 @@ using System.Security.Claims;
 using Lagoo.BusinessLogic.Common.Exceptions.Api;
 using Lagoo.BusinessLogic.Common.ExternalServices.Database;
 using Lagoo.BusinessLogic.Common.Services.JwtAuthService;
+using Lagoo.BusinessLogic.Resources.CommandsAndQueries;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.RefreshAccessToken;
 
@@ -16,10 +18,13 @@ public class RefreshAccessTokenCommandHandler : IRequestHandler<RefreshAccessTok
 
     private readonly IJwtAuthService _jwtAuthService;
 
-    public RefreshAccessTokenCommandHandler(IAppDbContext context, IJwtAuthService jwtAuthService)
+    private readonly IStringLocalizer<AccountResources> _accountLocalizer;
+
+    public RefreshAccessTokenCommandHandler(IAppDbContext context, IJwtAuthService jwtAuthService, IStringLocalizer<AccountResources> accountLocalizer)
     {
         _context = context;
         _jwtAuthService = jwtAuthService;
+        _accountLocalizer = accountLocalizer;
     }
 
     public async Task<RefreshAccessTokenResponseDto> Handle(RefreshAccessTokenCommand request, CancellationToken cancellationToken)
@@ -30,9 +35,9 @@ public class RefreshAccessTokenCommandHandler : IRequestHandler<RefreshAccessTok
             .Include(rt => rt.Owner)
             .FirstOrDefaultAsync(rt => rt.Value == request.RefreshTokenValue && rt.OwnerId == userId, cancellationToken);
 
-        if (refreshToken is null)
+        if (refreshToken is null || refreshToken.ExpiresAt < DateTime.UtcNow)
         {
-            throw new BadRequestException("Refresh token was not found");
+            throw new BadRequestException(_accountLocalizer["RefreshTokenWasNotFoundOrExpired"]);
         }
 
         var (accessToken, accessTokenExpiresAt) = await _jwtAuthService.GenerateAccessTokenAsync(refreshToken.Owner!);
@@ -51,7 +56,7 @@ public class RefreshAccessTokenCommandHandler : IRequestHandler<RefreshAccessTok
 
         if (claimUserId is null || !Guid.TryParse(claimUserId, out var userId))
         {
-            throw new BadRequestException("Invalid JWT claims");
+            throw new BadRequestException(_accountLocalizer["InvalidJwtClaims"]);
         }
 
         return userId;

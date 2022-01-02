@@ -169,6 +169,15 @@ namespace Lagoo.BusinessLogic.Resources.CommandsAndQueries {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid JWT claims.
+        /// </summary>
+        public static string InvalidJwtClaims {
+            get {
+                return ResourceManager.GetString("InvalidJwtClaims", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The given password is not valid.
         /// </summary>
         public static string InvalidPassword {
@@ -264,6 +273,15 @@ namespace Lagoo.BusinessLogic.Resources.CommandsAndQueries {
         public static string RefreshTokenWasNotFound {
             get {
                 return ResourceManager.GetString("RefreshTokenWasNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh token was not found or expired.
+        /// </summary>
+        public static string RefreshTokenWasNotFoundOrExpired {
+            get {
+                return ResourceManager.GetString("RefreshTokenWasNotFoundOrExpired", resourceCulture);
             }
         }
         

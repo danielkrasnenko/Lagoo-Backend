@@ -66,6 +66,9 @@
     <data name="InvalidExternalAuthService" xml:space="preserve">
         <value>Invalid external authentication service</value>
     </data>
+    <data name="InvalidJwtClaims" xml:space="preserve">
+        <value>Invalid JWT claims</value>
+    </data>
     <data name="AccessTokenIsEmpty" xml:space="preserve">
         <value>Access token is not provided</value>
     </data>
@@ -74,6 +77,9 @@
     </data>
     <data name="RefreshTokenWasNotFound" xml:space="preserve">
         <value>Refresh token with specified value was not found</value>
+    </data>
+    <data name="RefreshTokenWasNotFoundOrExpired" xml:space="preserve">
+        <value>Refresh token was not found or expired</value>
     </data>
     <data name="UserDoesNotHaveExternalLogins" xml:space="preserve">
         <value>You do not have external logins</value>
