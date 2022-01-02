@@ -1,5 +1,6 @@
 using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.LoginUser;
 using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.LoginUserViaExternalService;
+using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.RefreshAccessToken;
 using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.RegisterUser;
 using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Common.Dtos;
 using MediatR;
@@ -35,5 +36,14 @@ public class AccountsController : ApiController
     /// <returns>Access and Refresh tokens, and their expiration dates</returns>
     [HttpPost("auth/login/external-service")]
     public Task<AuthenticationTokensDto> LoginUserViaFacebook([FromBody] LoginUserViaExternalServiceCommand command) =>
+        Mediator.Send(command);
+
+    /// <summary>
+    /// Refresh access token using refresh token for further access to guarded endpoints
+    /// </summary>
+    /// <param name="command">Expired Access token and Refresh token</param>
+    /// <returns>New Access token</returns>
+    [HttpPost("auth/refresh")]
+    public Task<RefreshAccessTokenResponseDto> RefreshAccessToken([FromBody] RefreshAccessTokenCommand command) =>
         Mediator.Send(command);
 }
