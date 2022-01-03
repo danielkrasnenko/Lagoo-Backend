@@ -23,6 +23,6 @@ public class RefreshToken
     }
     private DateTime? _lastModifiedAtBackingField;
 
-    public AppUser? Owner { get; set; }
+    public AppUser Owner { get; set; } = null!;
     public Guid OwnerId { get; set; }
 }

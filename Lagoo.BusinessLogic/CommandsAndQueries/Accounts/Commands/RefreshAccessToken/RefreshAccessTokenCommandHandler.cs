@@ -40,7 +40,7 @@ public class RefreshAccessTokenCommandHandler : IRequestHandler<RefreshAccessTok
             throw new BadRequestException(_accountLocalizer["RefreshTokenWasNotFoundOrExpired"]);
         }
 
-        var (accessToken, accessTokenExpiresAt) = await _jwtAuthService.GenerateAccessTokenAsync(refreshToken.Owner!);
+        var (accessToken, accessTokenExpiresAt) = await _jwtAuthService.GenerateAccessTokenAsync(refreshToken.Owner);
 
         return new RefreshAccessTokenResponseDto
         {
