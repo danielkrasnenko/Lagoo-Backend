@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 namespace Lagoo.BusinessLogic.Common.Exceptions.Api;
 
 /// <summary>
-///  An Exception gets thrown from a middleware with 400 status code
+///   An Exception gets thrown from a middleware with 400 status code
 /// </summary>
 public class BadRequestException : BaseException
 {

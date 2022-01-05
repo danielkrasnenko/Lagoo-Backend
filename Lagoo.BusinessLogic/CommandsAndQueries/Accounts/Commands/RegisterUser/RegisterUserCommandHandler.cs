@@ -12,7 +12,7 @@ using Microsoft.Extensions.Localization;
 namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.RegisterUser;
 
 /// <summary>
-/// Request handler for <see cref="RegisterUserCommand"/>
+///   Request handler for <see cref="RegisterUserCommand"/>
 /// </summary>
 public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, AuthenticationTokensDto>
 {

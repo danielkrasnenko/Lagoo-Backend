@@ -1,7 +1,7 @@
 namespace Lagoo.BusinessLogic.Common.ExternalServices.Models;
 
 /// <summary>
-///  User information from external auth services
+///   User information from external auth services
 /// </summary>
 public interface IExternalAuthServiceUserInfo
 {

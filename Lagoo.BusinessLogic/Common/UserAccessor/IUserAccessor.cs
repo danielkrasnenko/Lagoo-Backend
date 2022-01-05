@@ -3,7 +3,7 @@ using System.Security.Claims;
 namespace Lagoo.BusinessLogic.Common.UserAccessor;
 
 /// <summary>
-///  An interface for declaring needed functionality to work with JWT
+///   An interface for declaring needed functionality to work with JWT
 /// </summary>
 public interface IUserAccessor
 {

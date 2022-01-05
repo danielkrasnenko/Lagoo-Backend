@@ -3,7 +3,7 @@ using Lagoo.BusinessLogic.Common.UserAccessor;
 namespace Lagoo.BusinessLogic.Common.Extensions;
 
 /// <summary>
-///  Extension methods for <see cref="IUserAccessor"/>
+///   Extension methods for <see cref="IUserAccessor"/>
 /// </summary>
 public static class UserAccessorExtensions
 {

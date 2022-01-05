@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 namespace Lagoo.Domain.Entities;
 
 /// <summary>
-///  A model of the application user
+///   A model of the application user
 /// </summary>
 public class AppUser : IdentityUser<Guid>
 {
@@ -20,4 +20,6 @@ public class AppUser : IdentityUser<Guid>
         set => _registeredAtBackingField = value.ConvertToUtc();
     }
     private DateTime _registeredAtBackingField;
+    
+    public IList<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
 }

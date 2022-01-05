@@ -3,7 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 namespace Lagoo.BusinessLogic.Common.AppOptions.Services;
 
 /// <summary>
-///  JWT options for Authentication and Authorization
+///   JWT options for Authentication and Authorization
 /// </summary>
 public class JwtAuthOptions
 {

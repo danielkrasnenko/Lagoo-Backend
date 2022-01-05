@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Lagoo.BusinessLogic.Common.Services;
 
 /// <summary>
-///  Adding business logic services into DI container
+///   Adding business logic services into DI container
 /// </summary>
 public static class ServicesDependencyInjection
 {

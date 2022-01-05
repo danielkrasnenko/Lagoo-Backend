@@ -13,7 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 namespace Lagoo.BusinessLogic.Common.Services.JwtAuthService;
 
 /// <summary>
-/// Service for dealing with JWT in the app
+///   Service for dealing with JWT in the app
 /// </summary>
 public class JwtAuthService : IJwtAuthService
 {

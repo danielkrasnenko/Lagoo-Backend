@@ -4,7 +4,7 @@ using Lagoo.BusinessLogic.Common.Services.HttpService;
 namespace Lagoo.Infrastructure.Services.FacebookAuthService;
 
 /// <summary>
-///  A service for authentication via Facebook
+///   A service for authentication via Facebook
 /// </summary>
 public class FacebookAuthService : IFacebookAuthService
 {

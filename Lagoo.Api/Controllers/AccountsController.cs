@@ -14,7 +14,7 @@ public class AccountsController : ApiController
     public AccountsController(IMediator mediator) : base(mediator) { }
 
     /// <summary>
-    /// Register a user in the app, optionally via an external authentication
+    ///   Register a user in the app, optionally via an external authentication
     /// </summary>
     /// <param name="command">User data for registration</param>
     /// <returns>Access and Refresh tokens, and their expiration dates</returns>
@@ -22,7 +22,7 @@ public class AccountsController : ApiController
     public Task<AuthenticationTokensDto> RegisterUser([FromBody] RegisterUserCommand command) => Mediator.Send(command);
 
     /// <summary>
-    /// Login a user in the app
+    ///   Login a user in the app
     /// </summary>
     /// <param name="command">User data to login in the app</param>
     /// <returns>Access and Refresh tokens, and their expiration dates</returns>
@@ -30,16 +30,16 @@ public class AccountsController : ApiController
     public Task<AuthenticationTokensDto> LoginUser([FromBody] LoginUserCommand command) => Mediator.Send(command);
 
     /// <summary>
-    /// Login a user via any supported external authentication service
+    ///   Login a user via any supported external authentication service
     /// </summary>
     /// <param name="command">External authentication service, its access token and an optional refresh token if exists on a device</param>
     /// <returns>Access and Refresh tokens, and their expiration dates</returns>
-    [HttpPost("auth/login/external-service")]
+    [HttpPost("auth/external-service/login")]
     public Task<AuthenticationTokensDto> LoginUserViaFacebook([FromBody] LoginUserViaExternalServiceCommand command) =>
         Mediator.Send(command);
 
     /// <summary>
-    /// Refresh access token using refresh token for further access to guarded endpoints
+    ///   Refresh access token using refresh token for further access to guarded endpoints
     /// </summary>
     /// <param name="command">Expired Access token and Refresh token</param>
     /// <returns>New Access token</returns>

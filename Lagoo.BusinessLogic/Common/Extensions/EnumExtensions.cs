@@ -3,7 +3,7 @@ using System.ComponentModel;
 namespace Lagoo.BusinessLogic.Common.Extensions;
 
 /// <summary>
-///  Extension method for <see cref="Enum"/>
+///   Extension method for <see cref="Enum"/>
 /// </summary>
 public static class EnumExtensions
 {

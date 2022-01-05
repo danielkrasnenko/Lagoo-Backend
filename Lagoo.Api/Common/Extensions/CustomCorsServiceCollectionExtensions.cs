@@ -1,7 +1,7 @@
 namespace Lagoo.Api.Common.Extensions;
 
 /// <summary>
-///  Custom CORS extension methods for <see cref="IServiceCollection"/>
+///   Custom CORS extension methods for <see cref="IServiceCollection"/>
 /// </summary>
 public static class CustomCorsServiceCollectionExtensions
 {

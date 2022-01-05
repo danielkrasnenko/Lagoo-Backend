@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 namespace Lagoo.BusinessLogic.Common.ExternalServices.Database;
 
 /// <summary>
-///  An interface for declaring needed functionality to work with Persistence Store
+///   An interface for declaring needed functionality to work with Persistence Store
 /// </summary>
 public interface IAppDbContext
 {

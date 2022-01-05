@@ -10,7 +10,7 @@ using Microsoft.Extensions.Localization;
 namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.LoginUser;
 
 /// <summary>
-/// Request handler for <see cref="LoginUserCommand"/>
+///   Request handler for <see cref="LoginUserCommand"/>
 /// </summary>
 public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, AuthenticationTokensDto>
 {

@@ -16,7 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Lagoo.BusinessLogic;
 
 /// <summary>
-///  Adding all business logic services to DI Container
+///   Adding all business logic services to DI Container
 /// </summary>
 public static class DependencyInjection
 {
@@ -49,7 +49,7 @@ public static class DependencyInjection
     }
     
     /// <summary>
-    ///  Add property validators to the app
+    ///   Add property validators to the app
     /// </summary>
     /// <param name="services"><see cref="IServiceCollection"/></param>
     private static void AddPropertyValidatorsFromAssembly(this IServiceCollection services)

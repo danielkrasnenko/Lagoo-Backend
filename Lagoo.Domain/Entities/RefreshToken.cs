@@ -3,7 +3,7 @@ using Lagoo.Domain.Extensions;
 namespace Lagoo.Domain.Entities;
 
 /// <summary>
-///  Refresh Token model for refreshing Access token
+///   Refresh Token model for refreshing Access token
 /// </summary>
 public class RefreshToken
 {

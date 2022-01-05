@@ -4,7 +4,7 @@ using Lagoo.BusinessLogic.Common.Services.HttpService;
 namespace Lagoo.Infrastructure.Services.GoogleAuthService;
 
 /// <summary>
-///  A service for authentication via Google
+///   A service for authentication via Google
 /// </summary>
 public class GoogleAuthService : IGoogleAuthService
 {

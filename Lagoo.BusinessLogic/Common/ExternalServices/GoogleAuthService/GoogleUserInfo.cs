@@ -4,7 +4,7 @@ using Lagoo.BusinessLogic.Common.ExternalServices.Models;
 namespace Lagoo.BusinessLogic.Common.ExternalServices.GoogleAuthService;
 
 /// <summary>
-///  User information from Google
+///   User information from Google
 /// </summary>
 public class GoogleUserInfo : IExternalAuthServiceUserInfo
 {

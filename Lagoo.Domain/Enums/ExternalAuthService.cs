@@ -3,7 +3,7 @@ using System.ComponentModel;
 namespace Lagoo.Domain.Enums;
 
 /// <summary>
-///  Different external authentication services
+///   Different external authentication services
 /// </summary>
 public enum ExternalAuthService
 {

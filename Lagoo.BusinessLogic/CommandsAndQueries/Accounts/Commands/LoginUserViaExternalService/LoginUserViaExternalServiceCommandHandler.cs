@@ -12,7 +12,7 @@ using Microsoft.Extensions.Localization;
 namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.LoginUserViaExternalService;
 
 /// <summary>
-/// Request handler for <see cref="LoginUserViaExternalServiceCommand"/>
+///   Request handler for <see cref="LoginUserViaExternalServiceCommand"/>
 /// </summary>
 public class LoginUserViaExternalServiceCommandHandler : IRequestHandler<LoginUserViaExternalServiceCommand, AuthenticationTokensDto>
 {

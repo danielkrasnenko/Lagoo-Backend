@@ -5,7 +5,7 @@ using Lagoo.BusinessLogic.Common.Exceptions.Base;
 namespace Lagoo.BusinessLogic.Common.Services.HttpService;
 
 /// <summary>
-///  Wrapper over HttpClient with additional functionality
+///   Wrapper over HttpClient with additional functionality
 /// </summary>
 public class HttpService : IHttpService
 {

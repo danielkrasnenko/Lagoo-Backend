@@ -4,7 +4,7 @@ using Lagoo.BusinessLogic.Common.ExternalServices.Models;
 namespace Lagoo.BusinessLogic.Common.ExternalServices.FacebookAuthService;
 
 /// <summary>
-///  User information from Facebook
+///   User information from Facebook
 /// </summary>
 public class FacebookUserInfo : IExternalAuthServiceUserInfo
 {

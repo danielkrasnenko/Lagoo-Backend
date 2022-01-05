@@ -3,7 +3,7 @@ using System.ComponentModel;
 namespace Lagoo.Domain.Enums;
 
 /// <summary>
-///  Cultures
+///   Cultures
 /// </summary>
 public enum Culture
 {

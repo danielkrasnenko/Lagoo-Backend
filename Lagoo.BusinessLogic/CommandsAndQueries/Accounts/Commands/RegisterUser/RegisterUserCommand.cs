@@ -5,44 +5,44 @@ using MediatR;
 namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.RegisterUser;
 
 /// <summary>
-/// Command for registering users in the app.
-/// If an external authentication service has been specified, created account will be bound to it.
-/// Will throw an exception, if a connection to an external authentication service has failed. 
+///   Command for registering users in the app.
+///   If an external authentication service has been specified, created account will be bound to it.
+///   Will throw an exception, if a connection to an external authentication service has failed. 
 /// </summary>
 public class RegisterUserCommand : IRequest<AuthenticationTokensDto>
 {
     /// <summary>
-    /// First name
+    ///   First name
     /// </summary>
     public string FirstName { get; set; } = string.Empty;
 
     /// <summary>
-    /// Last name
+    ///   Last name
     /// </summary>
     public string LastName { get; set; } = string.Empty;
     
     /// <summary>
-    /// Email
+    ///   Email
     /// </summary>
     public string Email { get; set; } = string.Empty;
 
     /// <summary>
-    /// Password
+    ///   Password
     /// </summary>
     public string? Password { get; set; }
 
     /// <summary>
-    /// Password confirmation
+    ///   Password confirmation
     /// </summary>
     public string? ConfirmPassword { get; set; }
 
     /// <summary>
-    /// External authentication service
+    ///   External authentication service
     /// </summary>
     public ExternalAuthService? ExternalAuthService { get; set; }
 
     /// <summary>
-    /// Access token for getting needed user information from other platforms 
+    ///   Access token for getting needed user information from other platforms 
     /// </summary>
     public string? ExternalAuthServiceAccessToken { get; set; }
 }

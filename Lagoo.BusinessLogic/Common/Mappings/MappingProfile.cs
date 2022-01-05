@@ -4,7 +4,7 @@ using AutoMapper;
 namespace Lagoo.BusinessLogic.Common.Mappings;
 
 /// <summary>
-///  Mappings creation via reflection
+///   Mappings creation via reflection
 /// </summary>
 public class MappingProfile : Profile
 {

@@ -10,7 +10,7 @@ using Microsoft.Extensions.Localization;
 namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.RefreshAccessToken;
 
 /// <summary>
-/// Request handler for <see cref="RefreshAccessTokenCommand"/>
+///   Request handler for <see cref="RefreshAccessTokenCommand"/>
 /// </summary>
 public class RefreshAccessTokenCommandHandler : IRequestHandler<RefreshAccessTokenCommand, RefreshAccessTokenResponseDto>
 {

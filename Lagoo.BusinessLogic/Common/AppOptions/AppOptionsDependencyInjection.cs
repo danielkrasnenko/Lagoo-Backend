@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 namespace Lagoo.BusinessLogic.Common.AppOptions;
 
 /// <summary>
-///  Adding <see cref="IOptions{TOptions}"/> configs from appsettings to DI Container
+///   Adding <see cref="IOptions{TOptions}"/> configs from appsettings to DI Container
 /// </summary>
 public static class AppOptionsDependencyInjection
 {

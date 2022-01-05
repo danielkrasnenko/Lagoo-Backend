@@ -7,7 +7,7 @@ using Lagoo.BusinessLogic.Common.Exceptions.Api;
 namespace Lagoo.Api.Common.Middlewares;
 
 /// <summary>
-///  A middleware for appropriate handling of thrown custom exceptions in the app
+///   A middleware for appropriate handling of thrown custom exceptions in the app
 /// </summary>
 public class CustomExceptionHandlerMiddleware
 {

@@ -9,7 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 namespace Lagoo.Api.Common.Extensions;
 
 /// <summary>
-///  Authentication and Authorization extension methods for <see cref="IServiceCollection"/>
+///   Authentication and Authorization extension methods for <see cref="IServiceCollection"/>
 /// </summary>
 public static class AuthServiceCollectionExtensions
 {
