@@ -10,7 +10,10 @@ public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshToken>
     {
         builder
             .HasKey(rt => rt.Value)
-            .HasName("PrimaryKey_Value");;
+            .HasName("PrimaryKey_Value");
+
+        builder
+            .HasIndex(rt => rt.DeviceId);
         
         builder
             .Property(rt => rt.Value)

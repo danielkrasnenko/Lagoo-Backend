@@ -16,8 +16,7 @@ public class LoginUserCommandValidator : AbstractValidator<LoginUserCommand>
         RuleFor(luc => luc.Password)
             .NotEmpty().WithMessage(accountLocalizer["PasswordIsEmpty"]);
         
-        RuleFor(luc => luc.RefreshTokenValue)
-            .NotEmpty().WithMessage(accountLocalizer["RefreshTokenValueIsEmpty"])
-            .When(luc => luc.RefreshTokenValue is not null);
+        RuleFor(luc => luc.DeviceId)
+            .NotEmpty().WithMessage(accountLocalizer["DeviceIdIsNotProvided"]);
     }
 }

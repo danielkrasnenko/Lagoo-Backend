@@ -35,7 +35,7 @@ public class AccountsController : ApiController
     /// <param name="command">External authentication service, its access token and an optional refresh token if exists on a device</param>
     /// <returns>Access and Refresh tokens, and their expiration dates</returns>
     [HttpPost("auth/external-service/login")]
-    public Task<AuthenticationTokensDto> LoginUserViaFacebook([FromBody] LoginUserViaExternalServiceCommand command) =>
+    public Task<AuthenticationTokensDto> LoginUserViaExternalAuthService([FromBody] LoginUserViaExternalServiceCommand command) =>
         Mediator.Send(command);
 
     /// <summary>

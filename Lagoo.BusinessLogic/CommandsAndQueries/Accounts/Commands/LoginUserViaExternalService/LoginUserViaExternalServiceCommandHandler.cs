@@ -45,6 +45,6 @@ public class LoginUserViaExternalServiceCommandHandler : IRequestHandler<LoginUs
             throw new BadRequestException(_accountLocalizer["AccountWasNotFoundByExternalAuthServiceData"]);
         }
         
-        return await _mediator.Send(new CreateAuthTokensCommand(user) { RefreshTokenValue = request.RefreshTokenValue }, cancellationToken);
+        return await _mediator.Send(new CreateAuthTokensCommand(user) { DeviceId = request.DeviceId }, cancellationToken);
     }
 }

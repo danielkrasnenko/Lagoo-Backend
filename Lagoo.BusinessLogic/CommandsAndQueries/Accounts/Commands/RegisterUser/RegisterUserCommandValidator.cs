@@ -54,5 +54,8 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
         RuleFor(ruc => ruc.ExternalAuthServiceAccessToken)
             .NotEmpty().WithMessage(accountLocalizer["AccessTokenIsEmpty"])
             .When(ruc => ruc.ExternalAuthService is not null);
+        
+        RuleFor(ruc => ruc.DeviceId)
+            .NotEmpty().WithMessage(accountLocalizer["DeviceIdIsNotProvided"]);
     }
 }

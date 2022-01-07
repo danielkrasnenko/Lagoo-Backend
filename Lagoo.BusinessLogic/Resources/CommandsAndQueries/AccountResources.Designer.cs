@@ -97,6 +97,15 @@ namespace Lagoo.BusinessLogic.Resources.CommandsAndQueries {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Device ID is not provided.
+        /// </summary>
+        public static string DeviceIdIsNotProvided {
+            get {
+                return ResourceManager.GetString("DeviceIdIsNotProvided", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email cannot be empty.
         /// </summary>
         public static string EmailIsEmpty {

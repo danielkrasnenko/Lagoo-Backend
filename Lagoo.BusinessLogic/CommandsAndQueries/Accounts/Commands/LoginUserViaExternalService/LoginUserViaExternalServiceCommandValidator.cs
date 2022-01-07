@@ -15,8 +15,7 @@ public class LoginUserViaExternalServiceCommandValidator : AbstractValidator<Log
         RuleFor(luc => luc.ExternalServiceAccessToken)
             .NotEmpty().WithMessage(accountLocalizer["AccessTokenIsEmpty"]);
         
-        RuleFor(luc => luc.RefreshTokenValue)
-            .NotEmpty().WithMessage(accountLocalizer["RefreshTokenValueIsEmpty"])
-            .When(luc => luc.RefreshTokenValue is not null);
+        RuleFor(luc => luc.DeviceId)
+            .NotEmpty().WithMessage(accountLocalizer["DeviceIdIsNotProvided"]);
     }
 }

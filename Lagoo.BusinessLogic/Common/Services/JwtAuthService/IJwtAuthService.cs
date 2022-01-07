@@ -10,7 +10,7 @@ public interface IJwtAuthService
 {
     public Task<(string, DateTime)> GenerateAccessTokenAsync(AppUser user, string? userRole = null);
 
-    public RefreshToken GenerateRefreshToken(Guid ownerId);
+    public RefreshToken GenerateRefreshToken(Guid ownerId, Guid deviceId);
 
     public RefreshToken UpdateRefreshToken(RefreshToken refreshToken);
 

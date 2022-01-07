@@ -1,5 +1,4 @@
 using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Common.Dtos;
-using Lagoo.BusinessLogic.Common.Exceptions.Api;
 using Lagoo.BusinessLogic.Common.ExternalServices.Database;
 using Lagoo.BusinessLogic.Common.Services.JwtAuthService;
 using Lagoo.BusinessLogic.Resources.CommandsAndQueries;
@@ -28,7 +27,7 @@ public class CreateAuthTokensCommandHandler : IRequestHandler<CreateAuthTokensCo
     public async Task<AuthenticationTokensDto> Handle(CreateAuthTokensCommand request, CancellationToken cancellationToken)
     {
         var (accessToken, accessTokenExpirationDate) = await _jwtAuthService.GenerateAccessTokenAsync(request.User);
-        var refreshToken = await GetRefreshTokenAsync(request.User.Id, request.RefreshTokenValue, cancellationToken);
+        var refreshToken = await GetRefreshTokenAsync(request.User, request.DeviceId, cancellationToken);
 
         await _context.SaveChangesAsync(CancellationToken.None);
         
@@ -41,25 +40,18 @@ public class CreateAuthTokensCommandHandler : IRequestHandler<CreateAuthTokensCo
         };
     }
     
-    private async Task<RefreshToken> GetRefreshTokenAsync(Guid userId, string? refreshTokenValue, CancellationToken cancellationToken)
+    private async Task<RefreshToken> GetRefreshTokenAsync(AppUser user, Guid deviceId, CancellationToken cancellationToken)
     {
-        if (refreshTokenValue is null)
-        {
-            var refreshToken = _jwtAuthService.GenerateRefreshToken(userId);
-            _context.RefreshTokens.Add(refreshToken);
-
-            return refreshToken;
-        }
-        
-        var outdatedRefreshToken =
-            await _context.RefreshTokens.FirstOrDefaultAsync(rt => rt.Value == refreshTokenValue,
+        var refreshToken =
+            await _context.RefreshTokens.FirstOrDefaultAsync(rt => rt.OwnerId == user.Id && rt.DeviceId == deviceId,
                 cancellationToken);
 
-        if (outdatedRefreshToken is null)
-        {
-            throw new BadRequestException(_accountLocalizer["RefreshTokenWasNotFound"]);
-        }
+        if (refreshToken is not null)
+            return _jwtAuthService.UpdateRefreshToken(refreshToken);
 
-        return _jwtAuthService.UpdateRefreshToken(outdatedRefreshToken);
+        var newRefreshToken = _jwtAuthService.GenerateRefreshToken(user.Id, deviceId);
+        _context.RefreshTokens.Add(newRefreshToken);
+
+        return newRefreshToken;
     }
 }

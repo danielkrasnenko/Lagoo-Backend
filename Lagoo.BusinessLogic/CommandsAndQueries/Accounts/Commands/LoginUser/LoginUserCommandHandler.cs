@@ -38,7 +38,7 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Authent
         
         await ValidateUserDataAsync(user, request.Password);
         
-        return await _mediator.Send(new CreateAuthTokensCommand(user) { RefreshTokenValue = request.RefreshTokenValue },
+        return await _mediator.Send(new CreateAuthTokensCommand(user) { DeviceId = request.DeviceId },
             cancellationToken);
     }
 

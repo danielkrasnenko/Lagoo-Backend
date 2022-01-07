@@ -81,6 +81,9 @@
     <data name="RefreshTokenWasNotFoundOrExpired" xml:space="preserve">
         <value>Refresh token was not found or expired</value>
     </data>
+    <data name="DeviceIdIsNotProvided" xml:space="preserve">
+        <value>Device ID is not provided</value>
+    </data>
     <data name="UserDoesNotHaveExternalLogins" xml:space="preserve">
         <value>You do not have external logins</value>
     </data>

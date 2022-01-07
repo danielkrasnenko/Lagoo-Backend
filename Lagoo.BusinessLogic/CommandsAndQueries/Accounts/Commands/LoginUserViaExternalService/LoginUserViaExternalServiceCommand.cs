@@ -20,8 +20,8 @@ public class LoginUserViaExternalServiceCommand : IRequest<AuthenticationTokensD
     public string ExternalServiceAccessToken { get; set; } = string.Empty;
     
     /// <summary>
-    ///   Refresh token value for updating Refresh token if it exists on a device,
+    ///   A Guid associated with a particular device for updating Refresh token if it exists on a device,
     ///   otherwise create a new one
     /// </summary>
-    public string? RefreshTokenValue { get; set; }
+    public Guid DeviceId { get; set; }
 }

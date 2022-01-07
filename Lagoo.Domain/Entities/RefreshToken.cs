@@ -8,6 +8,8 @@ namespace Lagoo.Domain.Entities;
 public class RefreshToken
 {
     public string Value { get; set; } = string.Empty;
+    // TODO Check if it is indexed by default
+    public Guid DeviceId { get; set; }
 
     public DateTime ExpiresAt
     {
@@ -23,6 +25,11 @@ public class RefreshToken
     }
     private DateTime? _lastModifiedAtBackingField;
 
-    public AppUser Owner { get; set; } = null!;
     public Guid OwnerId { get; set; }
+    public AppUser Owner
+    {
+        get => _ownerBackingField ?? throw new InvalidOperationException($"Uninitialized property: {nameof(Owner)}");
+        set => _ownerBackingField = value;
+    }
+    private AppUser? _ownerBackingField;
 }

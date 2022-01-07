@@ -54,7 +54,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
             throw new BadRequestException(_accountLocalizer["InvalidData"]);
         }
 
-        return await _mediator.Send(new CreateAuthTokensCommand(user), cancellationToken);
+        return await _mediator.Send(new CreateAuthTokensCommand(user) { DeviceId = request.DeviceId }, cancellationToken);
     }
 
     private async Task CreateAccount(AppUser user, string password)

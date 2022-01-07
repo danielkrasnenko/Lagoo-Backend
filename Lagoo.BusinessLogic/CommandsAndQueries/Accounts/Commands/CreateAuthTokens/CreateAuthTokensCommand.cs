@@ -20,8 +20,8 @@ public class CreateAuthTokensCommand : IRequest<AuthenticationTokensDto>
     public AppUser User { get; set; }
     
     /// <summary>
-    ///   Refresh token value for updating Refresh token if it exists on a device,
-    /// otherwise create a new one
+    ///   A Guid associated with a particular device for updating Refresh token if it exists on a device,
+    ///   otherwise create a new one
     /// </summary>
-    public string? RefreshTokenValue { get; set; } = string.Empty;
+    public Guid DeviceId { get; set; }
 }

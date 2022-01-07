@@ -45,4 +45,10 @@ public class RegisterUserCommand : IRequest<AuthenticationTokensDto>
     ///   Access token for getting needed user information from other platforms 
     /// </summary>
     public string? ExternalAuthServiceAccessToken { get; set; }
+
+    /// <summary>
+    ///   A Guid associated with a particular device for updating Refresh token if it exists on a device,
+    ///   otherwise create a new one
+    /// </summary>
+    public Guid DeviceId { get; set; }
 }
