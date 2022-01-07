@@ -50,6 +50,13 @@
             <param name="command">External authentication service, its access token and an optional refresh token if exists on a device</param>
             <returns>Access and Refresh tokens, and their expiration dates</returns>
         </member>
+        <member name="M:Lagoo.Api.Controllers.AccountsController.GetExternalAuthServiceUserInfo(Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Queries.GetExternalAuthServiceUserInfo.GetExternalAuthServiceUserInfoQuery)">
+            <summary>
+              Get user information from specified external authentication service
+            </summary>
+            <param name="query">External authentication service and access token to it</param>
+            <returns>User info from specified external authentication service</returns>
+        </member>
         <member name="M:Lagoo.Api.Controllers.AccountsController.RefreshAccessToken(Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.RefreshAccessToken.RefreshAccessTokenCommand)">
             <summary>
               Refresh access token using refresh token for further access to guarded endpoints

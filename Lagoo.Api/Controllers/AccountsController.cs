@@ -3,6 +3,7 @@ using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.LoginUserViaExter
 using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.RefreshAccessToken;
 using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.RegisterUser;
 using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Common.Dtos;
+using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Queries.GetExternalAuthServiceUserInfo;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,6 +38,15 @@ public class AccountsController : ApiController
     [HttpPost("auth/external-service/login")]
     public Task<AuthenticationTokensDto> LoginUserViaExternalAuthService([FromBody] LoginUserViaExternalServiceCommand command) =>
         Mediator.Send(command);
+
+    /// <summary>
+    ///   Get user information from specified external authentication service
+    /// </summary>
+    /// <param name="query">External authentication service and access token to it</param>
+    /// <returns>User info from specified external authentication service</returns>
+    [HttpGet("auth/external-service/user-info")]
+    public Task<GetExternalAuthServiceUserInfoResponseDto> GetExternalAuthServiceUserInfo(
+        [FromQuery] GetExternalAuthServiceUserInfoQuery query) => Mediator.Send(query);
 
     /// <summary>
     ///   Refresh access token using refresh token for further access to guarded endpoints
