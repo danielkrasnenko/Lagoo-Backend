@@ -7,7 +7,7 @@ namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.LoginUserViaE
 /// <summary>
 ///   Command to login user in the app via an external authentication service
 /// </summary>
-public class LoginUserViaExternalServiceCommand : IRequest<AuthenticationTokensDto>
+public class LoginUserViaExternalServiceCommand : IRequest<AuthenticationDataDto>
 {
     /// <summary>
     ///   External authentication service
@@ -20,8 +20,8 @@ public class LoginUserViaExternalServiceCommand : IRequest<AuthenticationTokensD
     public string ExternalServiceAccessToken { get; set; } = string.Empty;
     
     /// <summary>
-    ///   A Guid associated with a particular device for updating Refresh token if it exists on a device,
-    ///   otherwise create a new one
+    ///   A Guid associated with a particular device after register or login.
+    ///   Used for updating Refresh token if it existed on a device, otherwise create a new one
     /// </summary>
-    public Guid DeviceId { get; set; }
+    public Guid? DeviceId { get; set; }
 }

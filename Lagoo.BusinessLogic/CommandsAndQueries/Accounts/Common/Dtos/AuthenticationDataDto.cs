@@ -1,6 +1,6 @@
 namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Common.Dtos;
 
-public class AuthenticationTokensDto
+public class AuthenticationDataDto
 {
     public string AccessToken { get; set; } = string.Empty;
     
@@ -9,4 +9,6 @@ public class AuthenticationTokensDto
     public string RefreshTokenValue { get; set; } = string.Empty;
     
     public DateTime RefreshTokenExpiresAt { get; set; }
+
+    public Guid DeviceId { get; set; }
 }

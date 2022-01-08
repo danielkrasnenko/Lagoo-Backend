@@ -14,7 +14,7 @@ namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.LoginUserViaE
 /// <summary>
 ///   Request handler for <see cref="LoginUserViaExternalServiceCommand"/>
 /// </summary>
-public class LoginUserViaExternalServiceCommandHandler : IRequestHandler<LoginUserViaExternalServiceCommand, AuthenticationTokensDto>
+public class LoginUserViaExternalServiceCommandHandler : IRequestHandler<LoginUserViaExternalServiceCommand, AuthenticationDataDto>
 {
     private readonly IExternalAuthServicesManager _externalAuthServicesManager;
 
@@ -32,7 +32,7 @@ public class LoginUserViaExternalServiceCommandHandler : IRequestHandler<LoginUs
         _accountLocalizer = accountLocalizer;
     }
 
-    public async Task<AuthenticationTokensDto> Handle(LoginUserViaExternalServiceCommand request, CancellationToken cancellationToken)
+    public async Task<AuthenticationDataDto> Handle(LoginUserViaExternalServiceCommand request, CancellationToken cancellationToken)
     {
         var userInfo =
             await _externalAuthServicesManager.GetUserInfoAsync(request.ExternalAuthService,

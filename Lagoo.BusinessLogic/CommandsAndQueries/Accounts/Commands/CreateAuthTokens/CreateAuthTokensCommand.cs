@@ -7,7 +7,7 @@ namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.CreateAuthTok
 /// <summary>
 ///   Command for creating authentication tokens to send to the frontend for further authorization
 /// </summary>
-public class CreateAuthTokensCommand : IRequest<AuthenticationTokensDto>
+public class CreateAuthTokensCommand : IRequest<AuthenticationDataDto>
 {
     public CreateAuthTokensCommand(AppUser user)
     {
@@ -20,8 +20,8 @@ public class CreateAuthTokensCommand : IRequest<AuthenticationTokensDto>
     public AppUser User { get; set; }
     
     /// <summary>
-    ///   A Guid associated with a particular device for updating Refresh token if it exists on a device,
-    ///   otherwise create a new one
+    ///   A Guid associated with a particular device after register or login.
+    ///   Used for updating Refresh token if it existed on a device, otherwise create a new one
     /// </summary>
-    public Guid DeviceId { get; set; }
+    public Guid? DeviceId { get; set; }
 }

@@ -6,7 +6,7 @@ namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.LoginUser;
 /// <summary>
 ///   Command to login user in the app via his/her credentials of a local account
 /// </summary>
-public class LoginUserCommand : IRequest<AuthenticationTokensDto>
+public class LoginUserCommand : IRequest<AuthenticationDataDto>
 {
     /// <summary>
     ///   User email
@@ -19,8 +19,8 @@ public class LoginUserCommand : IRequest<AuthenticationTokensDto>
     public string Password { get; set; } = string.Empty;
 
     /// <summary>
-    ///   A Guid associated with a particular device for updating Refresh token if it exists on a device,
-    ///   otherwise create a new one
+    ///   A Guid associated with a particular device after register or login.
+    ///   Used for updating Refresh token if it existed on a device, otherwise create a new one
     /// </summary>
-    public Guid DeviceId { get; set; }
+    public Guid? DeviceId { get; set; }
 }

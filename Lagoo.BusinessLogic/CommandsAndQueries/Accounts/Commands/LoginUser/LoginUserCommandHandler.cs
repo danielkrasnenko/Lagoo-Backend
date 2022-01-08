@@ -12,7 +12,7 @@ namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.LoginUser;
 /// <summary>
 ///   Request handler for <see cref="LoginUserCommand"/>
 /// </summary>
-public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, AuthenticationTokensDto>
+public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, AuthenticationDataDto>
 {
     private readonly UserManager<AppUser> _userManager;
 
@@ -27,7 +27,7 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Authent
         _accountLocalizer = accountLocalizer;
     }
     
-    public async Task<AuthenticationTokensDto> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+    public async Task<AuthenticationDataDto> Handle(LoginUserCommand request, CancellationToken cancellationToken)
     {
         var user = await _userManager.FindByEmailAsync(request.Email);
 

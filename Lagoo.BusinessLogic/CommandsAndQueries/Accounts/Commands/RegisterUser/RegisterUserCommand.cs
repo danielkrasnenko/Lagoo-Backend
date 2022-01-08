@@ -9,7 +9,7 @@ namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.RegisterUser;
 ///   If an external authentication service has been specified, created account will be bound to it.
 ///   Will throw an exception, if a connection to an external authentication service has failed. 
 /// </summary>
-public class RegisterUserCommand : IRequest<AuthenticationTokensDto>
+public class RegisterUserCommand : IRequest<AuthenticationDataDto>
 {
     /// <summary>
     ///   First name
@@ -47,8 +47,8 @@ public class RegisterUserCommand : IRequest<AuthenticationTokensDto>
     public string? ExternalAuthServiceAccessToken { get; set; }
 
     /// <summary>
-    ///   A Guid associated with a particular device for updating Refresh token if it exists on a device,
-    ///   otherwise create a new one
+    ///   A Guid associated with a particular device after register or login.
+    ///   Used for updating Refresh token if it existed on a device, otherwise create a new one
     /// </summary>
-    public Guid DeviceId { get; set; }
+    public Guid? DeviceId { get; set; }
 }

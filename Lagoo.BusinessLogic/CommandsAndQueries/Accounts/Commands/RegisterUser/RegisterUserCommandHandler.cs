@@ -14,7 +14,7 @@ namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.RegisterUser;
 /// <summary>
 ///   Request handler for <see cref="RegisterUserCommand"/>
 /// </summary>
-public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, AuthenticationTokensDto>
+public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, AuthenticationDataDto>
 {
     private readonly UserManager<AppUser> _userManager;
 
@@ -32,7 +32,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
         _accountLocalizer = accountLocalizer;
     }
 
-    public async Task<AuthenticationTokensDto> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+    public async Task<AuthenticationDataDto> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
         var user = new AppUser
         {
