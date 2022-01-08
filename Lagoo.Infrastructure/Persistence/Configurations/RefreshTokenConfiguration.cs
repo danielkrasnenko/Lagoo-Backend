@@ -9,8 +9,7 @@ public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshToken>
     public void Configure(EntityTypeBuilder<RefreshToken> builder)
     {
         builder
-            .HasKey(rt => rt.Value)
-            .HasName("PrimaryKey_Value");
+            .HasIndex(rt => rt.Value);
 
         builder
             .HasIndex(rt => rt.DeviceId);

@@ -15,9 +15,9 @@ public class LoginUserViaExternalServiceCommand : IRequest<AuthenticationDataDto
     public ExternalAuthService ExternalAuthService { get; set; }
 
     /// <summary>
-    ///   Access token for getting needed user information from other platforms
+    ///   Access token from external authentication service for getting needed user information from it
     /// </summary>
-    public string ExternalServiceAccessToken { get; set; } = string.Empty;
+    public string ExternalAuthServiceAccessToken { get; set; } = string.Empty;
     
     /// <summary>
     ///   A Guid associated with a particular device after register or login.

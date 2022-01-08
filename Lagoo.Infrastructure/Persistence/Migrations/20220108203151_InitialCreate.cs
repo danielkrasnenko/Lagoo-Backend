@@ -162,14 +162,17 @@ namespace Lagoo.Infrastructure.Persistence.Migrations
                 name: "RefreshTokens",
                 columns: table => new
                 {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Value = table.Column<string>(type: "char(40)", maxLength: 40, nullable: false),
+                    DeviceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ExpiresAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     OwnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PrimaryKey_Value", x => x.Value);
+                    table.PrimaryKey("PK_RefreshTokens", x => x.Id);
                     table.ForeignKey(
                         name: "FK_RefreshTokens_AspNetUsers_OwnerId",
                         column: x => x.OwnerId,
@@ -218,9 +221,19 @@ namespace Lagoo.Infrastructure.Persistence.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_RefreshTokens_DeviceId",
+                table: "RefreshTokens",
+                column: "DeviceId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RefreshTokens_OwnerId",
                 table: "RefreshTokens",
                 column: "OwnerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RefreshTokens_Value",
+                table: "RefreshTokens",
+                column: "Value");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

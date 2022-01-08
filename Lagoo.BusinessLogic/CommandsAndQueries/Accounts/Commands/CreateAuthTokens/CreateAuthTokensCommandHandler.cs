@@ -43,9 +43,8 @@ public class CreateAuthTokensCommandHandler : IRequestHandler<CreateAuthTokensCo
             return CreateRefreshToken(user);
         }
 
-        var refreshToken =
-            await _context.RefreshTokens.FirstOrDefaultAsync(rt => rt.OwnerId == user.Id && rt.DeviceId == deviceId,
-                cancellationToken);
+        var refreshToken = await _context.RefreshTokens
+            .FirstOrDefaultAsync(rt => rt.OwnerId == user.Id && rt.DeviceId == deviceId, cancellationToken);
 
         return refreshToken is null ? CreateRefreshToken(user) : _jwtAuthService.UpdateRefreshToken(refreshToken);
     }

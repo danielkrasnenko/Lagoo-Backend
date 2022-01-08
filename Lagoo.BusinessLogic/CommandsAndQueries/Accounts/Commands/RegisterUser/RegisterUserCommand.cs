@@ -42,7 +42,7 @@ public class RegisterUserCommand : IRequest<AuthenticationDataDto>
     public ExternalAuthService? ExternalAuthService { get; set; }
 
     /// <summary>
-    ///   Access token for getting needed user information from other platforms 
+    ///   Access token of external authentication service for getting needed user information from it 
     /// </summary>
     public string? ExternalAuthServiceAccessToken { get; set; }
 

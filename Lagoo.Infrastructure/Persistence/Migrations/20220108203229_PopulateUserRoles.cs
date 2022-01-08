@@ -19,6 +19,7 @@ namespace Lagoo.Infrastructure.Persistence.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+
         }
     }
 }

@@ -12,7 +12,7 @@ public class LoginUserViaExternalServiceCommandValidator : AbstractValidator<Log
             .NotNull().WithMessage(accountLocalizer["ExternalAuthServiceNotSpecified"])
             .IsInEnum().WithMessage(accountLocalizer["InvalidExternalAuthService"]);
 
-        RuleFor(luc => luc.ExternalServiceAccessToken)
+        RuleFor(luc => luc.ExternalAuthServiceAccessToken)
             .NotEmpty().WithMessage(accountLocalizer["AccessTokenIsEmpty"]);
     }
 }

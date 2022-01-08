@@ -17,11 +17,13 @@ public interface IAppDbContext
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 
     Task LoadRelatedEntityAsync<TEntity, TRelatedEntity>(TEntity entity,
-        Expression<Func<TEntity, TRelatedEntity?>> expression) where TEntity : class where TRelatedEntity : class;
+        Expression<Func<TEntity, TRelatedEntity?>> expression, CancellationToken cancellationToken)
+        where TEntity : class where TRelatedEntity : class;
 
     Task LoadRelatedCollectionAsync<TEntity, TRelatedEntity>(TEntity entity,
         Expression<Func<TEntity, IEnumerable<TRelatedEntity>>> expression,
-        Expression<Func<TRelatedEntity, bool>>? condition = null) where TEntity : class where TRelatedEntity : class;
+        CancellationToken cancellationToken, Expression<Func<TRelatedEntity, bool>>? condition = null)
+        where TEntity : class where TRelatedEntity : class;
 
     EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
 }

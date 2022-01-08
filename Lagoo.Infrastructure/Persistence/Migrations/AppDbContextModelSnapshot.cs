@@ -109,9 +109,11 @@ namespace Lagoo.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Lagoo.Domain.Entities.RefreshToken", b =>
                 {
-                    b.Property<string>("Value")
-                        .HasMaxLength(40)
-                        .HasColumnType("char(40)");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
                     b.Property<Guid>("DeviceId")
                         .HasColumnType("uniqueidentifier");
@@ -125,12 +127,18 @@ namespace Lagoo.Infrastructure.Persistence.Migrations
                     b.Property<Guid>("OwnerId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Value")
-                        .HasName("PrimaryKey_Value");
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("char(40)");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("DeviceId");
 
                     b.HasIndex("OwnerId");
+
+                    b.HasIndex("Value");
 
                     b.ToTable("RefreshTokens");
                 });

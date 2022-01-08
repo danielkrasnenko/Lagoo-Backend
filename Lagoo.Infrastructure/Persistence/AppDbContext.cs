@@ -22,19 +22,20 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
         return base.SaveChangesAsync(cancellationToken);
     }
 
-    public Task LoadRelatedEntityAsync<TEntity, TRelatedEntity>(TEntity entity, Expression<Func<TEntity, TRelatedEntity?>> expression) where TEntity : class where TRelatedEntity : class
+    public Task LoadRelatedEntityAsync<TEntity, TRelatedEntity>(TEntity entity, Expression<Func<TEntity, TRelatedEntity?>> expression,
+        CancellationToken cancellationToken) where TEntity : class where TRelatedEntity : class
     {
-        return Entry(entity).Reference(expression).LoadAsync();
+        return Entry(entity).Reference(expression).LoadAsync(cancellationToken);
     }
 
     public Task LoadRelatedCollectionAsync<TEntity, TRelatedEntity>(TEntity entity, Expression<Func<TEntity, IEnumerable<TRelatedEntity>>> expression,
-        Expression<Func<TRelatedEntity, bool>>? condition = null) where TEntity : class where TRelatedEntity : class
+        CancellationToken cancellationToken, Expression<Func<TRelatedEntity, bool>>? condition = null) where TEntity : class where TRelatedEntity : class
     {
         var collection = Entry(entity).Collection(expression);
 
         return condition is null
-            ? collection.LoadAsync()
-            : collection.Query().Where(condition).LoadAsync();
+            ? collection.LoadAsync(cancellationToken)
+            : collection.Query().Where(condition).LoadAsync(cancellationToken);
     }
 
     protected override void OnModelCreating(ModelBuilder builder)

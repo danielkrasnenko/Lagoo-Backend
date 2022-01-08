@@ -7,6 +7,8 @@ namespace Lagoo.Domain.Entities;
 /// </summary>
 public class RefreshToken
 {
+    public long Id { get; set; }
+    
     public string Value { get; set; } = string.Empty;
     
     public Guid DeviceId { get; set; }
@@ -28,8 +30,8 @@ public class RefreshToken
     public Guid OwnerId { get; set; }
     public AppUser Owner
     {
-        get => _ownerBackingField ?? throw new InvalidOperationException($"Uninitialized property: {nameof(Owner)}");
-        set => _ownerBackingField = value;
+        get => _owner ?? throw new InvalidOperationException($"Uninitialized property: {nameof(Owner)}");
+        set => _owner = value;
     }
-    private AppUser? _ownerBackingField;
+    private AppUser? _owner;
 }

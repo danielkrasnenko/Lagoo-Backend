@@ -36,7 +36,7 @@ public class LoginUserViaExternalServiceCommandHandler : IRequestHandler<LoginUs
     {
         var userInfo =
             await _externalAuthServicesManager.GetUserInfoAsync(request.ExternalAuthService,
-                request.ExternalServiceAccessToken);
+                request.ExternalAuthServiceAccessToken);
 
         var user = await _userManager.FindByLoginAsync(request.ExternalAuthService.GetEnumDescription(), userInfo.Id);
 
