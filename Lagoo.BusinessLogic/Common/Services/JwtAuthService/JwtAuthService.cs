@@ -54,11 +54,11 @@ public class JwtAuthService : IJwtAuthService
         return (serializedToken, newToken.ValidTo);
     }
 
-    public RefreshToken GenerateRefreshToken(Guid ownerId, Guid deviceId) => new()
+    public RefreshToken GenerateRefreshToken(AppUser user, Guid deviceId) => new()
     {
         Value = GenerateRefreshTokenValue(),
         ExpiresAt = DateTime.UtcNow.AddMinutes(_authOptions.RefreshTokenExpirationInMin),
-        OwnerId = ownerId,
+        Owner = user,
         DeviceId = deviceId
     };
 

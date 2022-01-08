@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -37,7 +38,6 @@ public class AppDbInitializer
 
     private Task SyncDatabase(AppDbContext context)
     {
-        // await context.Database.MigrateAsync();
-        return Task.FromResult(0);
+        return context.Database.MigrateAsync();
     }
 }

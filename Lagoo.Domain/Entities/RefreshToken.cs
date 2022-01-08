@@ -8,7 +8,7 @@ namespace Lagoo.Domain.Entities;
 public class RefreshToken
 {
     public string Value { get; set; } = string.Empty;
-    // TODO Check if it is indexed by default
+    
     public Guid DeviceId { get; set; }
 
     public DateTime ExpiresAt

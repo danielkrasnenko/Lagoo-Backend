@@ -21,15 +21,15 @@ public class CustomExceptionHandlerMiddleware
         _requestDelegate = requestDelegate;
     }
 
-    public Task Invoke(HttpContext httpContext)
+    public async Task Invoke(HttpContext httpContext)
     {
         try
         {
-            return _requestDelegate(httpContext);
+            await _requestDelegate(httpContext);
         }
         catch (Exception exception)
         {
-            return HandleExceptionAsync(httpContext, exception);
+            await HandleExceptionAsync(httpContext, exception);
         }
     }
 
@@ -39,6 +39,8 @@ public class CustomExceptionHandlerMiddleware
     private Task HandleExceptionAsync(HttpContext httpContext, Exception exception)
     {
         httpContext.Response.ContentType = MediaTypeNames.Application.Json;
+
+        Console.WriteLine($"\n########\n EXCEPTION: {exception.Message} {exception.GetType()} \n########\n");
 
         return exception switch
         {

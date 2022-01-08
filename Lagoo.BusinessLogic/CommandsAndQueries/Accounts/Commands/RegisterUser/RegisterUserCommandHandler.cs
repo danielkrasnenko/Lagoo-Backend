@@ -5,6 +5,7 @@ using Lagoo.BusinessLogic.Common.Services.ExternalAuthServicesManager;
 using Lagoo.BusinessLogic.Resources.CommandsAndQueries;
 using Lagoo.Domain.Entities;
 using Lagoo.Domain.Enums;
+using Lagoo.Domain.Types;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
@@ -38,7 +39,8 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
         {
             FirstName = request.FirstName,
             LastName = request.LastName,
-            Email = request.Email
+            Email = request.Email,
+            UserName = request.Email
         };
 
         if (request.ExternalAuthService is not null && request.ExternalAuthServiceAccessToken is not null)
@@ -53,6 +55,8 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
         {
             throw new BadRequestException(_accountLocalizer["InvalidData"]);
         }
+
+        await AddDefaultRoleToUser(user);
 
         return await _mediator.Send(new CreateAuthTokensCommand(user) { DeviceId = request.DeviceId }, cancellationToken);
     }
@@ -82,6 +86,16 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
         if (!loginResult.Succeeded)
         {
             throw new BadRequestException(loginResult);
+        }
+    }
+
+    private async Task AddDefaultRoleToUser(AppUser user)
+    {
+        var result = await _userManager.AddToRoleAsync(user, AppUserRole.User);
+
+        if (!result.Succeeded)
+        {
+            throw new BadRequestException(result);
         }
     }
 }
