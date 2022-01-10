@@ -6,6 +6,8 @@ namespace Lagoo.Infrastructure.Persistence.Configurations;
 
 public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshToken>
 {
+    public const int ValueMaxLength = 40; 
+    
     public void Configure(EntityTypeBuilder<RefreshToken> builder)
     {
         builder
@@ -17,6 +19,6 @@ public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshToken>
         builder
             .Property(rt => rt.Value)
             .HasColumnType("char")
-            .HasMaxLength(40);
+            .HasMaxLength(ValueMaxLength);
     }
 }
