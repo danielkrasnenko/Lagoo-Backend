@@ -59,6 +59,7 @@ public class JwtAuthService : IJwtAuthService
         Value = GenerateRefreshTokenValue(),
         ExpiresAt = DateTime.UtcNow.AddMinutes(_authOptions.RefreshTokenExpirationInMin),
         Owner = user,
+        OwnerId = user.Id,
         DeviceId = deviceId
     };
 
