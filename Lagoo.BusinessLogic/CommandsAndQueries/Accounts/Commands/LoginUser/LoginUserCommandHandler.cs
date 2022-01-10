@@ -5,7 +5,6 @@ using Lagoo.BusinessLogic.Resources.CommandsAndQueries;
 using Lagoo.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Localization;
 
 namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.LoginUser;
 
@@ -18,13 +17,10 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Authent
 
     private readonly IMediator _mediator;
 
-    private readonly IStringLocalizer<AccountResources> _accountLocalizer;
-
-    public LoginUserCommandHandler(UserManager<AppUser> userManager, IMediator mediator, IStringLocalizer<AccountResources> accountLocalizer)
+    public LoginUserCommandHandler(UserManager<AppUser> userManager, IMediator mediator)
     {
         _userManager = userManager;
         _mediator = mediator;
-        _accountLocalizer = accountLocalizer;
     }
     
     public async Task<AuthenticationDataDto> Handle(LoginUserCommand request, CancellationToken cancellationToken)
@@ -33,7 +29,7 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Authent
 
         if (user is null)
         {
-            throw new BadRequestException(_accountLocalizer["AccountWasNotFoundByEmail"]);
+            throw new BadRequestException(AccountResources.AccountWasNotFoundByEmail);
         }
         
         await ValidateUserDataAsync(user, request.Password);
@@ -48,7 +44,7 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Authent
         
         if (!givenPasswordIsValid)
         {
-            throw new BadRequestException(_accountLocalizer["InvalidPassword"]);
+            throw new BadRequestException(AccountResources.InvalidPassword);
         }
     }
 }

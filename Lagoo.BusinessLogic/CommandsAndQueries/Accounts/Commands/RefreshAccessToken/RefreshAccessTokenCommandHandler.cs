@@ -5,7 +5,6 @@ using Lagoo.BusinessLogic.Common.Services.JwtAuthService;
 using Lagoo.BusinessLogic.Resources.CommandsAndQueries;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Localization;
 
 namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.RefreshAccessToken;
 
@@ -18,13 +17,10 @@ public class RefreshAccessTokenCommandHandler : IRequestHandler<RefreshAccessTok
 
     private readonly IJwtAuthService _jwtAuthService;
 
-    private readonly IStringLocalizer<AccountResources> _accountLocalizer;
-
-    public RefreshAccessTokenCommandHandler(IAppDbContext context, IJwtAuthService jwtAuthService, IStringLocalizer<AccountResources> accountLocalizer)
+    public RefreshAccessTokenCommandHandler(IAppDbContext context, IJwtAuthService jwtAuthService)
     {
         _context = context;
         _jwtAuthService = jwtAuthService;
-        _accountLocalizer = accountLocalizer;
     }
 
     public async Task<RefreshAccessTokenResponseDto> Handle(RefreshAccessTokenCommand request, CancellationToken cancellationToken)
@@ -37,7 +33,7 @@ public class RefreshAccessTokenCommandHandler : IRequestHandler<RefreshAccessTok
 
         if (refreshToken is null || refreshToken.ExpiresAt < DateTime.UtcNow)
         {
-            throw new BadRequestException(_accountLocalizer["RefreshTokenWasNotFoundOrExpired"]);
+            throw new BadRequestException(AccountResources.RefreshTokenWasNotFoundOrExpired);
         }
 
         var (accessToken, accessTokenExpiresAt) = await _jwtAuthService.GenerateAccessTokenAsync(refreshToken.Owner);
@@ -56,7 +52,7 @@ public class RefreshAccessTokenCommandHandler : IRequestHandler<RefreshAccessTok
 
         if (claimUserId is null || !Guid.TryParse(claimUserId, out var userId))
         {
-            throw new BadRequestException(_accountLocalizer["InvalidJwtClaims"]);
+            throw new BadRequestException(AccountResources.InvalidJwtClaims);
         }
 
         return userId;

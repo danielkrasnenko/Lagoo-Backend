@@ -1,17 +1,16 @@
 using FluentValidation;
 using Lagoo.BusinessLogic.Resources.CommandsAndQueries;
-using Microsoft.Extensions.Localization;
 
 namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.RefreshAccessToken;
 
 public class RefreshAccessTokenCommandValidator : AbstractValidator<RefreshAccessTokenCommand>
 {
-    public RefreshAccessTokenCommandValidator(IStringLocalizer<AccountResources> accountLocalizer)
+    public RefreshAccessTokenCommandValidator()
     {
         RuleFor(ratc => ratc.AccessToken)
-            .NotEmpty().WithMessage(accountLocalizer["AccessTokenIsEmpty"]);
+            .NotEmpty().WithMessage(AccountResources.AccessTokenIsEmpty);
 
         RuleFor(ratc => ratc.RefreshTokenValue)
-            .NotEmpty().WithMessage(accountLocalizer["RefreshTokenValueIsEmpty"]);
+            .NotEmpty().WithMessage(AccountResources.RefreshTokenValueIsEmpty);
     }
 }

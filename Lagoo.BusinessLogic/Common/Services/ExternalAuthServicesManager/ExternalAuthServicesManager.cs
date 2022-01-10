@@ -19,21 +19,18 @@ public class ExternalAuthServicesManager : IExternalAuthServicesManager
 
     private readonly IGoogleAuthService _googleAuthService;
 
-    private readonly IStringLocalizer<AccountResources> _accountLocalizer;
-
-    public ExternalAuthServicesManager(UserManager<AppUser> userManager, IFacebookAuthService facebookAuthService, IGoogleAuthService googleAuthService, IStringLocalizer<AccountResources> accountLocalizer)
+    public ExternalAuthServicesManager(UserManager<AppUser> userManager, IFacebookAuthService facebookAuthService, IGoogleAuthService googleAuthService)
     {
         _userManager = userManager;
         _facebookAuthService = facebookAuthService;
         _googleAuthService = googleAuthService;
-        _accountLocalizer = accountLocalizer;
     }
     
     public async Task<IExternalAuthServiceUserInfo> GetUserInfoAsync(ExternalAuthService externalAuthService, string accessToken) => externalAuthService switch
     {
         ExternalAuthService.Facebook => await _facebookAuthService.GetUserInfoAsync(accessToken),
         ExternalAuthService.Google => await _googleAuthService.GetUserInfoAsync(accessToken),
-        _ => throw new ArgumentOutOfRangeException(nameof(externalAuthService), _accountLocalizer["InvalidExternalAuthService"])
+        _ => throw new ArgumentOutOfRangeException(nameof(externalAuthService), AccountResources.InvalidExternalAuthService)
     };
 
     public async Task<IdentityResult> BindUserAsync(AppUser user, ExternalAuthService externalAuthService, string accessToken)
@@ -49,7 +46,7 @@ public class ExternalAuthServicesManager : IExternalAuthServicesManager
 
         if (logins is null || !logins.Any())
         {
-            throw new BadRequestException(_accountLocalizer["UserDoesNotHaveExternalLogins"]);
+            throw new BadRequestException(AccountResources.UserDoesNotHaveExternalLogins);
         }
 
         var loginProvider = externalAuthService.GetEnumDescription();
@@ -58,7 +55,7 @@ public class ExternalAuthServicesManager : IExternalAuthServicesManager
         if (userLoginInfo is null)
         {
             var res = AccountResources.PasswordIsTooShort;
-            throw new BadRequestException(_accountLocalizer["UserDoesNotHaveSpecificExternalLogin"]);
+            throw new BadRequestException(AccountResources.UserDoesNotHaveSpecificExternalLogin);
         }
 
         return await _userManager.RemoveLoginAsync(user, userLoginInfo.LoginProvider, userLoginInfo.ProviderKey);

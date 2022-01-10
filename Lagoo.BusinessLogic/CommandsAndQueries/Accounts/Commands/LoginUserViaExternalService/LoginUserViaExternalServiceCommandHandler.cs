@@ -7,7 +7,6 @@ using Lagoo.BusinessLogic.Resources.CommandsAndQueries;
 using Lagoo.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Localization;
 
 namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.LoginUserViaExternalService;
 
@@ -21,15 +20,12 @@ public class LoginUserViaExternalServiceCommandHandler : IRequestHandler<LoginUs
     private readonly UserManager<AppUser> _userManager;
 
     private readonly IMediator _mediator;
-
-    private readonly IStringLocalizer<AccountResources> _accountLocalizer;
-
-    public LoginUserViaExternalServiceCommandHandler(IExternalAuthServicesManager externalAuthServicesManager, UserManager<AppUser> userManager, IMediator mediator, IStringLocalizer<AccountResources> accountLocalizer)
+    
+    public LoginUserViaExternalServiceCommandHandler(IExternalAuthServicesManager externalAuthServicesManager, UserManager<AppUser> userManager, IMediator mediator)
     {
         _externalAuthServicesManager = externalAuthServicesManager;
         _userManager = userManager;
         _mediator = mediator;
-        _accountLocalizer = accountLocalizer;
     }
 
     public async Task<AuthenticationDataDto> Handle(LoginUserViaExternalServiceCommand request, CancellationToken cancellationToken)
@@ -42,7 +38,7 @@ public class LoginUserViaExternalServiceCommandHandler : IRequestHandler<LoginUs
 
         if (user is null)
         {
-            throw new BadRequestException(_accountLocalizer["AccountWasNotFoundByExternalAuthServiceData"]);
+            throw new BadRequestException(AccountResources.AccountWasNotFoundByExternalAuthServiceData);
         }
         
         return await _mediator.Send(new CreateAuthTokensCommand(user) { DeviceId = request.DeviceId }, cancellationToken);

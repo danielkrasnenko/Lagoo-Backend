@@ -1,18 +1,17 @@
 using FluentValidation;
 using Lagoo.BusinessLogic.Resources.CommandsAndQueries;
-using Microsoft.Extensions.Localization;
 
 namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.LoginUserViaExternalService;
 
 public class LoginUserViaExternalServiceCommandValidator : AbstractValidator<LoginUserViaExternalServiceCommand>
 {
-    public LoginUserViaExternalServiceCommandValidator(IStringLocalizer<AccountResources> accountLocalizer)
+    public LoginUserViaExternalServiceCommandValidator()
     {
         RuleFor(luc => luc.ExternalAuthService)
-            .NotNull().WithMessage(accountLocalizer["ExternalAuthServiceNotSpecified"])
-            .IsInEnum().WithMessage(accountLocalizer["InvalidExternalAuthService"]);
+            .NotNull().WithMessage(AccountResources.ExternalAuthServiceNotSpecified)
+            .IsInEnum().WithMessage(AccountResources.InvalidExternalAuthService);
 
         RuleFor(luc => luc.ExternalAuthServiceAccessToken)
-            .NotEmpty().WithMessage(accountLocalizer["AccessTokenIsEmpty"]);
+            .NotEmpty().WithMessage(AccountResources.AccessTokenIsEmpty);
     }
 }

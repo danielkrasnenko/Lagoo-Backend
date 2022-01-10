@@ -8,7 +8,6 @@ using Lagoo.Domain.Enums;
 using Lagoo.Domain.Types;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Localization;
 
 namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.RegisterUser;
 
@@ -23,14 +22,11 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
 
     private readonly IExternalAuthServicesManager _externalAuthServicesManager;
 
-    private readonly IStringLocalizer<AccountResources> _accountLocalizer;
-
-    public RegisterUserCommandHandler(UserManager<AppUser> userManager, IMediator mediator, IExternalAuthServicesManager externalAuthServicesManager, IStringLocalizer<AccountResources> accountLocalizer)
+    public RegisterUserCommandHandler(UserManager<AppUser> userManager, IMediator mediator, IExternalAuthServicesManager externalAuthServicesManager)
     {
         _userManager = userManager;
         _mediator = mediator;
         _externalAuthServicesManager = externalAuthServicesManager;
-        _accountLocalizer = accountLocalizer;
     }
 
     public async Task<AuthenticationDataDto> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
@@ -53,7 +49,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
         }
         else
         {
-            throw new BadRequestException(_accountLocalizer["InvalidData"]);
+            throw new BadRequestException(AccountResources.InvalidData);
         }
 
         await AddDefaultRoleToUser(user);
