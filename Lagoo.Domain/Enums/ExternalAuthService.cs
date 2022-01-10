@@ -5,7 +5,7 @@ namespace Lagoo.Domain.Enums;
 /// <summary>
 ///   Different external authentication services
 /// </summary>
-public enum ExternalAuthService
+public enum ExternalAuthService : byte
 {
     [Description("Facebook")]
     Facebook = 1,

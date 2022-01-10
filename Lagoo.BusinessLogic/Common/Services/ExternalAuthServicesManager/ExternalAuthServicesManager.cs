@@ -57,6 +57,7 @@ public class ExternalAuthServicesManager : IExternalAuthServicesManager
         
         if (userLoginInfo is null)
         {
+            var res = AccountResources.PasswordIsTooShort;
             throw new BadRequestException(_accountLocalizer["UserDoesNotHaveSpecificExternalLogin"]);
         }
 

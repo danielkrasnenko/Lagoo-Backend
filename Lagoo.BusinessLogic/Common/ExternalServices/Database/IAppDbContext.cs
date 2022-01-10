@@ -12,6 +12,8 @@ public interface IAppDbContext
 {
     public DbSet<AppUser> Users { get; set; }
 
+    public DbSet<Event> Events { get; set; }
+
     public DbSet<RefreshToken> RefreshTokens { get; set; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
