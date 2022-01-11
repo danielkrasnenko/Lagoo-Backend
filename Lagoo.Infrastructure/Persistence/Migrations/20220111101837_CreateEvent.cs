@@ -19,8 +19,11 @@ namespace Lagoo.Infrastructure.Persistence.Migrations
                     Type = table.Column<byte>(type: "tinyint", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
                     Comment = table.Column<string>(type: "nvarchar(1026)", maxLength: 1026, nullable: true),
+                    IsPrivate = table.Column<bool>(type: "bit", nullable: false),
                     Duration = table.Column<TimeSpan>(type: "time", nullable: false),
-                    BeginsAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getutcdate()")
+                    BeginsAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getutcdate()"),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {

@@ -64,5 +64,12 @@
             <param name="command">Expired Access token and Refresh token</param>
             <returns>New Access token</returns>
         </member>
+        <member name="M:Lagoo.Api.Controllers.EventsController.GetEvents(Lagoo.BusinessLogic.CommandsAndQueries.Events.Queries.GetEvents.GetEventsQuery)">
+            <summary>
+              Get events with optionally specified filtration, sorting and pagination
+            </summary>
+            <param name="query">Optional parameters for filtration, sorting and pagination</param>
+            <returns>Events and their count, or throws in case of invalid parameters</returns>
+        </member>
     </members>
 </doc>

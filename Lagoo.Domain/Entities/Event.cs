@@ -18,6 +18,8 @@ public class Event
 
     public string? Comment { get; set; }
 
+    public bool IsPrivate { get; set; }
+
     public TimeSpan Duration { get; set; }
 
     public DateTime BeginsAt
@@ -26,4 +28,18 @@ public class Event
         set => _beginsAtBackingField = value.ConvertToUtc();
     }
     private DateTime _beginsAtBackingField;
+
+    public DateTime CreatedAt
+    {
+        get => _createdAtBackingField;
+        set => _createdAtBackingField = value.ConvertToUtc();
+    }
+    private DateTime _createdAtBackingField;
+
+    public DateTime? UpdatedAt
+    {
+        get => _updatedAtBackingField;
+        set => _updatedAtBackingField = value?.ConvertToUtc();
+    }
+    private DateTime? _updatedAtBackingField;
 }

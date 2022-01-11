@@ -31,7 +31,7 @@ public class EventConfiguration : IEntityTypeConfiguration<Event>
             .HasMaxLength(CommentMaxLength);
 
         builder
-            .Property(e => e.BeginsAt)
+            .Property(e => e.CreatedAt)
             .HasDefaultValueSql("getutcdate()");
     }
 }

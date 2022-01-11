@@ -16,6 +16,11 @@ public class BadRequestException : BaseException
         Failures = new Dictionary<string, string[]>();
     }
 
+    public BadRequestException(string message) : base(message)
+    {
+        Failures = new Dictionary<string, string[]>();
+    }
+
     public BadRequestException(IEnumerable<ValidationFailure> validationFailures) : this()
     {
         var groupedFailures = validationFailures.GroupBy(vf => vf.PropertyName, vf => vf.ErrorMessage);

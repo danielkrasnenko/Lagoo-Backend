@@ -40,8 +40,6 @@ public class CustomExceptionHandlerMiddleware
     {
         httpContext.Response.ContentType = MediaTypeNames.Application.Json;
 
-        Console.WriteLine($"\n########\n EXCEPTION: {exception.Message} {exception.GetType()} \n########\n");
-
         return exception switch
         {
             ValidationException validationException => HandleBadRequestExceptionAsync(new BadRequestException(validationException.Errors), httpContext),
