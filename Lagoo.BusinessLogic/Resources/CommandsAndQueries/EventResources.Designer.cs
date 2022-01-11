@@ -61,6 +61,15 @@ namespace Lagoo.BusinessLogic.Resources.CommandsAndQueries {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Event with the specified ID was not found.
+        /// </summary>
+        public static string EventWasNotFound {
+            get {
+                return ResourceManager.GetString("EventWasNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Specified sorting order is invalid.
         /// </summary>
         public static string InvalidSortingOrder {

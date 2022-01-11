@@ -21,8 +21,6 @@ public class EventDto : IMapFrom<Event>
 
     public string Address { get; set; } = string.Empty;
 
-    public string? Comment { get; set; }
-
     public bool IsPrivate { get; set; }
 
     public TimeSpan Duration { get; set; }

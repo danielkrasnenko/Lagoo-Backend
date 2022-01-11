@@ -71,5 +71,12 @@
             <param name="query">Optional parameters for filtration, sorting and pagination</param>
             <returns>Events and their count, or throws in case of invalid parameters</returns>
         </member>
+        <member name="M:Lagoo.Api.Controllers.EventsController.GetEvent(Lagoo.BusinessLogic.CommandsAndQueries.Events.Queries.GetEvent.GetEventQuery)">
+            <summary>
+              Get an event by specified ID
+            </summary>
+            <param name="query">ID of an event</param>
+            <returns>Requested event or not found response</returns>
+        </member>
     </members>
 </doc>
