@@ -7,22 +7,22 @@ namespace Lagoo.BusinessLogic.Common.Extensions;
 /// </summary>
 public static class EnumExtensions
 {
-    public static string GetEnumDescription<TEnum>(this TEnum @enum) where TEnum : Enum
+    public static string GetEnumDescription<TEnum>(this TEnum source) where TEnum : Enum
     {
-        var descriptionAttribute = @enum.GetAttributeFromEnum<TEnum, DescriptionAttribute>();
+        var descriptionAttribute = source.GetAttributeFromEnum<TEnum, DescriptionAttribute>();
         
-        return descriptionAttribute?.Description ?? @enum.ToString();
+        return descriptionAttribute?.Description ?? source.ToString();
     }
 
-    private static TAttribute? GetAttributeFromEnum<TEnum, TAttribute>(this TEnum @enum) where TAttribute : Attribute
+    private static TAttribute? GetAttributeFromEnum<TEnum, TAttribute>(this TEnum source) where TAttribute : Attribute
     {
-        if (@enum is null)
+        if (source is null)
         {
             return null;
         }
 
         var enumType = typeof(TEnum);
-        var enumName = enumType.GetEnumName(@enum);
+        var enumName = enumType.GetEnumName(source);
 
         if (enumName is null)
         {

@@ -1,7 +1,6 @@
 using System.Security.Claims;
 using Lagoo.BusinessLogic.Common.AppOptions.Services;
 using Lagoo.BusinessLogic.Common.Services.JwtAuthService;
-using Lagoo.BusinessLogic.Common.UserSecrets;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
