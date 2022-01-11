@@ -78,5 +78,12 @@
             <param name="query">ID of an event</param>
             <returns>Requested event or not found response</returns>
         </member>
+        <member name="M:Lagoo.Api.Controllers.EventsController.CreateEvent(Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.CreateEvent.CreateEventCommand)">
+            <summary>
+              Create an event
+            </summary>
+            <param name="command">Properties for creating an event</param>
+            <returns>Event DTO with some default data from database</returns>
+        </member>
     </members>
 </doc>

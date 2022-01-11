@@ -1,3 +1,5 @@
+using Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.CreateEvent;
+using Lagoo.BusinessLogic.CommandsAndQueries.Events.Common.Dtos;
 using Lagoo.BusinessLogic.CommandsAndQueries.Events.Queries.GetEvent;
 using Lagoo.BusinessLogic.CommandsAndQueries.Events.Queries.GetEvents;
 using MediatR;
@@ -24,5 +26,13 @@ public class EventsController : ApiController
     /// <param name="query">ID of an event</param>
     /// <returns>Requested event or not found response</returns>
     [HttpGet("{id:long}")]
-    public Task<GetEventResponseDto> GetEvent([FromRoute] GetEventQuery query) => Mediator.Send(query);
+    public Task<EventDto> GetEvent([FromRoute] GetEventQuery query) => Mediator.Send(query);
+
+    /// <summary>
+    ///   Create an event
+    /// </summary>
+    /// <param name="command">Properties for creating an event</param>
+    /// <returns>Event DTO with some default data from database</returns>
+    [HttpPost]
+    public Task<EventDto> CreateEvent([FromBody] CreateEventCommand command) => Mediator.Send(command);
 }

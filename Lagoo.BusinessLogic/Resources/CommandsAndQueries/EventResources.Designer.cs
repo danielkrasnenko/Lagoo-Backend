@@ -61,6 +61,60 @@ namespace Lagoo.BusinessLogic.Resources.CommandsAndQueries {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Address is not specified.
+        /// </summary>
+        public static string AddressIsEmpty {
+            get {
+                return ResourceManager.GetString("AddressIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Address cannot be longer than {0} characters.
+        /// </summary>
+        public static string AddressIsTooLong {
+            get {
+                return ResourceManager.GetString("AddressIsTooLong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Beginning date is not specified.
+        /// </summary>
+        public static string BeginningDateIsEmpty {
+            get {
+                return ResourceManager.GetString("BeginningDateIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Comment cannot contain only whitespaces.
+        /// </summary>
+        public static string CommentIsEmpty {
+            get {
+                return ResourceManager.GetString("CommentIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Comment cannot be longer than {0} characters.
+        /// </summary>
+        public static string CommentIsTooLong {
+            get {
+                return ResourceManager.GetString("CommentIsTooLong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duration is not specified.
+        /// </summary>
+        public static string DurationIsEmpty {
+            get {
+                return ResourceManager.GetString("DurationIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Event with the specified ID was not found.
         /// </summary>
         public static string EventWasNotFound {
@@ -84,6 +138,33 @@ namespace Lagoo.BusinessLogic.Resources.CommandsAndQueries {
         public static string InvalidSortingProperty {
             get {
                 return ResourceManager.GetString("InvalidSortingProperty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type is invalid.
+        /// </summary>
+        public static string InvalidType {
+            get {
+                return ResourceManager.GetString("InvalidType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name is not specified.
+        /// </summary>
+        public static string NameIsEmpty {
+            get {
+                return ResourceManager.GetString("NameIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name cannot be longer than {0} characters.
+        /// </summary>
+        public static string NameIsTooLong {
+            get {
+                return ResourceManager.GetString("NameIsTooLong", resourceCulture);
             }
         }
     }

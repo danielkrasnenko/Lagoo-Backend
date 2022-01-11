@@ -8,10 +8,10 @@ public class GetEventsResponseDto
 {
     public int Count { get; set; }
 
-    public ICollection<EventDto> Events { get; set; } = new List<EventDto>();
+    public ICollection<CollectionEventDto> Events { get; set; } = new List<CollectionEventDto>();
 }
 
-public class EventDto : IMapFrom<Event>
+public class CollectionEventDto : IMapFrom<Event>
 {
     public long Id { get; set; }
 

@@ -2,9 +2,9 @@ using Lagoo.BusinessLogic.Common.Mappings;
 using Lagoo.Domain.Entities;
 using Lagoo.Domain.Enums;
 
-namespace Lagoo.BusinessLogic.CommandsAndQueries.Events.Queries.GetEvent;
+namespace Lagoo.BusinessLogic.CommandsAndQueries.Events.Common.Dtos;
 
-public class GetEventResponseDto : IMapFrom<Event>
+public class EventDto : IMapFrom<Event>
 {
     public long Id { get; set; }
 

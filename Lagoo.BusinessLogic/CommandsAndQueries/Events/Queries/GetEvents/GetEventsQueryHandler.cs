@@ -42,7 +42,7 @@ public class GetEventsQueryHandler : IRequestHandler<GetEventsQuery, GetEventsRe
 
         var events = await query
             .AsNoTracking()
-            .ProjectTo<EventDto>(_mapper.ConfigurationProvider)
+            .ProjectTo<CollectionEventDto>(_mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
 
         return new GetEventsResponseDto
