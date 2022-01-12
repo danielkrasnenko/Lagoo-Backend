@@ -10,27 +10,30 @@ public class UpdateEventCommandValidator : AbstractValidator<UpdateEventCommand>
     {
         RuleFor(uec => uec.Id)
             .GreaterThan(0).WithMessage(EventResources.InvalidId);
-        
-        RuleFor(cec => cec.Name)
-            .NotEmpty().WithMessage(EventResources.NameIsEmpty)
-            .MaximumLength(CreateEventCommandValidator.NameMaxLength).WithMessage(string.Format(EventResources.NameIsTooLong, CreateEventCommandValidator.NameMaxLength));
 
-        RuleFor(cec => cec.Type)
+        RuleFor(uec => uec.Name)
+            .NotEmpty().WithMessage(EventResources.NameIsEmpty)
+            .MaximumLength(CreateEventCommandValidator.NameMaxLength).WithMessage(
+                string.Format(EventResources.NameIsTooLong, CreateEventCommandValidator.NameMaxLength));
+
+        RuleFor(uec => uec.Type)
             .IsInEnum().WithMessage(EventResources.InvalidType);
 
-        RuleFor(cec => cec.Address)
+        RuleFor(uec => uec.Address)
             .NotEmpty().WithMessage(EventResources.AddressIsEmpty)
-            .MaximumLength(CreateEventCommandValidator.AddressMaxLength).WithMessage(string.Format(EventResources.AddressIsTooLong, CreateEventCommandValidator.AddressMaxLength));
+            .MaximumLength(CreateEventCommandValidator.AddressMaxLength).WithMessage(
+                string.Format(EventResources.AddressIsTooLong, CreateEventCommandValidator.AddressMaxLength));
 
-        RuleFor(cec => cec.Comment)
+        RuleFor(uec => uec.Comment)
             .NotEmpty().WithMessage(EventResources.CommentIsEmpty)
-            .MaximumLength(CreateEventCommandValidator.CommentMaxLength).WithMessage(string.Format(EventResources.CommentIsTooLong, CreateEventCommandValidator.CommentMaxLength))
-            .When(cec => cec.Comment is not "");
+            .MaximumLength(CreateEventCommandValidator.CommentMaxLength).WithMessage(
+                string.Format(EventResources.CommentIsTooLong, CreateEventCommandValidator.CommentMaxLength))
+            .When(uec => uec.Comment is not "");
 
-        RuleFor(cec => cec.Duration)
+        RuleFor(uec => uec.Duration)
             .NotEmpty().WithMessage(EventResources.DurationIsEmpty);
 
-        RuleFor(cec => cec.BeginsAt)
+        RuleFor(uec => uec.BeginsAt)
             .NotEmpty().WithMessage(EventResources.BeginningDateIsEmpty);
     }
 }

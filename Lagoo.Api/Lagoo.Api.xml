@@ -89,8 +89,16 @@
             <summary>
               Update an event with the given ID
             </summary>
-            <param name="id">ID of an event</param>
+            <param name="id">ID of needful event</param>
             <param name="command">Updated event properties</param>
+            <returns>Updated event DTO or throws in case of validation failures or wrong event ID</returns>
+        </member>
+        <member name="M:Lagoo.Api.Controllers.EventsController.UpdateEventPartially(System.Int64,Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.UpdateEventPartially.UpdateEventPartiallyCommand)">
+            <summary>
+              Update an event with the given ID partially
+            </summary>
+            <param name="id">ID of needful event</param>
+            <param name="command">Some updated event properties</param>
             <returns>Updated event DTO or throws in case of validation failures or wrong event ID</returns>
         </member>
     </members>

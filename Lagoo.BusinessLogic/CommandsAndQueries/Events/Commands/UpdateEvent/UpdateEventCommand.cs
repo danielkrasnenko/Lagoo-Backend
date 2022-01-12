@@ -17,7 +17,7 @@ public class UpdateEventCommand : IRequest<EventDto>, IMapFrom<Event>
 
     public string Address { get; set; } = string.Empty;
 
-    public string? Comment { get; set; }
+    public string Comment { get; set; } = string.Empty;
 
     public bool IsPrivate { get; set; }
 

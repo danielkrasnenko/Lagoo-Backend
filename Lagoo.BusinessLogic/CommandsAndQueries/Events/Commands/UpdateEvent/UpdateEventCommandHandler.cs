@@ -29,10 +29,10 @@ public class UpdateEventCommandHandler : IRequestHandler<UpdateEventCommand, Eve
             throw new NotFoundException(EventResources.EventWasNotFound);
         }
         
-        @event = _mapper.Map(request, @event);
+        _mapper.Map(request, @event);
         @event.LastModifiedAt = DateTime.UtcNow;
         
-        await _context.SaveChangesAsync(cancellationToken);
+        await _context.SaveChangesAsync(CancellationToken.None);
 
         return _mapper.Map<EventDto>(@event);
     }

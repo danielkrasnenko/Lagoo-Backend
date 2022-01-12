@@ -1,5 +1,6 @@
 using Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.CreateEvent;
 using Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.UpdateEvent;
+using Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.UpdateEventPartially;
 using Lagoo.BusinessLogic.CommandsAndQueries.Events.Common.Dtos;
 using Lagoo.BusinessLogic.CommandsAndQueries.Events.Queries.GetEvent;
 using Lagoo.BusinessLogic.CommandsAndQueries.Events.Queries.GetEvents;
@@ -40,11 +41,24 @@ public class EventsController : ApiController
     /// <summary>
     ///   Update an event with the given ID
     /// </summary>
-    /// <param name="id">ID of an event</param>
+    /// <param name="id">ID of needful event</param>
     /// <param name="command">Updated event properties</param>
     /// <returns>Updated event DTO or throws in case of validation failures or wrong event ID</returns>
     [HttpPut("{id:long}")]
     public Task<EventDto> UpdateEvent([FromRoute] long id, [FromBody] UpdateEventCommand command)
+    {
+        command.Id = id;
+        return Mediator.Send(command);
+    }
+
+    /// <summary>
+    ///   Update an event with the given ID partially
+    /// </summary>
+    /// <param name="id">ID of needful event</param>
+    /// <param name="command">Some updated event properties</param>
+    /// <returns>Updated event DTO or throws in case of validation failures or wrong event ID</returns>
+    [HttpPatch("{id:long}")]
+    public Task<EventDto> UpdateEventPartially([FromRoute] long id, [FromBody] UpdateEventPartiallyCommand command)
     {
         command.Id = id;
         return Mediator.Send(command);
