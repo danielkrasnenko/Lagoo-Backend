@@ -1,4 +1,5 @@
 using Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.CreateEvent;
+using Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.DeleteEvent;
 using Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.UpdateEvent;
 using Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.UpdateEventPartially;
 using Lagoo.BusinessLogic.CommandsAndQueries.Events.Common.Dtos;
@@ -63,4 +64,11 @@ public class EventsController : ApiController
         command.Id = id;
         return Mediator.Send(command);
     }
+
+    /// <summary>
+    ///   Delete an event with the given ID
+    /// </summary>
+    /// <param name="command">ID of needful event</param>
+    [HttpDelete("{id:long}")]
+    public Task DeleteEvent([FromRoute] DeleteEventCommand command) => Mediator.Send(command);
 }

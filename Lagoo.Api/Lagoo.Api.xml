@@ -101,5 +101,11 @@
             <param name="command">Some updated event properties</param>
             <returns>Updated event DTO or throws in case of validation failures or wrong event ID</returns>
         </member>
+        <member name="M:Lagoo.Api.Controllers.EventsController.DeleteEvent(Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.DeleteEvent.DeleteEventCommand)">
+            <summary>
+              Delete an event with the given ID
+            </summary>
+            <param name="command">ID of needful event</param>
+        </member>
     </members>
 </doc>
