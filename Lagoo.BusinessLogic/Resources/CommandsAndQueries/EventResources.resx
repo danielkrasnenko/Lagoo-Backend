@@ -27,6 +27,9 @@
     <data name="EventWasNotFound" xml:space="preserve">
         <value>Event with the specified ID was not found</value>
     </data>
+    <data name="InvalidId" xml:space="preserve">
+        <value>Specified ID is invalid</value>
+    </data>
     <data name="NameIsEmpty" xml:space="preserve">
         <value>Name is not specified</value>
     </data>

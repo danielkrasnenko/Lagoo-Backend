@@ -16,7 +16,7 @@ public class Event
 
     public string Address { get; set; } = string.Empty;
 
-    public string? Comment { get; set; }
+    public string Comment { get; set; } = string.Empty;
 
     public bool IsPrivate { get; set; }
 
@@ -36,10 +36,10 @@ public class Event
     }
     private DateTime _createdAtBackingField;
 
-    public DateTime? UpdatedAt
+    public DateTime? LastModifiedAt
     {
-        get => _updatedAtBackingField;
-        set => _updatedAtBackingField = value?.ConvertToUtc();
+        get => _lastModifiedAtBackingField;
+        set => _lastModifiedAtBackingField = value?.ConvertToUtc();
     }
-    private DateTime? _updatedAtBackingField;
+    private DateTime? _lastModifiedAtBackingField;
 }

@@ -83,7 +83,15 @@
               Create an event
             </summary>
             <param name="command">Properties for creating an event</param>
-            <returns>Event DTO with some default data from database</returns>
+            <returns>New event DTO with some default data from database or throws in case of validation failures</returns>
+        </member>
+        <member name="M:Lagoo.Api.Controllers.EventsController.UpdateEvent(System.Int64,Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.UpdateEvent.UpdateEventCommand)">
+            <summary>
+              Update an event with the given ID
+            </summary>
+            <param name="id">ID of an event</param>
+            <param name="command">Updated event properties</param>
+            <returns>Updated event DTO or throws in case of validation failures or wrong event ID</returns>
         </member>
     </members>
 </doc>

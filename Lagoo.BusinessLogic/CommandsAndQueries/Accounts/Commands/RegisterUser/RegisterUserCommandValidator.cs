@@ -8,13 +8,13 @@ namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.RegisterUser;
 
 public class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
 {
-    private const short FirstNameMaxLength = 256;
+    public const short FirstNameMaxLength = 256;
 
-    private const short LastNameMaxLength = 256;
+    public const short LastNameMaxLength = 256;
 
-    private const short EmailMaxLength = 256;
+    public const short EmailMaxLength = 256;
 
-    private const short PasswordMinLength = 5;
+    public const short PasswordMinLength = 5;
 
     public RegisterUserCommandValidator()
     {

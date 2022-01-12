@@ -5,10 +5,12 @@ using Lagoo.Domain.Entities;
 using Lagoo.Domain.Enums;
 using MediatR;
 
-namespace Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.CreateEvent;
+namespace Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.UpdateEvent;
 
-public class CreateEventCommand : IRequest<EventDto>, IMapFrom<Event>
+public class UpdateEventCommand : IRequest<EventDto>, IMapFrom<Event>
 {
+    public long Id { get; set; }
+    
     public string Name { get; set; } = string.Empty;
 
     public EventType Type { get; set; }
@@ -25,7 +27,7 @@ public class CreateEventCommand : IRequest<EventDto>, IMapFrom<Event>
 
     public void Mapping(Profile profile)
     {
-        profile.CreateMap<CreateEventCommand, Event>()
+        profile.CreateMap<UpdateEventCommand, Event>()
             .ForMember(e => e.Id, opt => opt.Ignore())
             .ForMember(e => e.CreatedAt, opt => opt.Ignore())
             .ForMember(e => e.LastModifiedAt, opt => opt.Ignore());

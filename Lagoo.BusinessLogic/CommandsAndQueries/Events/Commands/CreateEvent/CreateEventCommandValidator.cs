@@ -5,11 +5,11 @@ namespace Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.CreateEvent;
 
 public class CreateEventCommandValidator : AbstractValidator<CreateEventCommand>
 {
-    private const int NameMaxLength = 256;
+    public const int NameMaxLength = 256;
 
-    private const int AddressMaxLength = 512;
+    public const int AddressMaxLength = 512;
 
-    private const int CommentMaxLength = 1026;
+    public const int CommentMaxLength = 1026;
     
     public CreateEventCommandValidator()
     {
@@ -27,7 +27,7 @@ public class CreateEventCommandValidator : AbstractValidator<CreateEventCommand>
         RuleFor(cec => cec.Comment)
             .NotEmpty().WithMessage(EventResources.CommentIsEmpty)
             .MaximumLength(CommentMaxLength).WithMessage(string.Format(EventResources.CommentIsTooLong, CommentMaxLength))
-            .When(cec => cec.Comment is not null);
+            .When(cec => cec.Comment is not "");
 
         RuleFor(cec => cec.Duration)
             .NotEmpty().WithMessage(EventResources.DurationIsEmpty);

@@ -124,6 +124,15 @@ namespace Lagoo.BusinessLogic.Resources.CommandsAndQueries {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Specified ID is invalid.
+        /// </summary>
+        public static string InvalidId {
+            get {
+                return ResourceManager.GetString("InvalidId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Specified sorting order is invalid.
         /// </summary>
         public static string InvalidSortingOrder {

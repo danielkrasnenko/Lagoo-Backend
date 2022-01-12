@@ -107,53 +107,6 @@ namespace Lagoo.Infrastructure.Persistence.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Lagoo.Domain.Entities.Event", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(512)
-                        .HasColumnType("nvarchar(512)");
-
-                    b.Property<DateTime>("BeginsAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Comment")
-                        .HasMaxLength(1026)
-                        .HasColumnType("nvarchar(1026)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("getutcdate()");
-
-                    b.Property<TimeSpan>("Duration")
-                        .HasColumnType("time");
-
-                    b.Property<bool>("IsPrivate")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<byte>("Type")
-                        .HasColumnType("tinyint");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Events");
-                });
-
             modelBuilder.Entity("Lagoo.Domain.Entities.RefreshToken", b =>
                 {
                     b.Property<long>("Id")
@@ -187,7 +140,7 @@ namespace Lagoo.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("Value");
 
-                    b.ToTable("RefreshTokens");
+                    b.ToTable("RefreshTokens", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
