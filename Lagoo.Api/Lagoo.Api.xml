@@ -24,6 +24,12 @@
               Custom exception handler extenstion method for <see cref="T:Microsoft.AspNetCore.Builder.WebApplication"/>
             </summary>
         </member>
+        <member name="T:Lagoo.Api.Common.JsonTools.CustomDateTimeConverter">
+            <summary>
+              Converter of <see cref="T:System.DateTime"/> for keeping all of them in UTC
+              in communication between a server and client
+            </summary>
+        </member>
         <member name="T:Lagoo.Api.Common.Middlewares.CustomExceptionHandlerMiddleware">
             <summary>
               A middleware for appropriate handling of thrown custom exceptions in the app

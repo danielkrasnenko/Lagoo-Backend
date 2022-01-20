@@ -4,7 +4,7 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-Startup.ConfigureServices(builder.Services, builder.Configuration);
+Startup.ConfigureServices(builder.Services, builder.Configuration, builder.Environment);
 builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
 
 var app = builder.Build();

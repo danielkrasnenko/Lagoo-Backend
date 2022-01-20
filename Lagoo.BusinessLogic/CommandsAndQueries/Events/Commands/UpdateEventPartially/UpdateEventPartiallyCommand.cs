@@ -8,11 +8,11 @@ public class UpdateEventPartiallyCommand : IRequest<EventDto>
 {
     public long Id { get; set; }
     
-    public string? Name { get; set; } = string.Empty;
+    public string? Name { get; set; }
 
     public EventType? Type { get; set; }
 
-    public string? Address { get; set; } = string.Empty;
+    public string? Address { get; set; }
 
     public string? Comment { get; set; }
 
