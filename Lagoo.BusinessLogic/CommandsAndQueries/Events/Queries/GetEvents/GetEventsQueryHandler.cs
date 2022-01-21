@@ -30,9 +30,7 @@ public class GetEventsQueryHandler : IRequestHandler<GetEventsQuery, GetEventsRe
 
     public async Task<GetEventsResponseDto> Handle(GetEventsQuery request, CancellationToken cancellationToken)
     {
-        var query = _context.Events.AsQueryable();
-
-        query = ApplyFiltration(query, request.Type, request.IsPrivate);
+        var query = ApplyFiltration(_context.Events, request.Type, request.IsPrivate);
         
         var count = await query.CountAsync(cancellationToken);
         

@@ -13,13 +13,21 @@ using NSubstitute;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
 
-namespace Lagoo.BusinessLogic.UnitTests;
+namespace Lagoo.BusinessLogic.UnitTests.Common.Base;
 
+/// <summary>
+///   Base class for all tests which contains mocks of main service
+/// </summary>
 public class TestBase
 {
-    protected static readonly Guid DefaultUserId = new("45987d62-19b0-440e-81ce-7049d71dedb2");
+    protected static readonly Guid DefaultUserId = Guid.NewGuid();
 
-    protected IConfiguration Configuration = new ConfigurationBuilder().AddJsonFile("appsettings.Test.json").Build();
+    protected static readonly string DefaultUserEmail = "default-user@unit-tests.com";
+
+    protected IConfiguration Configuration = new ConfigurationBuilder()
+        .AddJsonFile("appsettings.Test.json")
+        .AddUserSecrets("4bd89ed4-423f-4131-bb3c-983b6dc107d2")
+        .Build();
 
     protected IAppDbContext Context = Substitute.For<IAppDbContext>();
 
@@ -29,22 +37,22 @@ public class TestBase
 
     protected IMediator Mediator = Substitute.For<IMediator>();
 
-    protected EmptyConstraint IsNotNullOrEmpty = Is.Not.Null.And.Not.Empty;
-
     protected IMapper Mapper = CreateMapperSubstitution();
 
     protected UserManager<AppUser> UserManager = CreateUserManagerSubstitution();
 
-    protected IUserAccessor UserAccessor = CreateUserAccessorSubstitution();
+    protected IUserAccessor UserAccessorOfDefaultUser = CreateUserAccessorOfDefaultUserSubstitution();
 
-    protected AppUser DefaultUser = new AppUser
+    protected AppUser DefaultUser = new()
     {
         Id = DefaultUserId,
-        UserName = "default-user@unit-tests.com",
-        Email = "default-user@unit-tests.com",
+        UserName = DefaultUserEmail,
+        Email = DefaultUserEmail,
         FirstName = "Paul",
         LastName = "Anderson"
     };
+    
+    protected EmptyConstraint IsNotNullOrEmpty = Is.Not.Null.And.Not.Empty;
 
     private static IMapper CreateMapperSubstitution()
     {
@@ -72,7 +80,7 @@ public class TestBase
         return userManager;
     }
 
-    private static IUserAccessor CreateUserAccessorSubstitution()
+    private static IUserAccessor CreateUserAccessorOfDefaultUserSubstitution()
     {
         var userAccessor = Substitute.For<IUserAccessor>();
         userAccessor.UserId.Returns(DefaultUserId);

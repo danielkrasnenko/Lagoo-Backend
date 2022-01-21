@@ -22,7 +22,7 @@ public class HttpService : IHttpService
     {
         var query = queryParams is null
             ? url
-            : await GenerateUrlWithQueryParams(url, queryParams);
+            : await GenerateUrlWithQueryParamsAsync(url, queryParams);
 
         var response = await _httpClient.GetAsync(query);
 
@@ -39,7 +39,7 @@ public class HttpService : IHttpService
     public void SetBearerToken(string token) => _httpClient.DefaultRequestHeaders.Authorization =
         new AuthenticationHeaderValue("Bearer", token);
 
-    private static async Task<string> GenerateUrlWithQueryParams(string url, IDictionary<string, string> queryParams)
+    private static async Task<string> GenerateUrlWithQueryParamsAsync(string url, IDictionary<string, string> queryParams)
     {
         if (queryParams.Count == 0)
         {

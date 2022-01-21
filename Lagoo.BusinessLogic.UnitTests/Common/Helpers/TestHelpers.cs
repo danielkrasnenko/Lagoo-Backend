@@ -3,8 +3,11 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using MockQueryable.NSubstitute;
 
-namespace Lagoo.BusinessLogic.UnitTests;
+namespace Lagoo.BusinessLogic.UnitTests.Common.Helpers;
 
+/// <summary>
+///   Helper methods for tests
+/// </summary>
 public static class TestHelpers
 {
     public static DbSet<TEntity> MockDbSet<TEntity>(params TEntity[] entities) where TEntity : class

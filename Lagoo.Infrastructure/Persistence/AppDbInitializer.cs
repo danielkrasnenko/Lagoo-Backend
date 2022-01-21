@@ -26,7 +26,7 @@ public class AppDbInitializer
 
             if (context is not null && context.Database.ProviderName != InMemoryDbName)
             {
-                await SyncDatabase(context);
+                await SyncDatabaseAsync(context);
             }
         }
         catch (Exception exception)
@@ -36,7 +36,7 @@ public class AppDbInitializer
         }
     }
 
-    private Task SyncDatabase(AppDbContext context)
+    private Task SyncDatabaseAsync(AppDbContext context)
     {
         return context.Database.MigrateAsync();
     }

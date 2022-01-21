@@ -41,23 +41,23 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
 
         if (request.ExternalAuthService is not null && request.ExternalAuthServiceAccessToken is not null)
         {
-            await CreateAccountWithExternalLogin(user, request.ExternalAuthService.Value, request.ExternalAuthServiceAccessToken);
+            await CreateAccountWithExternalLoginAsync(user, request.ExternalAuthService.Value, request.ExternalAuthServiceAccessToken);
         }
         else if (request.Password is not null)
         {
-            await CreateAccount(user, request.Password);
+            await CreateAccountAsync(user, request.Password);
         }
         else
         {
             throw new BadRequestException(AccountResources.InvalidData);
         }
 
-        await AddDefaultRoleToUser(user);
+        await AddDefaultRoleToUserAsync(user);
 
         return await _mediator.Send(new CreateAuthTokensCommand(user) { DeviceId = request.DeviceId }, cancellationToken);
     }
 
-    private async Task CreateAccount(AppUser user, string password)
+    private async Task CreateAccountAsync(AppUser user, string password)
     {
         var result = await _userManager.CreateAsync(user, password);
 
@@ -67,7 +67,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
         }
     }
 
-    private async Task CreateAccountWithExternalLogin(AppUser user, ExternalAuthService externalAuthService,
+    private async Task CreateAccountWithExternalLoginAsync(AppUser user, ExternalAuthService externalAuthService,
         string accessToken)
     {
         var result = await _userManager.CreateAsync(user);
@@ -85,7 +85,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
         }
     }
 
-    private async Task AddDefaultRoleToUser(AppUser user)
+    private async Task AddDefaultRoleToUserAsync(AppUser user)
     {
         var result = await _userManager.AddToRoleAsync(user, AppUserRole.User);
 
