@@ -1,29 +1,36 @@
 using System;
 using FluentValidation.Results;
-using Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.CreateEvent;
+using Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.UpdateEvent;
 using Lagoo.BusinessLogic.UnitTests.Common.Base;
 using Lagoo.BusinessLogic.UnitTests.Common.Helpers;
 using Lagoo.Domain.Enums;
 using NUnit.Framework;
 
-namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Events.Commands.CreateEvent;
+namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Events.Commands.UpdateEvent;
 
-[TestFixture]
-public class CreateEventCommandValidatorTests : TestBase
+public class UpdateEventCommandValidatorTests : TestBase
 {
     [Test]
     public void Validate_ProvidedDataIsValid_ShouldReturnValidResultOfValidation()
     {
-        var result = PerformValidation(GenerateCommandWithValidDefaultData());
+        var result = PerformValidation(GenerateCommandWithValidDefaultData(1));
         
         Assert.IsTrue(result.IsValid);
     }
-    
+
+    [Test]
+    public void Validate_CommandWithInvalidId_ShouldReturnInvalidResultOfValidation()
+    {
+        var result = PerformValidation(GenerateCommandWithValidDefaultData(-1));
+        
+        Assert.IsFalse(result.IsValid);
+    }
+
     [TestCase(null)]
     [TestCase("")]
     public void Validate_CommandWithOmittedOrEmptyName_ShouldReturnInvalidResultOfValidation(string? name)
     {
-        var result = PerformValidation(GenerateCommandWithValidDefaultData(name));
+        var result = PerformValidation(GenerateCommandWithValidDefaultData(name: name));
         
         Assert.IsFalse(result.IsValid);
     }
@@ -33,7 +40,7 @@ public class CreateEventCommandValidatorTests : TestBase
     {
         var longName = StringHelpers.GenerateRandomString(500);
 
-        var result = PerformValidation(GenerateCommandWithValidDefaultData(longName));
+        var result = PerformValidation(GenerateCommandWithValidDefaultData(name: longName));
         
         Assert.IsFalse(result.IsValid);
     }
@@ -50,7 +57,7 @@ public class CreateEventCommandValidatorTests : TestBase
     [TestCase("")]
     public void Validate_CommandWithNullableOrEmptyAddress_ShouldReturnInvalidResultOfValidation(string? address)
     {
-        var result = PerformValidation(GenerateCommandWithValidDefaultData(address));
+        var result = PerformValidation(GenerateCommandWithValidDefaultData(address: address));
         
         Assert.IsFalse(result.IsValid);
     }
@@ -98,13 +105,15 @@ public class CreateEventCommandValidatorTests : TestBase
         
         Assert.IsFalse(result.IsValid);
     }
+    
+    private UpdateEventCommandValidator CreateValidator() => new();
 
-    private CreateEventCommandValidator CreateValidator() => new();
-
-    private CreateEventCommand GenerateCommandWithValidDefaultData(string name = "Name", EventType type = EventType.Ceremony,
-        string address = "Long street 19", string comment = "Nice", bool isPrivate = false, TimeSpan? duration = null, DateTime? beginsAt = null
+    private UpdateEventCommand GenerateCommandWithValidDefaultData(long id = 1, string name = "Name",
+        EventType type = EventType.Ceremony, string address = "Long street 19", string comment = "Nice",
+        bool isPrivate = false, TimeSpan? duration = null, DateTime? beginsAt = null
     ) => new()
     {
+        Id = id,
         Name = name,
         Type = type,
         Address = address,
@@ -114,7 +123,7 @@ public class CreateEventCommandValidatorTests : TestBase
         IsPrivate = isPrivate
     };
 
-    private ValidationResult PerformValidation(CreateEventCommand command)
+    private ValidationResult PerformValidation(UpdateEventCommand command)
     {
         var validator = CreateValidator();
 
