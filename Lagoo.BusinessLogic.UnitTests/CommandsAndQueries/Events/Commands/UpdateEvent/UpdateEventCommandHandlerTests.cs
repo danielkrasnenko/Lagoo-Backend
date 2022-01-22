@@ -11,6 +11,9 @@ using NUnit.Framework;
 
 namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Events.Commands.UpdateEvent;
 
+/// <summary>
+///   Tests for <see cref="UpdateEventCommandHandler"/>
+/// </summary>
 [TestFixture]
 public class UpdateEventCommandHandlerTests : TestBase
 {

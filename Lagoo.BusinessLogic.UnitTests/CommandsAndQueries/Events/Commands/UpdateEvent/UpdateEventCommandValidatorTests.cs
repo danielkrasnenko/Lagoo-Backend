@@ -8,6 +8,9 @@ using NUnit.Framework;
 
 namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Events.Commands.UpdateEvent;
 
+/// <summary>
+///   Tests for <see cref="UpdateEventCommandValidator"/>
+/// </summary>
 [TestFixture]
 public class UpdateEventCommandValidatorTests : TestBase
 {

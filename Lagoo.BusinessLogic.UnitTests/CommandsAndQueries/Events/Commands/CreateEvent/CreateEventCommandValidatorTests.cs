@@ -8,6 +8,9 @@ using NUnit.Framework;
 
 namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Events.Commands.CreateEvent;
 
+/// <summary>
+///   Tests for <see cref="CreateEventCommandValidator"/>
+/// </summary>
 [TestFixture]
 public class CreateEventCommandValidatorTests : TestBase
 {

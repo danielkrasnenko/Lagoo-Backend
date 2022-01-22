@@ -8,6 +8,9 @@ using NUnit.Framework;
 
 namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Events.Commands.UpdateEventPartially;
 
+/// <summary>
+///   Tests for <see cref="UpdateEventPartiallyCommandValidator"/>
+/// </summary>
 [TestFixture]
 public class UpdateEventPartiallyCommandValidatorTests : TestBase
 {

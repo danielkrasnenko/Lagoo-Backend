@@ -11,6 +11,9 @@ using NUnit.Framework;
 
 namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Events.Queries.GetEvent;
 
+/// <summary>
+///   Tests for <see cref="GetEventQueryHandler"/>
+/// </summary>
 [TestFixture]
 public class GetEventQueryHandlerTests : TestBase
 {

@@ -10,6 +10,9 @@ using NUnit.Framework;
 
 namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Events.Commands.CreateEvent;
 
+/// <summary>
+///   Tests for <see cref="CreateEventCommandHandler"/>
+/// </summary>
 [TestFixture]
 public class CreateEventCommandHandlerTests : TestBase
 {
