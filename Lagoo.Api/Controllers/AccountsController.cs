@@ -9,10 +9,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Lagoo.Api.Controllers;
 
+/// <summary>
+///   The accounts controller
+/// </summary>
 [Route("api/accounts")]
 public class AccountsController : ApiController
 {
-    public AccountsController(IMediator mediator) : base(mediator) { }
+    public AccountsController(ISender sender) : base(sender) { }
 
     /// <summary>
     ///   Register a user in the app, optionally via an external authentication
@@ -20,7 +23,7 @@ public class AccountsController : ApiController
     /// <param name="command">User data for registration</param>
     /// <returns>Access and Refresh tokens with their expiration dates, device ID</returns>
     [HttpPost("auth/register")]
-    public Task<AuthenticationDataDto> RegisterUser([FromBody] RegisterUserCommand command) => Mediator.Send(command);
+    public Task<AuthenticationDataDto> RegisterUser([FromBody] RegisterUserCommand command) => Sender.Send(command);
 
     /// <summary>
     ///   Login a user in the app
@@ -28,7 +31,7 @@ public class AccountsController : ApiController
     /// <param name="command">User data to login in the app</param>
     /// <returns>Access and Refresh tokens with their expiration dates, device ID</returns>
     [HttpPost("auth/login")]
-    public Task<AuthenticationDataDto> LoginUser([FromBody] LoginUserCommand command) => Mediator.Send(command);
+    public Task<AuthenticationDataDto> LoginUser([FromBody] LoginUserCommand command) => Sender.Send(command);
 
     /// <summary>
     ///   Login a user via any supported external authentication service
@@ -37,7 +40,7 @@ public class AccountsController : ApiController
     /// <returns>Access and Refresh tokens with their expiration dates, device ID</returns>
     [HttpPost("auth/external-service/login")]
     public Task<AuthenticationDataDto> LoginUserViaExternalAuthService([FromBody] LoginUserViaExternalServiceCommand command) =>
-        Mediator.Send(command);
+        Sender.Send(command);
 
     /// <summary>
     ///   Get user information from specified external authentication service
@@ -46,7 +49,7 @@ public class AccountsController : ApiController
     /// <returns>User info from specified external authentication service</returns>
     [HttpGet("auth/external-service/user-info")]
     public Task<GetExternalAuthServiceUserInfoResponseDto> GetExternalAuthServiceUserInfo(
-        [FromQuery] GetExternalAuthServiceUserInfoQuery query) => Mediator.Send(query);
+        [FromQuery] GetExternalAuthServiceUserInfoQuery query) => Sender.Send(query);
 
     /// <summary>
     ///   Refresh access token using refresh token for further access to guarded endpoints
@@ -55,5 +58,5 @@ public class AccountsController : ApiController
     /// <returns>New Access token</returns>
     [HttpPost("auth/refresh")]
     public Task<RefreshAccessTokenResponseDto> RefreshAccessToken([FromBody] RefreshAccessTokenCommand command) =>
-        Mediator.Send(command);
+        Sender.Send(command);
 }

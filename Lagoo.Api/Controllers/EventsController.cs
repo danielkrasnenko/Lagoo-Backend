@@ -10,10 +10,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Lagoo.Api.Controllers;
 
+/// <summary>
+///   The events controller
+/// </summary>
 [Route("api/events")]
 public class EventsController : ApiController
 {
-    public EventsController(IMediator mediator) : base(mediator) { }
+    public EventsController(ISender sender) : base(sender) { }
     
     /// <summary>
     ///   Get events with optionally specified filtration, sorting and pagination
@@ -21,7 +24,7 @@ public class EventsController : ApiController
     /// <param name="query">Optional parameters for filtration, sorting and pagination</param>
     /// <returns>Events and their count, or throws in case of invalid parameters</returns>
     [HttpGet]
-    public Task<GetEventsResponseDto> GetEvents([FromQuery] GetEventsQuery query) => Mediator.Send(query);
+    public Task<GetEventsResponseDto> GetEvents([FromQuery] GetEventsQuery query) => Sender.Send(query);
 
     /// <summary>
     ///   Get an event by specified ID
@@ -29,7 +32,7 @@ public class EventsController : ApiController
     /// <param name="query">ID of an event</param>
     /// <returns>Requested event or not found response</returns>
     [HttpGet("{id:long}")]
-    public Task<EventDto> GetEvent([FromRoute] GetEventQuery query) => Mediator.Send(query);
+    public Task<EventDto> GetEvent([FromRoute] GetEventQuery query) => Sender.Send(query);
 
     /// <summary>
     ///   Create an event
@@ -37,7 +40,7 @@ public class EventsController : ApiController
     /// <param name="command">Properties for creating an event</param>
     /// <returns>New event DTO with some default data from database or throws in case of validation failures</returns>
     [HttpPost]
-    public Task<EventDto> CreateEvent([FromBody] CreateEventCommand command) => Mediator.Send(command);
+    public Task<EventDto> CreateEvent([FromBody] CreateEventCommand command) => Sender.Send(command);
 
     /// <summary>
     ///   Update an event with the given ID
@@ -49,7 +52,7 @@ public class EventsController : ApiController
     public Task<EventDto> UpdateEvent([FromRoute] long id, [FromBody] UpdateEventCommand command)
     {
         command.Id = id;
-        return Mediator.Send(command);
+        return Sender.Send(command);
     }
 
     /// <summary>
@@ -62,7 +65,7 @@ public class EventsController : ApiController
     public Task<EventDto> UpdateEventPartially([FromRoute] long id, [FromBody] UpdateEventPartiallyCommand command)
     {
         command.Id = id;
-        return Mediator.Send(command);
+        return Sender.Send(command);
     }
 
     /// <summary>
@@ -70,5 +73,5 @@ public class EventsController : ApiController
     /// </summary>
     /// <param name="command">ID of needful event</param>
     [HttpDelete("{id:long}")]
-    public Task DeleteEvent([FromRoute] DeleteEventCommand command) => Mediator.Send(command);
+    public Task DeleteEvent([FromRoute] DeleteEventCommand command) => Sender.Send(command);
 }

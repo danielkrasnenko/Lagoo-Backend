@@ -9,23 +9,20 @@ namespace Lagoo.Api.Common.Middlewares;
 /// <summary>
 ///   A middleware for appropriate handling of thrown custom exceptions in the app
 /// </summary>
-public class CustomExceptionHandlerMiddleware
+public class CustomExceptionHandlerMiddleware : IMiddleware
 {
     private readonly ILogger<CustomExceptionHandlerMiddleware> _logger;
 
-    private readonly RequestDelegate _requestDelegate;
-
-    public CustomExceptionHandlerMiddleware(ILogger<CustomExceptionHandlerMiddleware> logger, RequestDelegate requestDelegate)
+    public CustomExceptionHandlerMiddleware(ILogger<CustomExceptionHandlerMiddleware> logger)
     {
         _logger = logger;
-        _requestDelegate = requestDelegate;
     }
 
-    public async Task Invoke(HttpContext httpContext)
+    public async Task InvokeAsync(HttpContext httpContext, RequestDelegate next)
     {
         try
         {
-            await _requestDelegate(httpContext);
+            await next(httpContext);
         }
         catch (Exception exception)
         {

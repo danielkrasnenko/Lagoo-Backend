@@ -3,13 +3,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Lagoo.Api.Controllers;
 
+/// <summary>
+///   The base controller for others
+/// </summary>
 [ApiController]
 public abstract class ApiController : ControllerBase
 {
-    protected ApiController(IMediator mediator)
+    protected ApiController(ISender sender)
     {
-        Mediator = mediator;
+        Sender = sender;
     }
 
-    protected IMediator Mediator { get; }
+    protected ISender Sender { get; }
 }
