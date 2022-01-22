@@ -33,6 +33,6 @@ public class CreateEventCommandValidator : AbstractValidator<CreateEventCommand>
             .NotEmpty().WithMessage(EventResources.DurationIsEmpty);
 
         RuleFor(cec => cec.BeginsAt)
-            .NotEmpty().WithMessage(EventResources.BeginningDateIsEmpty);
+            .Must(ba => ba > DateTime.UtcNow).WithMessage(EventResources.BeginningDateIsInvalid);
     }
 }

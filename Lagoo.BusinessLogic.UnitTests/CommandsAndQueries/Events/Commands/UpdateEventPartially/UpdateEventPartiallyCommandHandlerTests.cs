@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.UpdateEvent;
+using Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.UpdateEventPartially;
 using Lagoo.BusinessLogic.Common.Exceptions.Api;
 using Lagoo.BusinessLogic.UnitTests.Common.Base;
 using Lagoo.BusinessLogic.UnitTests.Common.Helpers;
@@ -9,23 +9,23 @@ using Lagoo.Domain.Entities;
 using Lagoo.Domain.Enums;
 using NUnit.Framework;
 
-namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Events.Commands.UpdateEvent;
+namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Events.Commands.UpdateEventPartially;
 
 [TestFixture]
-public class UpdateEventCommandHandlerTests : TestBase
+public class UpdateEventPartiallyCommandHandlerTests : TestBase
 {
     [Test]
-    public async Task Handle_ValidDataIsProvidedAndEventExists_ShouldReturnUpdatedEvent()
+    public async Task Handle_ValidDataIsProvidedAndEventExists_ShouldReturnPartiallyUpdatedEvent()
     {
         const long eventId = 1;
-        
-        Context.Events = TestHelpers.MockDbSet(new Event{ Id = eventId, Type = EventType.Happening });
-        
-        var command = new UpdateEventCommand
+
+        Context.Events = TestHelpers.MockDbSet(new Event { Id = eventId, Type = EventType.Festival });
+
+        var command = new UpdateEventPartiallyCommand
         {
             Id = eventId,
             Name = "New name",
-            Type = EventType.Festival,
+            Type = EventType.MediaEvent,
             Address = "New address",
             Comment = "New Comment",
             Duration = TimeSpan.FromHours(3),
@@ -36,7 +36,7 @@ public class UpdateEventCommandHandlerTests : TestBase
         var handler = CreateHandler();
 
         var result = await handler.Handle(command, CancellationToken.None);
-        
+      
         Assert.AreEqual(eventId, result.Id);
         Assert.AreEqual(command.Name, result.Name);
         Assert.AreEqual(command.Type, result.Type);
@@ -53,12 +53,12 @@ public class UpdateEventCommandHandlerTests : TestBase
     {
         Context.Events = TestHelpers.MockDbSet(Array.Empty<Event>());
 
-        var command = new UpdateEventCommand { Id = 1 };
+        var command = new UpdateEventPartiallyCommand { Id = 1 };
 
         var handler = CreateHandler();
 
         Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, CancellationToken.None));
     }
-    
-    private UpdateEventCommandHandler CreateHandler() => new(Context, Mapper);
+
+    private UpdateEventPartiallyCommandHandler CreateHandler() => new(Context, Mapper);
 }

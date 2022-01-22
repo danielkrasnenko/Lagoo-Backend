@@ -79,11 +79,11 @@ namespace Lagoo.BusinessLogic.Resources.CommandsAndQueries {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Beginning date is not specified.
+        ///   Looks up a localized string similar to Beginning date is invalid.
         /// </summary>
-        public static string BeginningDateIsEmpty {
+        public static string BeginningDateIsInvalid {
             get {
-                return ResourceManager.GetString("BeginningDateIsEmpty", resourceCulture);
+                return ResourceManager.GetString("BeginningDateIsInvalid", resourceCulture);
             }
         }
         

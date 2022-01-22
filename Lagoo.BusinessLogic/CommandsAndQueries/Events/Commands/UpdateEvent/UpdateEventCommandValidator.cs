@@ -34,6 +34,6 @@ public class UpdateEventCommandValidator : AbstractValidator<UpdateEventCommand>
             .NotEmpty().WithMessage(EventResources.DurationIsEmpty);
 
         RuleFor(uec => uec.BeginsAt)
-            .NotEmpty().WithMessage(EventResources.BeginningDateIsEmpty);
+            .Must(ba => ba > DateTime.UtcNow).WithMessage(EventResources.BeginningDateIsInvalid);
     }
 }

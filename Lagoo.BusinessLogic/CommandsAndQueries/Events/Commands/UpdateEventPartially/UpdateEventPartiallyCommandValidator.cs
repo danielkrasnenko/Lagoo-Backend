@@ -34,11 +34,11 @@ public class UpdateEventPartiallyCommandValidator : AbstractValidator<UpdateEven
             .When(uepc => uepc.Comment is not "" and not null);
 
         RuleFor(uepc => uepc.Duration)
-            .NotEmpty().WithMessage(EventResources.DurationIsEmpty)
+            .Must(d => d != TimeSpan.Zero).WithMessage(EventResources.DurationIsEmpty)
             .When(uepc => uepc.Duration is not null);
 
         RuleFor(uepc => uepc.BeginsAt)
-            .NotEmpty().WithMessage(EventResources.BeginningDateIsEmpty)
+            .Must(ba => ba > DateTime.UtcNow).WithMessage(EventResources.BeginningDateIsInvalid)
             .When(uepc => uepc.BeginsAt is not null);
     }
 }

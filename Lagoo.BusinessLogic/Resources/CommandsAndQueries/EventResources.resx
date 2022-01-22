@@ -54,7 +54,7 @@
     <data name="DurationIsEmpty" xml:space="preserve">
         <value>Duration is not specified</value>
     </data>
-    <data name="BeginningDateIsEmpty" xml:space="preserve">
-        <value>Beginning date is not specified</value>
+    <data name="BeginningDateIsInvalid" xml:space="preserve">
+        <value>Beginning date is invalid</value>
     </data>
 </root>

@@ -4,6 +4,7 @@ using Lagoo.BusinessLogic.Common.Exceptions.Api;
 using Lagoo.BusinessLogic.Common.ExternalServices.Database;
 using Lagoo.BusinessLogic.Resources.CommandsAndQueries;
 using Lagoo.Domain.Entities;
+using Lagoo.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -46,5 +47,6 @@ public class UpdateEventPartiallyCommandHandler : IRequestHandler<UpdateEventPar
         @event.IsPrivate = command.IsPrivate ?? @event.IsPrivate;
         @event.Duration = command.Duration ?? @event.Duration;
         @event.BeginsAt = command.BeginsAt ?? @event.BeginsAt;
+        @event.LastModifiedAt = DateTime.UtcNow;
     }
 }

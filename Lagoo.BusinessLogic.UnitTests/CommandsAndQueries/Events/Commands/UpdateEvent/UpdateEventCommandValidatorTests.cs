@@ -8,12 +8,13 @@ using NUnit.Framework;
 
 namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Events.Commands.UpdateEvent;
 
+[TestFixture]
 public class UpdateEventCommandValidatorTests : TestBase
 {
     [Test]
     public void Validate_ProvidedDataIsValid_ShouldReturnValidResultOfValidation()
     {
-        var result = PerformValidation(GenerateCommandWithValidDefaultData(1));
+        var result = PerformValidation(GenerateCommandWithValidDefaultData());
         
         Assert.IsTrue(result.IsValid);
     }
@@ -28,7 +29,8 @@ public class UpdateEventCommandValidatorTests : TestBase
 
     [TestCase(null)]
     [TestCase("")]
-    public void Validate_CommandWithOmittedOrEmptyName_ShouldReturnInvalidResultOfValidation(string? name)
+    [TestCase("   ")]
+    public void Validate_CommandWithOmittedOrEmptyOrWhitespaceName_ShouldReturnInvalidResultOfValidation(string? name)
     {
         var result = PerformValidation(GenerateCommandWithValidDefaultData(name: name));
         
@@ -55,7 +57,8 @@ public class UpdateEventCommandValidatorTests : TestBase
     
     [TestCase(null)]
     [TestCase("")]
-    public void Validate_CommandWithNullableOrEmptyAddress_ShouldReturnInvalidResultOfValidation(string? address)
+    [TestCase("   ")]
+    public void Validate_CommandWithOmittedOrEmptyOrWhitespaceAddress_ShouldReturnInvalidResultOfValidation(string? address)
     {
         var result = PerformValidation(GenerateCommandWithValidDefaultData(address: address));
         
@@ -72,10 +75,11 @@ public class UpdateEventCommandValidatorTests : TestBase
         Assert.IsFalse(result.IsValid);
     }
     
-    [Test]
-    public void Validate_CommandWithNullableComment_ShouldReturnInvalidResultOfValidation()
+    [TestCase(null)]
+    [TestCase("   ")]
+    public void Validate_CommandWithOmittedOrWhitespaceComment_ShouldReturnInvalidResultOfValidation(string? comment)
     {
-        var result = PerformValidation(GenerateCommandWithValidDefaultData(comment: null));
+        var result = PerformValidation(GenerateCommandWithValidDefaultData(comment: comment));
         
         Assert.IsFalse(result.IsValid);
     }
@@ -93,15 +97,15 @@ public class UpdateEventCommandValidatorTests : TestBase
     [Test]
     public void Validate_CommandWithDefaultDuration_ShouldReturnInvalidResultOfValidation()
     {
-        var result = PerformValidation(GenerateCommandWithValidDefaultData(duration: new TimeSpan()));
+        var result = PerformValidation(GenerateCommandWithValidDefaultData(duration: TimeSpan.Zero));
         
         Assert.IsFalse(result.IsValid);
     }
 
     [Test]
-    public void Validate_CommandWithDefaultBeginningDate_ShouldReturnInvalidResultOfValidation()
+    public void Validate_CommandWithPastBeginningDate_ShouldReturnInvalidResultOfValidation()
     {
-        var result = PerformValidation(GenerateCommandWithValidDefaultData(beginsAt: new DateTime()));
+        var result = PerformValidation(GenerateCommandWithValidDefaultData(beginsAt: DateTime.UtcNow.AddMonths(-1)));
         
         Assert.IsFalse(result.IsValid);
     }
