@@ -71,7 +71,7 @@ public class GetEventsQueryHandlerTests : TestBase
 
         var result = await handler.Handle(query, CancellationToken.None);
 
-        Assert.True(result.Events.All(e => e.Type == type));
+        Assert.IsTrue(result.Events.All(e => e.Type == type));
     }
 
     [Test]
@@ -269,7 +269,7 @@ public class GetEventsQueryHandlerTests : TestBase
         
         Assert.AreEqual(Context.Events.Count(), result.Count);
         Assert.AreEqual(pageSize, result.Events.Count);
-        Assert.True(result.Events.All(e => e.Id is fourthEventId or fifthEventId or sixthEventId));
+        Assert.IsTrue(result.Events.All(e => e.Id is fourthEventId or fifthEventId or sixthEventId));
     }
 
     [Test]

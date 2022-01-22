@@ -34,10 +34,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="CommandsAndQueries\Events\Commands" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Lagoo.BusinessLogic\Lagoo.BusinessLogic.csproj" />
     </ItemGroup>
 
