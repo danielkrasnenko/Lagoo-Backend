@@ -31,7 +31,7 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
             .MaximumLength(EmailMaxLength).WithMessage(string.Format(AccountResources.EmailIsTooLong, EmailMaxLength))
             .Must(email => email.IsEmail()).WithMessage(AccountResources.EmailIsInvalid);
 
-        RuleFor(ruc => ruc.Password)
+        RuleFor(ruc => ruc.Password).Cascade(CascadeMode.Stop)
             .NotEmpty().WithMessage(AccountResources.PasswordIsEmpty)
             .MinimumLength(PasswordMinLength).WithMessage(string.Format(AccountResources.PasswordIsTooShort, PasswordMinLength))
             .Must(p => p.Any(char.IsUpper)).WithMessage(AccountResources.PasswordWithoutUppercaseLetters)

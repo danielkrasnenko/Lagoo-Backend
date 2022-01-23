@@ -18,7 +18,7 @@ namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Events.Commands.Updat
 public class UpdateEventCommandHandlerTests : TestsBase
 {
     [Test]
-    public async Task Handle_ValidDataIsProvidedAndEventExists_ShouldReturnUpdatedEvent()
+    public async Task Handle_CommandContainsValidDataAndEventExists_ShouldReturnUpdatedEvent()
     {
         const long eventId = 1;
         

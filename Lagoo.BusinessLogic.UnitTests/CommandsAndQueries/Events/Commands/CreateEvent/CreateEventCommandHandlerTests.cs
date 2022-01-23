@@ -23,7 +23,7 @@ public class CreateEventCommandHandlerTests : TestsBase
     }
     
     [Test]
-    public async Task Handle_ValidDataForNewEventIsProvided_ShouldCreateNewEvent()
+    public async Task Handle_CommandContainsValidDataForNewEvent_ShouldCreateNewEvent()
     {
         var command = new CreateEventCommand
         {

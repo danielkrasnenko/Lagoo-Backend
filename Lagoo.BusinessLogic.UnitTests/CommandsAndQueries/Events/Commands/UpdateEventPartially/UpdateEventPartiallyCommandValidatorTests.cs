@@ -15,7 +15,7 @@ namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Events.Commands.Updat
 public class UpdateEventPartiallyCommandValidatorTests : TestsBase
 {
     [Test]
-    public void Validate_ProvidedDataIsValid_ShouldReturnValidResultOfValidation()
+    public void Validate_CommandContainsValidData_ShouldReturnValidResultOfValidation()
     {
         var result = PerformValidation(new UpdateEventPartiallyCommand
         {

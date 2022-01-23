@@ -15,7 +15,7 @@ namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Events.Commands.Creat
 public class CreateEventCommandValidatorTests : TestsBase
 {
     [Test]
-    public void Validate_ProvidedDataIsValid_ShouldReturnValidResultOfValidation()
+    public void Validate_CommandContainsValidData_ShouldReturnValidResultOfValidation()
     {
         var result = PerformValidation(GenerateCommandWithValidDefaultData());
         
@@ -116,7 +116,7 @@ public class CreateEventCommandValidatorTests : TestsBase
         Address = address,
         Comment = comment,
         Duration = duration ?? TimeSpan.FromHours(1),
-        BeginsAt = beginsAt ?? DateTime.UtcNow,
+        BeginsAt = beginsAt ?? DateTime.UtcNow.AddMonths(1),
         IsPrivate = isPrivate
     };
 

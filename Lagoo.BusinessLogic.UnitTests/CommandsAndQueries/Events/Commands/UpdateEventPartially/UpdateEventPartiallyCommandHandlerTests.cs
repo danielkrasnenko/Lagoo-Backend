@@ -18,7 +18,7 @@ namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Events.Commands.Updat
 public class UpdateEventPartiallyCommandHandlerTests : TestsBase
 {
     [Test]
-    public async Task Handle_ValidDataIsProvidedAndEventExists_ShouldReturnPartiallyUpdatedEvent()
+    public async Task Handle_CommandContainsValidDataAndEventExists_ShouldReturnPartiallyUpdatedEvent()
     {
         const long eventId = 1;
 

@@ -12,9 +12,19 @@ namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Accounts.Common;
 /// </summary>
 public class AccountTestsBase : TestsBase
 {
-    protected const string ExternalAuthServiceDefaultUserId = "unique_identifier";
+    protected const string ValidPassword = "=#IoP123IoP#=";
+    
+    protected const string ExternalAuthServiceDefaultUserId = "user_unique_identifier";
+
+    protected const string ExternalAuthServiceAccessToken = "access_token";
+    
+    protected const string DefaultAccessTokenValue = "access_token_value";
+    
+    protected static readonly DateTime DefaultAccessTokenExpirationDate = DateTime.UtcNow;
     
     protected static readonly Guid DefaultDeviceId = Guid.NewGuid();
+    
+    protected static readonly Guid NewDeviceId = Guid.NewGuid();
     
     protected const long DefaultRefreshTokenId = 1;
 
@@ -52,7 +62,7 @@ public class AccountTestsBase : TestsBase
     {
         var jwtAuthService = Substitute.For<IJwtAuthService>();
 
-        jwtAuthService.GenerateAccessTokenAsync(new AppUser()).ReturnsForAnyArgs(("value", DateTime.UtcNow));
+        jwtAuthService.GenerateAccessTokenAsync(new AppUser()).ReturnsForAnyArgs((DefaultAccessTokenValue, DefaultAccessTokenExpirationDate));
 
         jwtAuthService.GenerateRefreshToken(new AppUser(), default).ReturnsForAnyArgs(DefaultRefreshToken);
 
