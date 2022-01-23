@@ -18,15 +18,15 @@ namespace Lagoo.BusinessLogic.UnitTests.Common.Base;
 /// <summary>
 ///   Base class for all tests which contains mocks of main service
 /// </summary>
-public class TestBase
+public class TestsBase
 {
     protected static readonly Guid DefaultUserId = Guid.NewGuid();
 
-    protected static readonly string DefaultUserEmail = "default-user@unit-tests.com";
+    protected const string DefaultUserEmail = "default-user@unit-tests.com";
 
-    protected IConfiguration Configuration = new ConfigurationBuilder()
-        .AddJsonFile("appsettings.Test.json")
-        .AddUserSecrets("4bd89ed4-423f-4131-bb3c-983b6dc107d2")
+    protected readonly IConfiguration Configuration = new ConfigurationBuilder()
+        .AddJsonFile(JsonConfigFileName)
+        .AddUserSecrets(UserSecretsId)
         .Build();
 
     protected IAppDbContext Context = Substitute.For<IAppDbContext>();
@@ -43,7 +43,7 @@ public class TestBase
 
     protected IUserAccessor UserAccessorOfDefaultUser = CreateUserAccessorOfDefaultUserSubstitution();
 
-    protected AppUser DefaultUser = new()
+    protected static readonly AppUser DefaultUser = new()
     {
         Id = DefaultUserId,
         UserName = DefaultUserEmail,
@@ -52,7 +52,11 @@ public class TestBase
         LastName = "Anderson"
     };
     
-    protected EmptyConstraint IsNotNullOrEmpty = Is.Not.Null.And.Not.Empty;
+    protected readonly EmptyConstraint IsNotNullOrEmpty = Is.Not.Null.And.Not.Empty;
+    
+    private const string JsonConfigFileName = "appsettings.Test.json";
+    
+    private const string UserSecretsId = "4bd89ed4-423f-4131-bb3c-983b6dc107d2";
 
     private static IMapper CreateMapperSubstitution()
     {

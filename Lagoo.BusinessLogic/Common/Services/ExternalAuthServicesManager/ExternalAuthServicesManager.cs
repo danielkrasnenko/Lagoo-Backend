@@ -7,7 +7,6 @@ using Lagoo.BusinessLogic.Resources.CommandsAndQueries;
 using Lagoo.Domain.Entities;
 using Lagoo.Domain.Enums;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Localization;
 
 namespace Lagoo.BusinessLogic.Common.Services.ExternalAuthServicesManager;
 
@@ -54,7 +53,6 @@ public class ExternalAuthServicesManager : IExternalAuthServicesManager
         
         if (userLoginInfo is null)
         {
-            var res = AccountResources.PasswordIsTooShort;
             throw new BadRequestException(AccountResources.UserDoesNotHaveSpecificExternalLogin);
         }
 

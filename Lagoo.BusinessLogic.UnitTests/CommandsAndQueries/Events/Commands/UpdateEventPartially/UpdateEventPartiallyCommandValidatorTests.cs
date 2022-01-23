@@ -12,7 +12,7 @@ namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Events.Commands.Updat
 ///   Tests for <see cref="UpdateEventPartiallyCommandValidator"/>
 /// </summary>
 [TestFixture]
-public class UpdateEventPartiallyCommandValidatorTests : TestBase
+public class UpdateEventPartiallyCommandValidatorTests : TestsBase
 {
     [Test]
     public void Validate_ProvidedDataIsValid_ShouldReturnValidResultOfValidation()

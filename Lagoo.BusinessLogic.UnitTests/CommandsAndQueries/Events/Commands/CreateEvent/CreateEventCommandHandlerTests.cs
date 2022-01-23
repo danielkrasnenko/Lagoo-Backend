@@ -14,7 +14,7 @@ namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Events.Commands.Creat
 ///   Tests for <see cref="CreateEventCommandHandler"/>
 /// </summary>
 [TestFixture]
-public class CreateEventCommandHandlerTests : TestBase
+public class CreateEventCommandHandlerTests : TestsBase
 {
     [SetUp]
     public void SetUp()

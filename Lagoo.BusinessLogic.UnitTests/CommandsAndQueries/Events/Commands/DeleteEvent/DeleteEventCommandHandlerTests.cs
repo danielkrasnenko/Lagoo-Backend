@@ -12,7 +12,7 @@ namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Events.Commands.Delet
 ///   Tests for <see cref="DeleteEventCommandHandler"/>
 /// </summary>
 [TestFixture]
-public class DeleteEventCommandHandlerTests : TestBase
+public class DeleteEventCommandHandlerTests : TestsBase
 {
     private const long DefaultEventId = 1;
     

@@ -17,7 +17,7 @@ namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Events.Queries.GetEve
 ///   Tests for <see cref="GetEventsQueryHandler"/>
 /// </summary>
 [TestFixture]
-public class GetEventsQueryHandlerTests : TestBase
+public class GetEventsQueryHandlerTests : TestsBase
 {
     [Test]
     public async Task Handle_ThereAreNoEventsInDatabase_ShouldReturnEmptyList()

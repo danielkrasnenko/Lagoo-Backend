@@ -15,7 +15,7 @@ namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Events.Queries.GetEve
 ///   Tests for <see cref="GetEventQueryHandler"/>
 /// </summary>
 [TestFixture]
-public class GetEventQueryHandlerTests : TestBase
+public class GetEventQueryHandlerTests : TestsBase
 {
     private const long DefaultEventId = 1;
 

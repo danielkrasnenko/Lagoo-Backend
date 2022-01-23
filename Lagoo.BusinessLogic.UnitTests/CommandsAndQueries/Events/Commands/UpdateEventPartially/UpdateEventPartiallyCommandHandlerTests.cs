@@ -15,7 +15,7 @@ namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Events.Commands.Updat
 ///   Tests for <see cref="UpdateEventPartiallyCommandHandler"/>
 /// </summary>
 [TestFixture]
-public class UpdateEventPartiallyCommandHandlerTests : TestBase
+public class UpdateEventPartiallyCommandHandlerTests : TestsBase
 {
     [Test]
     public async Task Handle_ValidDataIsProvidedAndEventExists_ShouldReturnPartiallyUpdatedEvent()
