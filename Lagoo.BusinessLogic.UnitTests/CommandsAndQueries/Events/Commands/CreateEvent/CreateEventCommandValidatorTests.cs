@@ -35,7 +35,7 @@ public class CreateEventCommandValidatorTests : TestsBase
     [Test]
     public void Validate_CommandWithTooLongName_ShouldReturnInvalidResultOfValidation()
     {
-        var longName = StringHelpers.GenerateRandomString(500);
+        var longName = StringHelpers.GenerateRandomString(257);
 
         var result = PerformValidation(GenerateCommandWithValidDefaultData(longName));
         
@@ -63,7 +63,7 @@ public class CreateEventCommandValidatorTests : TestsBase
     [Test]
     public void Validate_CommandWithTooLongAddress_ShouldReturnInvalidResultOfValidation()
     {
-        var longAddress = StringHelpers.GenerateRandomString(1000);
+        var longAddress = StringHelpers.GenerateRandomString(513);
 
         var result = PerformValidation(GenerateCommandWithValidDefaultData(address: longAddress));
         
@@ -82,7 +82,7 @@ public class CreateEventCommandValidatorTests : TestsBase
     [Test]
     public void Validate_CommandWithTooLongComment_ShouldReturnInvalidResultOfValidation()
     {
-        var longComment = StringHelpers.GenerateRandomString(2000);
+        var longComment = StringHelpers.GenerateRandomString(1027);
 
         var result = PerformValidation(GenerateCommandWithValidDefaultData(comment: longComment));
         

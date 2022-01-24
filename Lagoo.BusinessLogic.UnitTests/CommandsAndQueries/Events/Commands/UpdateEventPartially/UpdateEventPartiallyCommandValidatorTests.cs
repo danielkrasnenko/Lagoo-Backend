@@ -52,7 +52,7 @@ public class UpdateEventPartiallyCommandValidatorTests : TestsBase
     [Test]
     public void Validate_CommandWithTooLongName_ShouldReturnInvalidResultOfValidation()
     {
-        var longName = StringHelpers.GenerateRandomString(500);
+        var longName = StringHelpers.GenerateRandomString(257);
 
         var result = PerformValidation(new UpdateEventPartiallyCommand { Id = 1, Name = longName });
         
@@ -79,7 +79,7 @@ public class UpdateEventPartiallyCommandValidatorTests : TestsBase
     [Test]
     public void Validate_CommandWithTooLongAddress_ShouldReturnInvalidResultOfValidation()
     {
-        var longAddress = StringHelpers.GenerateRandomString(1000);
+        var longAddress = StringHelpers.GenerateRandomString(513);
 
         var result = PerformValidation(new UpdateEventPartiallyCommand { Id = 1, Address = longAddress });
         
@@ -97,7 +97,7 @@ public class UpdateEventPartiallyCommandValidatorTests : TestsBase
     [Test]
     public void Validate_CommandWithTooLongComment_ShouldReturnInvalidResultOfValidation()
     {
-        var longComment = StringHelpers.GenerateRandomString(2000);
+        var longComment = StringHelpers.GenerateRandomString(1027);
 
         var result = PerformValidation(new UpdateEventPartiallyCommand { Id = 1, Comment = longComment });
         

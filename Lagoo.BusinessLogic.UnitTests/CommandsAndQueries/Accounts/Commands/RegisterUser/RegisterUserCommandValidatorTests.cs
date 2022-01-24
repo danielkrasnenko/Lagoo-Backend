@@ -40,7 +40,7 @@ public class RegisterUserCommandValidatorTests : AccountTestsBase
     [Test]
     public void Validate_CommandWithTooLongFirstName_ShouldReturnInvalidResultOfValidation()
     {
-        var tooLongFirstName = StringHelpers.GenerateRandomString(500);
+        var tooLongFirstName = StringHelpers.GenerateRandomString(257);
 
         var result = PerformValidation(GenerateCommand(
             tooLongFirstName, password: ValidPassword, confirmPassword: ValidPassword));
@@ -61,7 +61,7 @@ public class RegisterUserCommandValidatorTests : AccountTestsBase
     [Test]
     public void Validate_CommandWithTooLongLastName_ShouldReturnInvalidResultOfValidation()
     {
-        var tooLongLastName = StringHelpers.GenerateRandomString(500);
+        var tooLongLastName = StringHelpers.GenerateRandomString(257);
 
         var result = PerformValidation(GenerateCommand(
             tooLongLastName, password: ValidPassword, confirmPassword: ValidPassword));
@@ -83,7 +83,7 @@ public class RegisterUserCommandValidatorTests : AccountTestsBase
     [Test]
     public void Validate_CommandWithTooLongEmail_ShouldReturnInvalidResultOfValidation()
     {
-        var tooLongEmail = StringHelpers.GenerateRandomString(500) + DefaultUserEmail;
+        var tooLongEmail = StringHelpers.GenerateRandomString(231) + DefaultUserEmail;
 
         var result = PerformValidation(GenerateCommand(
              tooLongEmail, password: ValidPassword, confirmPassword: ValidPassword));
