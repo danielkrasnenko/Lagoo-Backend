@@ -14,6 +14,9 @@ using NUnit.Framework;
 
 namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Accounts.Commands.RefreshAccessToken;
 
+/// <summary>
+///   Tests for <see cref="RefreshAccessTokenCommandHandler"/>
+/// </summary>
 [TestFixture]
 public class RefreshAccessTokenCommandHandlerTests : AccountTestsBase
 {

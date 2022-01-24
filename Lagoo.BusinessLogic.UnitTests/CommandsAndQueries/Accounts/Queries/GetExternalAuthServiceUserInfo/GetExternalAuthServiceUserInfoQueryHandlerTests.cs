@@ -7,6 +7,9 @@ using NUnit.Framework;
 
 namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Accounts.Queries.GetExternalAuthServiceUserInfo;
 
+/// <summary>
+///   Tests for <see cref="GetExternalAuthServiceUserInfoQueryHandler"/>
+/// </summary>
 [TestFixture]
 public class GetExternalAuthServiceUserInfoQueryHandlerTests : AccountTestsBase
 {

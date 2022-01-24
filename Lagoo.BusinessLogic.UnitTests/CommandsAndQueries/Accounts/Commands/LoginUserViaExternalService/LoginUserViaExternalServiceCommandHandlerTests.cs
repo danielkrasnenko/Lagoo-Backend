@@ -12,6 +12,9 @@ using NUnit.Framework;
 
 namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Accounts.Commands.LoginUserViaExternalService;
 
+/// <summary>
+///   Tests for <see cref="LoginUserViaExternalServiceCommandHandler"/>
+/// </summary>
 [TestFixture]
 public class LoginUserViaExternalServiceCommandHandlerTests : AccountTestsBase
 {

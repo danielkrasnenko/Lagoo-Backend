@@ -11,6 +11,9 @@ using NUnit.Framework;
 
 namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Accounts.Commands.LoginUser;
 
+/// <summary>
+///   Tests for <see cref="LoginUserCommandHandler"/>
+/// </summary>
 [TestFixture]
 public class LoginUserCommandHandlerTests : AccountTestsBase
 {

@@ -13,6 +13,9 @@ using NUnit.Framework;
 
 namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Accounts.Commands.CreateAuthTokens;
 
+/// <summary>
+///   Tests for <see cref="CreateAuthTokensCommandHandler"/>
+/// </summary>
 [TestFixture]
 public class CreateAuthTokensCommandHandlerTests : AccountTestsBase
 {

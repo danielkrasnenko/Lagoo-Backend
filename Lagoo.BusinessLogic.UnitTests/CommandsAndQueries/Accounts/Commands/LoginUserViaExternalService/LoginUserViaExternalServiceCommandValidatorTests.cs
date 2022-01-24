@@ -6,6 +6,9 @@ using NUnit.Framework;
 
 namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Accounts.Commands.LoginUserViaExternalService;
 
+/// <summary>
+///   Tests for <see cref="LoginUserViaExternalServiceCommandValidator"/>
+/// </summary>
 [TestFixture]
 public class LoginUserViaExternalServiceCommandValidatorTests : AccountTestsBase
 {

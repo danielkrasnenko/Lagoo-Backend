@@ -5,6 +5,9 @@ using NUnit.Framework;
 
 namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Accounts.Commands.LoginUser;
 
+/// <summary>
+///   Tests for <see cref="LoginUserCommandValidator"/>
+/// </summary>
 [TestFixture]
 public class LoginUserCommandValidatorTests : AccountTestsBase
 {

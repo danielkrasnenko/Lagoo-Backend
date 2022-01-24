@@ -7,6 +7,9 @@ using NUnit.Framework;
 
 namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Accounts.Commands.RegisterUser;
 
+/// <summary>
+///   Tests for <see cref="RegisterUserCommandValidator"/>
+/// </summary>
 [TestFixture]
 public class RegisterUserCommandValidatorTests : AccountTestsBase
 {

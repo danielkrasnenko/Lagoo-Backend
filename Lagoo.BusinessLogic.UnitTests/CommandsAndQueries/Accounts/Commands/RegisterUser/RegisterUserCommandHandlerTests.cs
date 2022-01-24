@@ -12,6 +12,9 @@ using NUnit.Framework;
 
 namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Accounts.Commands.RegisterUser;
 
+/// <summary>
+///   Tests for <see cref="RegisterUserCommandHandler"/>
+/// </summary>
 [TestFixture]
 public class RegisterUserCommandHandlerTests : AccountTestsBase
 {
