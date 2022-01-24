@@ -66,7 +66,7 @@ public class LoginUserViaExternalServiceCommandHandlerTests : AccountTestsBase
 
     private LoginUserViaExternalServiceCommand GenerateCommandWithValidDefaultData(
         ExternalAuthService externalAuthService = ExternalAuthService.Google,
-        string accessToken = DefaultAccessTokenValue, Guid? deviceId = null) => new()
+        string accessToken = DefaultAccessToken, Guid? deviceId = null) => new()
     {
         ExternalAuthService = externalAuthService,
         ExternalAuthServiceAccessToken = accessToken,

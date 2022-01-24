@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Security.Claims;
 using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Common.Dtos;
 using Lagoo.BusinessLogic.Common.ExternalServices.FacebookAuthService;
 using Lagoo.BusinessLogic.Common.Services.JwtAuthService;
@@ -20,9 +22,12 @@ public class AccountTestsBase : TestsBase
 
     protected const string ExternalAuthServiceAccessToken = "access_token";
     
-    protected const string DefaultAccessTokenValue = "access_token_value";
+    protected const string DefaultAccessToken = "access_token_value";
     
-    protected static readonly DateTime DefaultAccessTokenExpirationDate = DateTime.UtcNow;
+    protected static readonly DateTime DefaultAccessTokenExpirationDate = DateTime.UtcNow.AddDays(1);
+
+    protected static readonly ClaimsPrincipal DefaultClaimsPrincipal =
+        new(new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, DefaultUserId.ToString()) }));
     
     protected static readonly Guid DefaultDeviceId = Guid.NewGuid();
     
@@ -32,7 +37,7 @@ public class AccountTestsBase : TestsBase
 
     protected const string DefaultRefreshTokenValue = "very very long hash";
 
-    protected static readonly DateTime DefaultRefreshTokenExpirationDate = DateTime.UtcNow;
+    protected static readonly DateTime DefaultRefreshTokenExpirationDate = DateTime.UtcNow.AddDays(1);
 
     protected static readonly RefreshToken DefaultRefreshToken = GenerateDefaultRefreshToken(DefaultDeviceId, DefaultRefreshTokenExpirationDate, null);
 
@@ -55,7 +60,7 @@ public class AccountTestsBase : TestsBase
     
     protected AuthenticationDataDto GenerateDefaultAuthDataDto(Guid deviceId) => new()
     {
-        AccessToken = DefaultAccessTokenValue,
+        AccessToken = DefaultAccessToken,
         AccessTokenExpiresAt = DefaultAccessTokenExpirationDate,
         RefreshTokenValue = DefaultRefreshTokenValue,
         RefreshTokenExpiresAt = DefaultRefreshToken.ExpiresAt,
@@ -64,7 +69,7 @@ public class AccountTestsBase : TestsBase
     
     protected void AssertAuthenticationDataDtoContainsDefaultData(AuthenticationDataDto result)
     {
-        Assert.AreEqual(DefaultAccessTokenValue, result.AccessToken);
+        Assert.AreEqual(DefaultAccessToken, result.AccessToken);
         Assert.AreEqual(DefaultAccessTokenExpirationDate, result.AccessTokenExpiresAt);
         Assert.AreEqual(DefaultRefreshTokenValue, result.RefreshTokenValue);
         Assert.AreEqual(DefaultRefreshTokenExpirationDate, result.RefreshTokenExpiresAt);   
@@ -85,11 +90,13 @@ public class AccountTestsBase : TestsBase
     {
         var jwtAuthService = Substitute.For<IJwtAuthService>();
 
-        jwtAuthService.GenerateAccessTokenAsync(new AppUser()).ReturnsForAnyArgs((DefaultAccessTokenValue, DefaultAccessTokenExpirationDate));
+        jwtAuthService.GenerateAccessTokenAsync(new AppUser()).ReturnsForAnyArgs((DefaultAccessToken, DefaultAccessTokenExpirationDate));
 
         jwtAuthService.GenerateRefreshToken(new AppUser(), default).ReturnsForAnyArgs(DefaultRefreshToken);
 
         jwtAuthService.UpdateRefreshToken(new RefreshToken()).ReturnsForAnyArgs(UpdatedDefaultRefreshToken);
+
+        jwtAuthService.GetPrincipalFromToken("").ReturnsForAnyArgs(DefaultClaimsPrincipal);
 
         return jwtAuthService;
     }

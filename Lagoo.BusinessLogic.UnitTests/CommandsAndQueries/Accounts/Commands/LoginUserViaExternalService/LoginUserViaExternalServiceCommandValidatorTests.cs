@@ -54,7 +54,7 @@ public class LoginUserViaExternalServiceCommandValidatorTests : AccountTestsBase
 
     private LoginUserViaExternalServiceCommand GenerateCommandWithValidDefaultData(
         ExternalAuthService externalAuthService = ExternalAuthService.Google,
-        string accessToken = DefaultAccessTokenValue) => new()
+        string accessToken = DefaultAccessToken) => new()
     {
         ExternalAuthService = externalAuthService,
         ExternalAuthServiceAccessToken = accessToken

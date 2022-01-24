@@ -1,4 +1,6 @@
 using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Common.Dtos;
+using Lagoo.BusinessLogic.Common.Exceptions.Api;
+using Lagoo.BusinessLogic.Common.Exceptions.Base;
 using Lagoo.BusinessLogic.Common.ExternalServices.Database;
 using Lagoo.BusinessLogic.Common.Services.JwtAuthService;
 using Lagoo.Domain.Entities;
@@ -21,7 +23,7 @@ public class CreateAuthTokensCommandHandler : IRequestHandler<CreateAuthTokensCo
 
     public async Task<AuthenticationDataDto> Handle(CreateAuthTokensCommand request, CancellationToken cancellationToken)
     {
-        var (accessToken, accessTokenExpirationDate) = await _jwtAuthService.GenerateAccessTokenAsync(request.User);
+        var (accessToken, accessTokenExpirationDate) = await TryCreateAccessTokenAsync(request.User);
         var refreshToken = await GetRefreshTokenAsync(request.User, request.DeviceId, cancellationToken);
 
         await _context.SaveChangesAsync(CancellationToken.None);
@@ -34,6 +36,18 @@ public class CreateAuthTokensCommandHandler : IRequestHandler<CreateAuthTokensCo
             RefreshTokenExpiresAt = refreshToken.ExpiresAt,
             DeviceId = refreshToken.DeviceId
         };
+    }
+
+    private Task<(string, DateTime)> TryCreateAccessTokenAsync(AppUser user)
+    {
+        try
+        {
+            return _jwtAuthService.GenerateAccessTokenAsync(user);
+        }
+        catch (BaseArgumentException exception)
+        {
+            throw new BadRequestException(exception.Message);
+        }
     }
     
     private async Task<RefreshToken> GetRefreshTokenAsync(AppUser user, Guid? deviceId, CancellationToken cancellationToken)

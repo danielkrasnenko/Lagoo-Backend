@@ -2,10 +2,13 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.CreateAuthTokens;
+using Lagoo.BusinessLogic.Common.Exceptions.Api;
+using Lagoo.BusinessLogic.Common.Exceptions.Base;
 using Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Accounts.Common;
 using Lagoo.BusinessLogic.UnitTests.Common.Helpers;
 using Lagoo.Domain.Entities;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 using NUnit.Framework;
 
 namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Accounts.Commands.CreateAuthTokens;
@@ -30,7 +33,7 @@ public class CreateAuthTokensCommandHandlerTests : AccountTestsBase
 
         var result = await handler.Handle(command, CancellationToken.None);
         
-        Assert.AreEqual(DefaultAccessTokenValue, result.AccessToken);
+        Assert.AreEqual(DefaultAccessToken, result.AccessToken);
         Assert.AreEqual(DefaultAccessTokenExpirationDate, result.AccessTokenExpiresAt);
         Assert.AreEqual(DefaultRefreshTokenValue, result.RefreshTokenValue);
         Assert.AreEqual(UpdatedDefaultRefreshToken.ExpiresAt, result.RefreshTokenExpiresAt);
@@ -74,6 +77,19 @@ public class CreateAuthTokensCommandHandlerTests : AccountTestsBase
         
         AssertAuthenticationDataDtoContainsDefaultData(result);
         Assert.AreEqual(DefaultDeviceId, result.DeviceId);
+    }
+    
+    [Test]
+    public void Handle_JwtAuthServiceCannotGenerateAccessToken_ShouldThrowBadRequestException()
+    {
+        JwtAuthService.GenerateAccessTokenAsync(DefaultUser).ThrowsForAnyArgs<BaseArgumentException>();
+        Context.RefreshTokens = TestHelpers.MockDbSet(DefaultRefreshToken);
+
+        var command = GenerateCommandWithValidDefaultData();
+
+        var handler = CreateHandler();
+
+        Assert.ThrowsAsync<BadRequestException>(() => handler.Handle(command, CancellationToken.None));
     }
 
     private CreateAuthTokensCommandHandler CreateHandler() => new(Context, JwtAuthService);

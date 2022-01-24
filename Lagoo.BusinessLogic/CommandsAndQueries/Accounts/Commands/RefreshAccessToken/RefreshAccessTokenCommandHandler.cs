@@ -1,8 +1,10 @@
 using System.Security.Claims;
 using Lagoo.BusinessLogic.Common.Exceptions.Api;
+using Lagoo.BusinessLogic.Common.Exceptions.Base;
 using Lagoo.BusinessLogic.Common.ExternalServices.Database;
 using Lagoo.BusinessLogic.Common.Services.JwtAuthService;
 using Lagoo.BusinessLogic.Resources.CommandsAndQueries;
+using Lagoo.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,7 +38,7 @@ public class RefreshAccessTokenCommandHandler : IRequestHandler<RefreshAccessTok
             throw new BadRequestException(AccountResources.RefreshTokenWasNotFoundOrExpired);
         }
 
-        var (accessToken, accessTokenExpiresAt) = await _jwtAuthService.GenerateAccessTokenAsync(refreshToken.Owner);
+        var (accessToken, accessTokenExpiresAt) = await TryCreateAccessTokenAsync(refreshToken.Owner);
 
         return new RefreshAccessTokenResponseDto
         {
@@ -47,7 +49,17 @@ public class RefreshAccessTokenCommandHandler : IRequestHandler<RefreshAccessTok
 
     private Guid ExtractUserIdFromAccessToken(string accessToken)
     {
-        var claimsPrincipal = _jwtAuthService.GetPrincipalFromToken(accessToken);
+        ClaimsPrincipal claimsPrincipal;
+        
+        try
+        {
+            claimsPrincipal = _jwtAuthService.GetPrincipalFromToken(accessToken);
+        }
+        catch (BaseArgumentException exception)
+        {
+            throw new BadRequestException(exception.Message);
+        }
+        
         var claimUserId = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
 
         if (claimUserId is null || !Guid.TryParse(claimUserId, out var userId))
@@ -56,5 +68,17 @@ public class RefreshAccessTokenCommandHandler : IRequestHandler<RefreshAccessTok
         }
 
         return userId;
+    }
+    
+    private Task<(string, DateTime)> TryCreateAccessTokenAsync(AppUser user)
+    {
+        try
+        {
+            return _jwtAuthService.GenerateAccessTokenAsync(user);
+        }
+        catch (BaseArgumentException exception)
+        {
+            throw new BadRequestException(exception.Message);
+        }
     }
 }
