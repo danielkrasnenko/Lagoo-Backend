@@ -1,9 +1,11 @@
 using System;
+using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Common.Dtos;
 using Lagoo.BusinessLogic.Common.ExternalServices.FacebookAuthService;
 using Lagoo.BusinessLogic.Common.Services.JwtAuthService;
 using Lagoo.BusinessLogic.UnitTests.Common.Base;
 using Lagoo.Domain.Entities;
 using NSubstitute;
+using NUnit.Framework;
 
 namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Accounts.Common;
 
@@ -45,6 +47,23 @@ public class AccountTestsBase : TestsBase
             FirstName = DefaultUser.FirstName,
             LastName = DefaultUser.LastName
         });
+    }
+    
+    protected AuthenticationDataDto GenerateDefaultAuthDataDto(Guid deviceId) => new()
+    {
+        AccessToken = DefaultAccessTokenValue,
+        AccessTokenExpiresAt = DefaultAccessTokenExpirationDate,
+        RefreshTokenValue = DefaultRefreshTokenValue,
+        RefreshTokenExpiresAt = DefaultRefreshToken.ExpiresAt,
+        DeviceId = deviceId
+    };
+    
+    protected void AssertAuthenticationDataDtoContainsDefaultData(AuthenticationDataDto result)
+    {
+        Assert.AreEqual(DefaultAccessTokenValue, result.AccessToken);
+        Assert.AreEqual(DefaultAccessTokenExpirationDate, result.AccessTokenExpiresAt);
+        Assert.AreEqual(DefaultRefreshTokenValue, result.RefreshTokenValue);
+        Assert.AreEqual(DefaultRefreshToken.ExpiresAt, result.RefreshTokenExpiresAt);   
     }
 
     protected static RefreshToken GenerateDefaultRefreshToken(DateTime expiresAt, DateTime? lastModifiedAt) => new()

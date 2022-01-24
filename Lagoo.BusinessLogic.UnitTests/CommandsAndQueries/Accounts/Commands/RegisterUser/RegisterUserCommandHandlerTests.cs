@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.CreateAuthTokens;
 using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.RegisterUser;
-using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Common.Dtos;
 using Lagoo.BusinessLogic.Common.Exceptions.Api;
 using Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Accounts.Common;
 using Lagoo.Domain.Enums;
@@ -33,10 +32,7 @@ public class RegisterUserCommandHandlerTests : AccountTestsBase
         
         var result = await handler.Handle(command, CancellationToken.None);
 
-        Assert.AreEqual(DefaultAccessTokenValue, result.AccessToken);
-        Assert.AreEqual(DefaultAccessTokenExpirationDate, result.AccessTokenExpiresAt);
-        Assert.AreEqual(DefaultRefreshTokenValue, result.RefreshTokenValue);
-        Assert.AreEqual(DefaultRefreshToken.ExpiresAt, result.RefreshTokenExpiresAt);
+        AssertAuthenticationDataDtoContainsDefaultData(result);
         Assert.AreEqual(DefaultDeviceId, result.DeviceId);
     }
     
@@ -51,10 +47,7 @@ public class RegisterUserCommandHandlerTests : AccountTestsBase
         
         var result = await handler.Handle(command, CancellationToken.None);
 
-        Assert.AreEqual(DefaultAccessTokenValue, result.AccessToken);
-        Assert.AreEqual(DefaultAccessTokenExpirationDate, result.AccessTokenExpiresAt);
-        Assert.AreEqual(DefaultRefreshTokenValue, result.RefreshTokenValue);
-        Assert.AreEqual(DefaultRefreshToken.ExpiresAt, result.RefreshTokenExpiresAt);
+        AssertAuthenticationDataDtoContainsDefaultData(result);
         Assert.AreEqual(NewDeviceId, result.DeviceId);
     }
 
@@ -70,10 +63,7 @@ public class RegisterUserCommandHandlerTests : AccountTestsBase
 
         var result = await handler.Handle(command, CancellationToken.None);
         
-        Assert.AreEqual(DefaultAccessTokenValue, result.AccessToken);
-        Assert.AreEqual(DefaultAccessTokenExpirationDate, result.AccessTokenExpiresAt);
-        Assert.AreEqual(DefaultRefreshTokenValue, result.RefreshTokenValue);
-        Assert.AreEqual(DefaultRefreshToken.ExpiresAt, result.RefreshTokenExpiresAt);
+        AssertAuthenticationDataDtoContainsDefaultData(result);
         Assert.AreEqual(DefaultDeviceId, result.DeviceId);
     }
     
@@ -89,10 +79,7 @@ public class RegisterUserCommandHandlerTests : AccountTestsBase
 
         var result = await handler.Handle(command, CancellationToken.None);
         
-        Assert.AreEqual(DefaultAccessTokenValue, result.AccessToken);
-        Assert.AreEqual(DefaultAccessTokenExpirationDate, result.AccessTokenExpiresAt);
-        Assert.AreEqual(DefaultRefreshTokenValue, result.RefreshTokenValue);
-        Assert.AreEqual(DefaultRefreshToken.ExpiresAt, result.RefreshTokenExpiresAt);
+        AssertAuthenticationDataDtoContainsDefaultData(result);
         Assert.AreEqual(NewDeviceId, result.DeviceId);
     }
 
@@ -156,15 +143,6 @@ public class RegisterUserCommandHandlerTests : AccountTestsBase
         ExternalAuthServicesManager.BindUserAsync(DefaultUser, default, "").ReturnsForAnyArgs(IdentityResult.Success);
         Mediator.Send(new CreateAuthTokensCommand(DefaultUser)).ReturnsForAnyArgs(GenerateDefaultAuthDataDto(DefaultDeviceId));
     }
-
-    private AuthenticationDataDto GenerateDefaultAuthDataDto(Guid deviceId) => new()
-    {
-        AccessToken = DefaultAccessTokenValue,
-        AccessTokenExpiresAt = DefaultAccessTokenExpirationDate,
-        RefreshTokenValue = DefaultRefreshTokenValue,
-        RefreshTokenExpiresAt = DefaultRefreshToken.ExpiresAt,
-        DeviceId = deviceId
-    };
 
     private RegisterUserCommand GenerateCommandWithDefaultUserData(string? password = null, string? confirmPassword = null,
         Guid? deviceId = null, ExternalAuthService? externalAuthService = null, string? externalAuthServiceAccessToken = null) => new()

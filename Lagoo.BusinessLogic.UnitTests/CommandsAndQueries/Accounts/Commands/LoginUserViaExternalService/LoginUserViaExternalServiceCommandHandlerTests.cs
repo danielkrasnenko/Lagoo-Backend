@@ -2,17 +2,18 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.CreateAuthTokens;
-using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.LoginUser;
+using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.LoginUserViaExternalService;
 using Lagoo.BusinessLogic.Common.Exceptions.Api;
 using Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Accounts.Common;
 using Lagoo.Domain.Entities;
+using Lagoo.Domain.Enums;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Accounts.Commands.LoginUser;
+namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Accounts.Commands.LoginUserViaExternalService;
 
 [TestFixture]
-public class LoginUserCommandHandlerTests : AccountTestsBase
+public class LoginUserViaExternalServiceCommandHandlerTests : AccountTestsBase
 {
     [SetUp]
     public void SetUp()
@@ -21,7 +22,7 @@ public class LoginUserCommandHandlerTests : AccountTestsBase
     }
 
     [Test]
-    public async Task Handle_CommandContainsDeviceIdAndValidData_ShouldReturnAuthTokenDataForExistingDevice()
+    public async Task Handle_CommandContainsValidDataForLoginAndDeviceId_ShouldReturnAuthTokenDataForExistingDevice()
     {
         var command = GenerateCommandWithValidDefaultData(deviceId: DefaultDeviceId);
 
@@ -32,9 +33,9 @@ public class LoginUserCommandHandlerTests : AccountTestsBase
         AssertAuthenticationDataDtoContainsDefaultData(result);
         Assert.AreEqual(DefaultDeviceId, result.DeviceId);
     }
-
+    
     [Test]
-    public async Task Handle_CommandContainsValidDataWithoutDeviceId_ShouldReturnAuthTokenDataForExistingDevice()
+    public async Task Handle_CommandContainsValidDataForLoginWithoutDeviceId_ShouldReturnAuthTokenDataForNewDevice()
     {
         Mediator.Send(new CreateAuthTokensCommand(DefaultUser)).ReturnsForAnyArgs(GenerateDefaultAuthDataDto(NewDeviceId));
         
@@ -49,43 +50,32 @@ public class LoginUserCommandHandlerTests : AccountTestsBase
     }
 
     [Test]
-    public void Handle_UserManagerCannotUserFindByEmail_ShouldThrowBadRequestException()
+    public void Handle_UserManagerCannotFindUserByLogin_ShouldThrowBadRequestException()
     {
         AppUser? user = null;
-        UserManager.FindByEmailAsync(default).ReturnsForAnyArgs(user);
-
-        var command = GenerateCommandWithValidDefaultData();
-
-        var handler = CreateHandler();
-
-        Assert.ThrowsAsync<BadRequestException>(() => handler.Handle(command, CancellationToken.None));
-    }
-
-    [Test]
-    public void Handle_CommandWithWrongPassword_ShouldThrowBadRequestException()
-    {
-        UserManager.CheckPasswordAsync(DefaultUser, default).ReturnsForAnyArgs(false);
+        UserManager.FindByLoginAsync("", default).ReturnsForAnyArgs(user);
         
         var command = GenerateCommandWithValidDefaultData();
-        
+
         var handler = CreateHandler();
 
         Assert.ThrowsAsync<BadRequestException>(() => handler.Handle(command, CancellationToken.None));
     }
     
-    private LoginUserCommandHandler CreateHandler() => new(UserManager, Mediator);
+    private LoginUserViaExternalServiceCommandHandler CreateHandler() => new(ExternalAuthServicesManager, UserManager, Mediator);
+
+    private LoginUserViaExternalServiceCommand GenerateCommandWithValidDefaultData(
+        ExternalAuthService externalAuthService = ExternalAuthService.Google,
+        string accessToken = DefaultAccessTokenValue, Guid? deviceId = null) => new()
+    {
+        ExternalAuthService = externalAuthService,
+        ExternalAuthServiceAccessToken = accessToken,
+        DeviceId = deviceId
+    };
     
     private void SetServicesDefaultBehaviour()
     {
-        UserManager.FindByEmailAsync(default).ReturnsForAnyArgs(DefaultUser);
-        UserManager.CheckPasswordAsync(DefaultUser, default).ReturnsForAnyArgs(true);
+        UserManager.FindByLoginAsync("", default).ReturnsForAnyArgs(DefaultUser);
         Mediator.Send(new CreateAuthTokensCommand(DefaultUser)).ReturnsForAnyArgs(GenerateDefaultAuthDataDto(DefaultDeviceId));
     }
-    
-    private LoginUserCommand GenerateCommandWithValidDefaultData(string email = DefaultUserEmail, string password = ValidPassword, Guid? deviceId = null) => new()
-    {
-        Email = email,
-        Password = password,
-        DeviceId = deviceId
-    };
 }

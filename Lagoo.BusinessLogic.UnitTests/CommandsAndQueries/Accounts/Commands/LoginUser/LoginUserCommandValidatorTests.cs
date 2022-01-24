@@ -11,7 +11,7 @@ public class LoginUserCommandValidatorTests : AccountTestsBase
     [Test]
     public void Validate_CommandContainsValidData_ShouldReturnValidResultOfValidation()
     {
-        var result = PerformValidation(GenerateCommandWithValidData());
+        var result = PerformValidation(GenerateCommandWithValidDefaultData());
         
         Assert.IsTrue(result.IsValid);
     }
@@ -22,7 +22,7 @@ public class LoginUserCommandValidatorTests : AccountTestsBase
     [TestCase("invalid_email.gmail")]
     public void Validate_CommandWithOmittedOrEmptyOrWhitespaceEmail_ShouldReturnInvalidResultOfValidation(string? email)
     {
-        var result = PerformValidation(GenerateCommandWithValidData(email));
+        var result = PerformValidation(GenerateCommandWithValidDefaultData(email));
         
         Assert.IsFalse(result.IsValid);
     }
@@ -32,7 +32,7 @@ public class LoginUserCommandValidatorTests : AccountTestsBase
     [TestCase("   ")]
     public void Validate_CommandWithOmittedOrEmptyOrWhitespacePassword_ShouldReturnInvalidResultOfValidation(string? password)
     {
-        var result = PerformValidation(GenerateCommandWithValidData(password: password));
+        var result = PerformValidation(GenerateCommandWithValidDefaultData(password: password));
         
         Assert.IsFalse(result.IsValid);
     }
@@ -46,7 +46,7 @@ public class LoginUserCommandValidatorTests : AccountTestsBase
         return validator.Validate(command);
     }
 
-    private LoginUserCommand GenerateCommandWithValidData(string email = DefaultUserEmail,
+    private LoginUserCommand GenerateCommandWithValidDefaultData(string email = DefaultUserEmail,
         string password = ValidPassword) => new()
     {
         Email = email,
