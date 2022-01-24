@@ -76,6 +76,8 @@ public class RegisterUserCommandValidatorTests : AccountTestsBase
     public void Validate_CommandWithOmittedOrEmptyOrWhitespaceEmail_ShouldReturnInvalidResultOfValidation(string? email)
     {
         var result = PerformValidation(GenerateCommand(email: email, password: ValidPassword, confirmPassword: ValidPassword));
+        
+        Assert.IsFalse(result.IsValid);
     }
     
     [Test]

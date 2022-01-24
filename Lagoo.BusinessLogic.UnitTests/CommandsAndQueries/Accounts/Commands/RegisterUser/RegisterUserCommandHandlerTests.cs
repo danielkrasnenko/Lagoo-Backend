@@ -41,7 +41,7 @@ public class RegisterUserCommandHandlerTests : AccountTestsBase
     }
     
     [Test]
-    public async Task Handle_CommandContainsOnlyValidDataForRegisteringUserWithLocalAccount_ShouldReturnAuthTokenDataForNewDevice()
+    public async Task Handle_CommandContainsValidDataForRegisteringUserWithLocalAccountWithoutDeviceId_ShouldReturnAuthTokenDataForNewDevice()
     {
         Mediator.Send(new CreateAuthTokensCommand(DefaultUser)).ReturnsForAnyArgs(GenerateDefaultAuthDataDto(NewDeviceId));
         
@@ -78,7 +78,7 @@ public class RegisterUserCommandHandlerTests : AccountTestsBase
     }
     
     [Test]
-    public async Task Handle_CommandContainsOnlyValidDataForRegisteringUserViaExternalAuthService_ShouldReturnAuthTokenDataForNewDevice()
+    public async Task Handle_CommandContainsValidDataForRegisteringUserViaExternalAuthServiceWithoutDeviceId_ShouldReturnAuthTokenDataForNewDevice()
     {
         Mediator.Send(new CreateAuthTokensCommand(DefaultUser)).ReturnsForAnyArgs(GenerateDefaultAuthDataDto(NewDeviceId));
         
