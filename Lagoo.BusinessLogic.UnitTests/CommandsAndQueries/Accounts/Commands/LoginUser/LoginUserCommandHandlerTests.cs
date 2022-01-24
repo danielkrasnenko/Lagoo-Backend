@@ -34,7 +34,7 @@ public class LoginUserCommandHandlerTests : AccountTestsBase
     }
 
     [Test]
-    public async Task Handle_CommandContainsValidDataWithoutDeviceId_ShouldReturnAuthTokenDataForExistingDevice()
+    public async Task Handle_CommandContainsOnlyValidData_ShouldReturnAuthTokenDataForNewDevice()
     {
         Mediator.Send(new CreateAuthTokensCommand(DefaultUser)).ReturnsForAnyArgs(GenerateDefaultAuthDataDto(NewDeviceId));
         

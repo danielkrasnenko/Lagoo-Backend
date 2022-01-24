@@ -22,7 +22,7 @@ public class RegisterUserCommandHandlerTests : AccountTestsBase
     }
     
     [Test]
-    public async Task Handle_CommandContainsDeviceIdAndValidDataForRegisteringUserWithLocalAccount_ShouldReturnAuthTokenDataForExistingDevice()
+    public async Task Handle_CommandContainsValidDataForRegisteringUserWithLocalAccountAndDeviceId_ShouldReturnAuthTokenDataForExistingDevice()
     {
         Mediator.Send(new CreateAuthTokensCommand(DefaultUser) { DeviceId = DefaultDeviceId }).ReturnsForAnyArgs(GenerateDefaultAuthDataDto(DefaultDeviceId));
         
@@ -37,7 +37,7 @@ public class RegisterUserCommandHandlerTests : AccountTestsBase
     }
     
     [Test]
-    public async Task Handle_CommandContainsValidDataForRegisteringUserWithLocalAccountWithoutDeviceId_ShouldReturnAuthTokenDataForNewDevice()
+    public async Task Handle_CommandContainsOnlyValidDataForRegisteringUserWithLocalAccount_ShouldReturnAuthTokenDataForNewDevice()
     {
         Mediator.Send(new CreateAuthTokensCommand(DefaultUser)).ReturnsForAnyArgs(GenerateDefaultAuthDataDto(NewDeviceId));
         
@@ -52,7 +52,7 @@ public class RegisterUserCommandHandlerTests : AccountTestsBase
     }
 
     [Test]
-    public async Task Handle_CommandContainsDeviceIdAndValidDataForRegisteringUserViaExternalAuthService_ShouldReturnAuthTokenDataForExistingDevice()
+    public async Task Handle_CommandContainsValidDataForRegisteringUserViaExternalAuthServiceAndDeviceId_ShouldReturnAuthTokenDataForExistingDevice()
     {
         Mediator.Send(new CreateAuthTokensCommand(DefaultUser) { DeviceId = DefaultDeviceId }).ReturnsForAnyArgs(GenerateDefaultAuthDataDto(DefaultDeviceId));
         
@@ -68,7 +68,7 @@ public class RegisterUserCommandHandlerTests : AccountTestsBase
     }
     
     [Test]
-    public async Task Handle_CommandContainsValidDataForRegisteringUserViaExternalAuthServiceWithoutDeviceId_ShouldReturnAuthTokenDataForNewDevice()
+    public async Task Handle_CommandContainsOnlyValidDataForRegisteringUserViaExternalAuthService_ShouldReturnAuthTokenDataForNewDevice()
     {
         Mediator.Send(new CreateAuthTokensCommand(DefaultUser)).ReturnsForAnyArgs(GenerateDefaultAuthDataDto(NewDeviceId));
         

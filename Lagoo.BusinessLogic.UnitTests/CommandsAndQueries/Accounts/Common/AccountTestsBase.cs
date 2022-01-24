@@ -32,9 +32,13 @@ public class AccountTestsBase : TestsBase
 
     protected const string DefaultRefreshTokenValue = "very very long hash";
 
-    protected static readonly RefreshToken DefaultRefreshToken = GenerateDefaultRefreshToken(DateTime.UtcNow, null);
+    protected static readonly DateTime DefaultRefreshTokenExpirationDate = DateTime.UtcNow;
 
-    protected static readonly RefreshToken UpdatedDefaultRefreshToken = GenerateDefaultRefreshToken(DateTime.MaxValue, DateTime.UtcNow);
+    protected static readonly RefreshToken DefaultRefreshToken = GenerateDefaultRefreshToken(DefaultDeviceId, DefaultRefreshTokenExpirationDate, null);
+
+    protected static readonly RefreshToken UpdatedDefaultRefreshToken = GenerateDefaultRefreshToken(DefaultDeviceId, DateTime.MaxValue, DateTime.UtcNow);
+
+    protected static readonly RefreshToken DefaultNewRefreshToken = GenerateDefaultRefreshToken(NewDeviceId, DefaultRefreshTokenExpirationDate, null);
 
     protected IJwtAuthService JwtAuthService = CreateJwtAuthServiceSubstitution();
 
@@ -63,14 +67,14 @@ public class AccountTestsBase : TestsBase
         Assert.AreEqual(DefaultAccessTokenValue, result.AccessToken);
         Assert.AreEqual(DefaultAccessTokenExpirationDate, result.AccessTokenExpiresAt);
         Assert.AreEqual(DefaultRefreshTokenValue, result.RefreshTokenValue);
-        Assert.AreEqual(DefaultRefreshToken.ExpiresAt, result.RefreshTokenExpiresAt);   
+        Assert.AreEqual(DefaultRefreshTokenExpirationDate, result.RefreshTokenExpiresAt);   
     }
 
-    protected static RefreshToken GenerateDefaultRefreshToken(DateTime expiresAt, DateTime? lastModifiedAt) => new()
+    protected static RefreshToken GenerateDefaultRefreshToken(Guid deviceId, DateTime expiresAt, DateTime? lastModifiedAt) => new()
     {
         Id = DefaultRefreshTokenId,
         Value = DefaultRefreshTokenValue,
-        DeviceId = DefaultDeviceId,
+        DeviceId = deviceId,
         ExpiresAt = expiresAt,
         LastModifiedAt = lastModifiedAt,
         OwnerId = DefaultUserId,
