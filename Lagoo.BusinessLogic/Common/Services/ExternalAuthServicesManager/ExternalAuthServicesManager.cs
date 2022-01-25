@@ -25,6 +25,13 @@ public class ExternalAuthServicesManager : IExternalAuthServicesManager
         _googleAuthService = googleAuthService;
     }
     
+    /// <summary>
+    ///   Gets user info from specified external authentication service
+    /// </summary>
+    /// <param name="externalAuthService">External authentication service for getting information from</param>
+    /// <param name="accessToken">Access token for specified external authentication service</param>
+    /// <returns>User info from external authentication service</returns>
+    /// <exception cref="ArgumentOutOfRangeException">Invalid external authentication service</exception>
     public async Task<IExternalAuthServiceUserInfo> GetUserInfoAsync(ExternalAuthService externalAuthService, string accessToken) => externalAuthService switch
     {
         ExternalAuthService.Facebook => await _facebookAuthService.GetUserInfoAsync(accessToken),
@@ -32,6 +39,13 @@ public class ExternalAuthServicesManager : IExternalAuthServicesManager
         _ => throw new ArgumentOutOfRangeException(nameof(externalAuthService), AccountResources.InvalidExternalAuthService)
     };
 
+    /// <summary>
+    ///   Binds a user to a specified external authentication service
+    /// </summary>
+    /// <param name="user">The user for binding</param>
+    /// <param name="externalAuthService">External authentication service to bind the user to</param>
+    /// <param name="accessToken">The access token for external authentication service</param>
+    /// <returns>The Task that represents the asynchronous operation, containing the Identity result of an operation</returns>
     public async Task<IdentityResult> BindUserAsync(AppUser user, ExternalAuthService externalAuthService, string accessToken)
     {
         var userInfo = await GetUserInfoAsync(externalAuthService, accessToken);
@@ -39,6 +53,13 @@ public class ExternalAuthServicesManager : IExternalAuthServicesManager
         return await _userManager.AddLoginAsync(user, new UserLoginInfo(externalAuthService.GetEnumDescription(), userInfo.Id, userInfo.ToString()));
     }
 
+    /// <summary>
+    ///   Unbinds a user from specified external authentication service
+    /// </summary>
+    /// <param name="user">The user for unbinding</param>
+    /// <param name="externalAuthService">The external authentication service to unbind the user from</param>
+    /// <returns>The Task that represents the asynchronous operation, containing the Identity result of an operation</returns>
+    /// <exception cref="BadRequestException">User was not bound to the specified authentication service</exception>
     public async Task<IdentityResult> UnbindUserAsync(AppUser user, ExternalAuthService externalAuthService)
     {
         var logins = await _userManager.GetLoginsAsync(user);

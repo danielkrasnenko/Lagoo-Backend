@@ -16,8 +16,21 @@ public class HttpService : IHttpService
         _httpClient = httpClient;
     }
 
+    /// <summary>
+    ///   Send a GET request to the specified Url and
+    ///   return the response body as a stream in an asynchronous operation
+    /// </summary>
+    /// <param name="url">The Url the request is sent to</param>
+    /// <returns>The task object representing the asynchronous operation</returns>
     public Task<Stream> GetStreamAsync(string url) => _httpClient.GetStreamAsync(url);
 
+    /// <summary>
+    ///   Send a GET request to the specified Url as an asynchronous operation 
+    /// </summary>
+    /// <param name="url">The Url the request is sent to</param>
+    /// <param name="queryParams">Dictionary of Query String Parameters for the request</param>
+    /// <typeparam name="TItem">Type for deserialization</typeparam>
+    /// <returns>Serialized requested data</returns>
     public async Task<TItem> GetAsync<TItem>(string url, IDictionary<string, string>? queryParams = null)
     {
         var query = queryParams is null
@@ -29,6 +42,13 @@ public class HttpService : IHttpService
         return await DeserializeHttpResponseAsync<TItem>(response);
     }
 
+    /// <summary>
+    ///   Send a POST request to the specified Url as an asynchronous operation
+    /// </summary>
+    /// <param name="url">The Url the request is sent to</param>
+    /// <param name="content">The HTTP request content sent to the server</param>
+    /// <typeparam name="TItem">Type for deserialization</typeparam>
+    /// <returns>Serialized requested data</returns>
     public async Task<TItem> PostAsync<TItem>(string url, HttpContent content)
     {
         var response = await _httpClient.PostAsync(url, content);
@@ -36,6 +56,10 @@ public class HttpService : IHttpService
         return await DeserializeHttpResponseAsync<TItem>(response);
     }
 
+    /// <summary>
+    ///   Sets a bearer token to the request
+    /// </summary>
+    /// <param name="token">Bearer token to set to the request</param>
     public void SetBearerToken(string token) => _httpClient.DefaultRequestHeaders.Authorization =
         new AuthenticationHeaderValue("Bearer", token);
 

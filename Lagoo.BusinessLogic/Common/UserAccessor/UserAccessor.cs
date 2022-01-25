@@ -17,12 +17,24 @@ public class UserAccessor : IUserAccessor
         UserId = RetrieveUserId();
     }
     
+    /// <summary>
+    ///   User ID extracted from JWT
+    /// </summary>
     public Guid? UserId { get; }
     
+    /// <summary>
+    ///   User role extracted from JWT
+    /// </summary>
     public string? Role => ClaimsPrincipal?.FindFirst(c => c.Type == ClaimTypes.Role)?.Value ?? null;
     
+    /// <summary>
+    ///   Determines whether the user is authenticated based on data in HttpContext
+    /// </summary>
     public bool IsAuthenticated => _httpContextAccessor.HttpContext?.User.Identity?.IsAuthenticated ?? false;
     
+    /// <summary>
+    ///   Claims Principal extracted from JWT
+    /// </summary>
     public ClaimsPrincipal? ClaimsPrincipal => _httpContextAccessor.HttpContext?.User;
 
     private Guid? RetrieveUserId()

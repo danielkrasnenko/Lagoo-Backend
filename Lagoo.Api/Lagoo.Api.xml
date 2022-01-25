@@ -35,6 +35,11 @@
               A middleware for appropriate handling of thrown custom exceptions in the app
             </summary>
         </member>
+        <member name="T:Lagoo.Api.Controllers.AccountsController">
+            <summary>
+              The accounts controller
+            </summary>
+        </member>
         <member name="M:Lagoo.Api.Controllers.AccountsController.RegisterUser(Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.RegisterUser.RegisterUserCommand)">
             <summary>
               Register a user in the app, optionally via an external authentication
@@ -69,6 +74,16 @@
             </summary>
             <param name="command">Expired Access token and Refresh token</param>
             <returns>New Access token</returns>
+        </member>
+        <member name="T:Lagoo.Api.Controllers.ApiController">
+            <summary>
+              The base controller for others
+            </summary>
+        </member>
+        <member name="T:Lagoo.Api.Controllers.EventsController">
+            <summary>
+              The events controller
+            </summary>
         </member>
         <member name="M:Lagoo.Api.Controllers.EventsController.GetEvents(Lagoo.BusinessLogic.CommandsAndQueries.Events.Queries.GetEvents.GetEventsQuery)">
             <summary>

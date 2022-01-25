@@ -27,6 +27,14 @@ public class JwtAuthService : IJwtAuthService
         _userManager = userManager;
     }
 
+    /// <summary>
+    ///   Generates an access token for a user and his/her role
+    /// </summary>
+    /// <param name="user">The user to generate access token for</param>
+    /// <param name="userRole">The user role</param>
+    /// <returns>The Task that represents the asynchronous operation,
+    ///  containing a Tuple of new encrypted access token and its expiration date</returns>
+    /// <exception cref="BaseArgumentException">User does not have a role</exception>
     public async Task<(string, DateTime)> GenerateAccessTokenAsync(AppUser user, string? userRole = null)
     {
         userRole ??= (await _userManager.GetRolesAsync(user)).FirstOrDefault(); 
@@ -54,6 +62,12 @@ public class JwtAuthService : IJwtAuthService
         return (serializedToken, newToken.ValidTo);
     }
 
+    /// <summary>
+    ///   Generates a refresh token for a user and device ID
+    /// </summary>
+    /// <param name="user">The user to generate access token for</param>
+    /// <param name="deviceId">A device ID</param>
+    /// <returns>New refresh token</returns>
     public RefreshToken GenerateRefreshToken(AppUser user, Guid deviceId) => new()
     {
         Value = GenerateRefreshTokenValue(),
@@ -63,6 +77,11 @@ public class JwtAuthService : IJwtAuthService
         DeviceId = deviceId
     };
 
+    /// <summary>
+    ///   Updates a refresh token
+    /// </summary>
+    /// <param name="refreshToken">A refresh token to update</param>
+    /// <returns>An updated refresh token</returns>
     public RefreshToken UpdateRefreshToken(RefreshToken refreshToken)
     {
         refreshToken.Value = GenerateRefreshTokenValue();
@@ -72,6 +91,12 @@ public class JwtAuthService : IJwtAuthService
         return refreshToken;
     }
 
+    /// <summary>
+    ///   Gets a claims principal based on provided access token
+    /// </summary>
+    /// <param name="token">Access token to extract claims principal from</param>
+    /// <returns>Claims principal of an access token</returns>
+    /// <exception cref="BaseArgumentException">Access token is invalid</exception>
     public ClaimsPrincipal GetPrincipalFromToken(string token)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
@@ -98,6 +123,12 @@ public class JwtAuthService : IJwtAuthService
         }
     }
 
+    /// <summary>
+    ///   Gets a symmetric security key based on a secret
+    /// </summary>
+    /// <param name="secret">A secret for generating symmetric security key</param>
+    /// <returns>A symmetric security key</returns>
+    /// <exception cref="NullReferenceException">Provided secret is empty</exception>
     public static SymmetricSecurityKey GetSymmetricSecurityKey(string secret)
     {
         return !string.IsNullOrWhiteSpace(secret)
