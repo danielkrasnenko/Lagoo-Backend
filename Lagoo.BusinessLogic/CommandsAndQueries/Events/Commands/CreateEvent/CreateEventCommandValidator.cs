@@ -1,32 +1,27 @@
 using FluentValidation;
 using Lagoo.BusinessLogic.Resources.CommandsAndQueries;
+using Lagoo.Domain.ConfigurationConstants;
 
 namespace Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.CreateEvent;
 
 public class CreateEventCommandValidator : AbstractValidator<CreateEventCommand>
 {
-    public const int NameMaxLength = 256;
-
-    public const int AddressMaxLength = 512;
-
-    public const int CommentMaxLength = 1026;
-    
     public CreateEventCommandValidator()
     {
         RuleFor(cec => cec.Name)
             .NotEmpty().WithMessage(EventResources.NameIsEmpty)
-            .MaximumLength(NameMaxLength).WithMessage(string.Format(EventResources.NameIsTooLong, NameMaxLength));
+            .MaximumLength(EventConfigurationConstansts.NameMaxLength).WithMessage(string.Format(EventResources.NameIsTooLong, EventConfigurationConstansts.NameMaxLength));
 
         RuleFor(cec => cec.Type)
             .IsInEnum().WithMessage(EventResources.InvalidType);
 
         RuleFor(cec => cec.Address)
             .NotEmpty().WithMessage(EventResources.AddressIsEmpty)
-            .MaximumLength(AddressMaxLength).WithMessage(string.Format(EventResources.AddressIsTooLong, AddressMaxLength));
+            .MaximumLength(EventConfigurationConstansts.AddressMaxLength).WithMessage(string.Format(EventResources.AddressIsTooLong, EventConfigurationConstansts.AddressMaxLength));
 
         RuleFor(cec => cec.Comment)
             .NotEmpty().WithMessage(EventResources.CommentIsEmpty)
-            .MaximumLength(CommentMaxLength).WithMessage(string.Format(EventResources.CommentIsTooLong, CommentMaxLength))
+            .MaximumLength(EventConfigurationConstansts.CommentMaxLength).WithMessage(string.Format(EventResources.CommentIsTooLong, EventConfigurationConstansts.CommentMaxLength))
             .When(cec => cec.Comment is not "");
 
         RuleFor(cec => cec.Duration)

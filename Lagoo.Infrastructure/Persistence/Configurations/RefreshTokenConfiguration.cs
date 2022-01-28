@@ -1,3 +1,4 @@
+using Lagoo.Domain.ConfigurationConstants;
 using Lagoo.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -6,8 +7,6 @@ namespace Lagoo.Infrastructure.Persistence.Configurations;
 
 public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshToken>
 {
-    public const int ValueMaxLength = 40; 
-    
     public void Configure(EntityTypeBuilder<RefreshToken> builder)
     {
         builder
@@ -19,6 +18,10 @@ public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshToken>
         builder
             .Property(rt => rt.Value)
             .HasColumnType("char")
-            .HasMaxLength(ValueMaxLength);
+            .HasMaxLength(RefreshTokenConfigurationConstants.ValueMaxLength);
+
+        builder
+            .Property(rt => rt.CreatedAt)
+            .HasDefaultValueSql("getutcdate()");
     }
 }

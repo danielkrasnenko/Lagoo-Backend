@@ -3,32 +3,27 @@ using FluentValidation;
 using Lagoo.BusinessLogic.Common.Constants;
 using Lagoo.BusinessLogic.Common.Extensions;
 using Lagoo.BusinessLogic.Resources.CommandsAndQueries;
+using Lagoo.Domain.ConfigurationConstants;
 
 namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.RegisterUser;
 
 public class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
 {
-    public const short FirstNameMaxLength = 256;
-
-    public const short LastNameMaxLength = 256;
-
-    public const short EmailMaxLength = 256;
-
     public const short PasswordMinLength = 5;
 
     public RegisterUserCommandValidator()
     {
         RuleFor(ruc => ruc.FirstName)
             .NotEmpty().WithMessage(AccountResources.FirstNameIsEmpty)
-            .MaximumLength(FirstNameMaxLength).WithMessage(string.Format(AccountResources.FirstNameIsTooLong, FirstNameMaxLength));
+            .MaximumLength(AppUserConfigurationConstants.FirstNameMaxLength).WithMessage(string.Format(AccountResources.FirstNameIsTooLong, AppUserConfigurationConstants.FirstNameMaxLength));
 
         RuleFor(ruc => ruc.LastName)
             .NotEmpty().WithMessage(AccountResources.LastNameIsEmpty)
-            .MaximumLength(LastNameMaxLength).WithMessage(string.Format(AccountResources.LastNameIsTooLong, LastNameMaxLength));
+            .MaximumLength(AppUserConfigurationConstants.LastNameMaxLength).WithMessage(string.Format(AccountResources.LastNameIsTooLong, AppUserConfigurationConstants.LastNameMaxLength));
 
         RuleFor(ruc => ruc.Email)
             .NotEmpty().WithMessage(AccountResources.EmailIsEmpty)
-            .MaximumLength(EmailMaxLength).WithMessage(string.Format(AccountResources.EmailIsTooLong, EmailMaxLength))
+            .MaximumLength(AppUserConfigurationConstants.EmailMaxLength).WithMessage(string.Format(AccountResources.EmailIsTooLong, AppUserConfigurationConstants.EmailMaxLength))
             .Must(email => email.IsEmail()).WithMessage(AccountResources.EmailIsInvalid);
 
         RuleFor(ruc => ruc.Password).Cascade(CascadeMode.Stop)

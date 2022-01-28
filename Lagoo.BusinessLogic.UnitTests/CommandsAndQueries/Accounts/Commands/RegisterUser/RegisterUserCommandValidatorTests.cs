@@ -2,6 +2,7 @@ using FluentValidation.Results;
 using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.RegisterUser;
 using Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Accounts.Common;
 using Lagoo.BusinessLogic.UnitTests.Common.Helpers;
+using Lagoo.Domain.ConfigurationConstants;
 using Lagoo.Domain.Enums;
 using NUnit.Framework;
 
@@ -43,7 +44,7 @@ public class RegisterUserCommandValidatorTests : AccountTestsBase
     [Test]
     public void Validate_CommandWithTooLongFirstName_ShouldReturnInvalidResultOfValidation()
     {
-        var tooLongFirstName = StringHelpers.GenerateRandomString(257);
+        var tooLongFirstName = StringHelpers.GenerateRandomString(AppUserConfigurationConstants.FirstNameMaxLength + 1);
 
         var result = PerformValidation(GenerateCommand(
             tooLongFirstName, password: ValidPassword, confirmPassword: ValidPassword));
@@ -64,7 +65,7 @@ public class RegisterUserCommandValidatorTests : AccountTestsBase
     [Test]
     public void Validate_CommandWithTooLongLastName_ShouldReturnInvalidResultOfValidation()
     {
-        var tooLongLastName = StringHelpers.GenerateRandomString(257);
+        var tooLongLastName = StringHelpers.GenerateRandomString(AppUserConfigurationConstants.LastNameMaxLength + 1);
 
         var result = PerformValidation(GenerateCommand(
             tooLongLastName, password: ValidPassword, confirmPassword: ValidPassword));
@@ -86,7 +87,7 @@ public class RegisterUserCommandValidatorTests : AccountTestsBase
     [Test]
     public void Validate_CommandWithTooLongEmail_ShouldReturnInvalidResultOfValidation()
     {
-        var tooLongEmail = StringHelpers.GenerateRandomString(231) + DefaultUserEmail;
+        var tooLongEmail = StringHelpers.GenerateRandomString(AppUserConfigurationConstants.EmailMaxLength - DefaultUserEmail.Length + 1) + DefaultUserEmail;
 
         var result = PerformValidation(GenerateCommand(
              tooLongEmail, password: ValidPassword, confirmPassword: ValidPassword));

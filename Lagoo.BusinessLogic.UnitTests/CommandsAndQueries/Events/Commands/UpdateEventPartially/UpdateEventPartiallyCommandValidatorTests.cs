@@ -3,6 +3,7 @@ using FluentValidation.Results;
 using Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.UpdateEventPartially;
 using Lagoo.BusinessLogic.UnitTests.Common.Base;
 using Lagoo.BusinessLogic.UnitTests.Common.Helpers;
+using Lagoo.Domain.ConfigurationConstants;
 using Lagoo.Domain.Enums;
 using NUnit.Framework;
 
@@ -52,7 +53,7 @@ public class UpdateEventPartiallyCommandValidatorTests : TestsBase
     [Test]
     public void Validate_CommandWithTooLongName_ShouldReturnInvalidResultOfValidation()
     {
-        var longName = StringHelpers.GenerateRandomString(257);
+        var longName = StringHelpers.GenerateRandomString(EventConfigurationConstansts.NameMaxLength + 1);
 
         var result = PerformValidation(new UpdateEventPartiallyCommand { Id = 1, Name = longName });
         
@@ -79,7 +80,7 @@ public class UpdateEventPartiallyCommandValidatorTests : TestsBase
     [Test]
     public void Validate_CommandWithTooLongAddress_ShouldReturnInvalidResultOfValidation()
     {
-        var longAddress = StringHelpers.GenerateRandomString(513);
+        var longAddress = StringHelpers.GenerateRandomString(EventConfigurationConstansts.AddressMaxLength + 1);
 
         var result = PerformValidation(new UpdateEventPartiallyCommand { Id = 1, Address = longAddress });
         
@@ -97,7 +98,7 @@ public class UpdateEventPartiallyCommandValidatorTests : TestsBase
     [Test]
     public void Validate_CommandWithTooLongComment_ShouldReturnInvalidResultOfValidation()
     {
-        var longComment = StringHelpers.GenerateRandomString(1027);
+        var longComment = StringHelpers.GenerateRandomString(EventConfigurationConstansts.CommentMaxLength + 1);
 
         var result = PerformValidation(new UpdateEventPartiallyCommand { Id = 1, Comment = longComment });
         

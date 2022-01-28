@@ -1,3 +1,4 @@
+using Lagoo.Domain.ConfigurationConstants;
 using Lagoo.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -6,17 +7,11 @@ namespace Lagoo.Infrastructure.Persistence.Configurations;
 
 public class EventConfiguration : IEntityTypeConfiguration<Event>
 {
-    public const int NameMaxLength = 256;
-
-    public const int AddressMaxLength = 512;
-
-    public const int CommentMaxLength = 1026;
-
     public void Configure(EntityTypeBuilder<Event> builder)
     {
         builder
             .Property(e => e.Name)
-            .HasMaxLength(NameMaxLength);
+            .HasMaxLength(EventConfigurationConstansts.NameMaxLength);
         
         builder
             .Property(e => e.Type)
@@ -24,11 +19,11 @@ public class EventConfiguration : IEntityTypeConfiguration<Event>
 
         builder
             .Property(e => e.Address)
-            .HasMaxLength(AddressMaxLength);
+            .HasMaxLength(EventConfigurationConstansts.AddressMaxLength);
 
         builder
             .Property(e => e.Comment)
-            .HasMaxLength(CommentMaxLength);
+            .HasMaxLength(EventConfigurationConstansts.CommentMaxLength);
 
         builder
             .Property(e => e.CreatedAt)

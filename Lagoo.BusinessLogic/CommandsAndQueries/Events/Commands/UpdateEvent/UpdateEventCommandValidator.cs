@@ -1,6 +1,6 @@
 using FluentValidation;
-using Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.CreateEvent;
 using Lagoo.BusinessLogic.Resources.CommandsAndQueries;
+using Lagoo.Domain.ConfigurationConstants;
 
 namespace Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.UpdateEvent;
 
@@ -13,21 +13,21 @@ public class UpdateEventCommandValidator : AbstractValidator<UpdateEventCommand>
 
         RuleFor(uec => uec.Name)
             .NotEmpty().WithMessage(EventResources.NameIsEmpty)
-            .MaximumLength(CreateEventCommandValidator.NameMaxLength).WithMessage(
-                string.Format(EventResources.NameIsTooLong, CreateEventCommandValidator.NameMaxLength));
+            .MaximumLength(EventConfigurationConstansts.NameMaxLength).WithMessage(
+                string.Format(EventResources.NameIsTooLong, EventConfigurationConstansts.NameMaxLength));
 
         RuleFor(uec => uec.Type)
             .IsInEnum().WithMessage(EventResources.InvalidType);
 
         RuleFor(uec => uec.Address)
             .NotEmpty().WithMessage(EventResources.AddressIsEmpty)
-            .MaximumLength(CreateEventCommandValidator.AddressMaxLength).WithMessage(
-                string.Format(EventResources.AddressIsTooLong, CreateEventCommandValidator.AddressMaxLength));
+            .MaximumLength(EventConfigurationConstansts.AddressMaxLength).WithMessage(
+                string.Format(EventResources.AddressIsTooLong, EventConfigurationConstansts.AddressMaxLength));
 
         RuleFor(uec => uec.Comment)
             .NotEmpty().WithMessage(EventResources.CommentIsEmpty)
-            .MaximumLength(CreateEventCommandValidator.CommentMaxLength).WithMessage(
-                string.Format(EventResources.CommentIsTooLong, CreateEventCommandValidator.CommentMaxLength))
+            .MaximumLength(EventConfigurationConstansts.CommentMaxLength).WithMessage(
+                string.Format(EventResources.CommentIsTooLong, EventConfigurationConstansts.CommentMaxLength))
             .When(uec => uec.Comment is not "");
 
         RuleFor(uec => uec.Duration)

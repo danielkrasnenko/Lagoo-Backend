@@ -1,6 +1,6 @@
 using FluentValidation;
-using Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.CreateEvent;
 using Lagoo.BusinessLogic.Resources.CommandsAndQueries;
+using Lagoo.Domain.ConfigurationConstants;
 
 namespace Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.UpdateEventPartially;
 
@@ -13,8 +13,8 @@ public class UpdateEventPartiallyCommandValidator : AbstractValidator<UpdateEven
 
         RuleFor(uepc => uepc.Name)
             .NotEmpty().WithMessage(EventResources.NameIsEmpty)
-            .MaximumLength(CreateEventCommandValidator.NameMaxLength).WithMessage(
-                string.Format(EventResources.NameIsTooLong, CreateEventCommandValidator.NameMaxLength))
+            .MaximumLength(EventConfigurationConstansts.NameMaxLength).WithMessage(
+                string.Format(EventResources.NameIsTooLong, EventConfigurationConstansts.NameMaxLength))
             .When(uepc => uepc.Name is not null);
 
         RuleFor(uepc => uepc.Type)
@@ -23,14 +23,14 @@ public class UpdateEventPartiallyCommandValidator : AbstractValidator<UpdateEven
 
         RuleFor(uepc => uepc.Address)
             .NotEmpty().WithMessage(EventResources.AddressIsEmpty)
-            .MaximumLength(CreateEventCommandValidator.AddressMaxLength).WithMessage(
-                string.Format(EventResources.AddressIsTooLong, CreateEventCommandValidator.AddressMaxLength))
+            .MaximumLength(EventConfigurationConstansts.AddressMaxLength).WithMessage(
+                string.Format(EventResources.AddressIsTooLong, EventConfigurationConstansts.AddressMaxLength))
             .When(uepc => uepc.Address is not null);
 
         RuleFor(uepc => uepc.Comment)
             .NotEmpty().WithMessage(EventResources.CommentIsEmpty)
-            .MaximumLength(CreateEventCommandValidator.CommentMaxLength).WithMessage(
-                string.Format(EventResources.CommentIsTooLong, CreateEventCommandValidator.CommentMaxLength))
+            .MaximumLength(EventConfigurationConstansts.CommentMaxLength).WithMessage(
+                string.Format(EventResources.CommentIsTooLong, EventConfigurationConstansts.CommentMaxLength))
             .When(uepc => uepc.Comment is not "" and not null);
 
         RuleFor(uepc => uepc.Duration)

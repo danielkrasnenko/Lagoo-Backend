@@ -20,6 +20,13 @@ public class RefreshToken
     }
     private DateTime _expiresAtBackingField;
 
+    public DateTime CreatedAt
+    {
+        get => _createdAtBackingField;
+        set => _createdAtBackingField = value.ConvertToUtc();
+    }
+    private DateTime _createdAtBackingField;
+    
     public DateTime? LastModifiedAt
     {
         get => _lastModifiedAtBackingField;
