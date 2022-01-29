@@ -33,10 +33,11 @@ public class GetEventsQueryHandler : IRequestHandler<GetEventsQuery, GetEventsRe
         var query = ApplyFiltration(_context.Events, request.Type, request.IsPrivate);
         
         var count = await query.CountAsync(cancellationToken);
-        
-        query = PaginationHelper.Paginate(query, request.Page, request.PageSize);
 
         query = ApplySorting(query, request.SortBy, request.SortingOrder);
+
+        query = PaginationHelper.Paginate(query, request.PageSize, request.Page,
+            request.LastFetchedEventId.HasValue ? e => e.Id > request.LastFetchedEventId.Value : null);
 
         var events = await query
             .AsNoTracking()
@@ -72,7 +73,7 @@ public class GetEventsQueryHandler : IRequestHandler<GetEventsQuery, GetEventsRe
     {
         if (!sortBy.HasValue || !sortingOrder.HasValue)
         {
-            return eventsQuery;
+            return eventsQuery.OrderBy(e => e.Id);
         }
         
         Expression<Func<Event, object>> columnSelector = sortBy switch
@@ -86,8 +87,8 @@ public class GetEventsQueryHandler : IRequestHandler<GetEventsQuery, GetEventsRe
         
         return sortingOrder switch
         {
-            SortingOrder.Ascending => eventsQuery.OrderBy(columnSelector),
-            SortingOrder.Descending => eventsQuery.OrderByDescending(columnSelector),
+            SortingOrder.Ascending => eventsQuery.OrderBy(columnSelector).ThenBy(e => e.Id),
+            SortingOrder.Descending => eventsQuery.OrderByDescending(columnSelector).ThenByDescending(e => e.Id),
             _ => throw new BadRequestException(EventResources.InvalidSortingOrder)
         };
     }

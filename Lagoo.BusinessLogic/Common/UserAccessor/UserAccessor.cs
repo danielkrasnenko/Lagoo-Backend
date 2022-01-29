@@ -18,12 +18,12 @@ public class UserAccessor : IUserAccessor
     }
     
     /// <summary>
-    ///   User ID extracted from JWT
+    ///   User ID retrieved from JWT
     /// </summary>
     public Guid? UserId { get; }
     
     /// <summary>
-    ///   User role extracted from JWT
+    ///   User role retrieved from JWT
     /// </summary>
     public string? Role => ClaimsPrincipal?.FindFirst(c => c.Type == ClaimTypes.Role)?.Value ?? null;
     
@@ -33,7 +33,7 @@ public class UserAccessor : IUserAccessor
     public bool IsAuthenticated => _httpContextAccessor.HttpContext?.User.Identity?.IsAuthenticated ?? false;
     
     /// <summary>
-    ///   Claims Principal extracted from JWT
+    ///   Claims Principal retrieved from JWT
     /// </summary>
     public ClaimsPrincipal? ClaimsPrincipal => _httpContextAccessor.HttpContext?.User;
 

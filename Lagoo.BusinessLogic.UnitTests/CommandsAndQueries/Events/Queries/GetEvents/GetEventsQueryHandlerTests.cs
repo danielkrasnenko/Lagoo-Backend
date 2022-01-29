@@ -97,7 +97,7 @@ public class GetEventsQueryHandlerTests : TestsBase
 
     [TestCase(true)]
     [TestCase(false)]
-    public async Task Handle_QueryContainsFilterByPrivate(bool isPrivate)
+    public async Task Handle_QueryContainsFilterByPrivate_ShouldReturnOnlyEventsWithSpecifiedPrivateProperty(bool isPrivate)
     {
         Context.Events = TestHelpers.MockDbSet(CreateBasicEvent(1, isPrivate: true), CreateBasicEvent(2, isPrivate: false));
 
@@ -152,7 +152,7 @@ public class GetEventsQueryHandlerTests : TestsBase
     }
 
     [Test]
-    public void Handle_QueryWithInvalidSortBy_ShouldThrowBadRequestException()
+    public void Handle_QueryWithInvalidSortByParameter_ShouldThrowBadRequestException()
     {
         Context.Events = TestHelpers.MockDbSet(Array.Empty<Event>());
 
@@ -244,7 +244,7 @@ public class GetEventsQueryHandlerTests : TestsBase
     }
 
     [Test]
-    public async Task Handle_QueryContainsPagination_ShouldReturnPaginatedEvents()
+    public async Task Handle_QueryContainsPaginationForRandomPage_ShouldReturnPaginatedEventsBySpecifiedPageAndItsSize()
     {
         const long firstEventId = 1;
         const long secondEventId = 2;
@@ -274,9 +274,75 @@ public class GetEventsQueryHandlerTests : TestsBase
         Assert.AreEqual(pageSize, result.Events.Count);
         Assert.IsTrue(result.Events.All(e => e.Id is fourthEventId or fifthEventId or sixthEventId));
     }
+    
+    [Test]
+    public async Task Handle_QueryContainsPaginationForNextOrPreviousPage_ShouldReturnPaginatedEventsAccordingToSpecifiedParameters()
+    {
+        const long firstEventId = 1;
+        const long secondEventId = 2;
+        const long thirdEventId = 3;
+        const long fourthEventId = 4;
+        const long fifthEventId = 5;
+        const long sixthEventId = 6;
+
+        const int pageSize = 3;
+
+        Context.Events = TestHelpers.MockDbSet(CreateBasicEvent(firstEventId), CreateBasicEvent(secondEventId),
+            CreateBasicEvent(thirdEventId), CreateBasicEvent(fourthEventId),
+            CreateBasicEvent(fifthEventId), CreateBasicEvent(sixthEventId));
+
+        var query = new GetEventsQuery
+        {
+            LastFetchedEventId = thirdEventId,
+            PageSize = pageSize
+        };
+
+        var handler = CreateHandler();
+
+        var result = await handler.Handle(query, CancellationToken.None);
+        
+        Assert.AreEqual(Context.Events.Count(), result.Count);
+        Assert.AreEqual(pageSize, result.Events.Count);
+        Assert.IsTrue(result.Events.All(e => e.Id > thirdEventId));
+    }
 
     [Test]
-    public async Task Handle_QueryWithOneOmittedParameterForPagination_ShouldReturnAllEvents()
+    public async Task Handle_QueryContainsPaginationAndSorting_ShouldReturnAGroupOfSortedEvents()
+    {
+        const long firstEventId = 1;
+        const long secondEventId = 2;
+        const long thirdEventId = 3;
+        const long fourthEventId = 4;
+        const long fifthEventId = 5;
+        const long sixthEventId = 6;
+
+        const int pageSize = 3;
+
+        Context.Events = TestHelpers.MockDbSet(CreateBasicEvent(firstEventId, beginsAt: DateTime.UtcNow), CreateBasicEvent(secondEventId, beginsAt: DateTime.UtcNow.AddDays(1)),
+            CreateBasicEvent(thirdEventId, beginsAt: DateTime.UtcNow.AddDays(2)), CreateBasicEvent(fourthEventId, beginsAt: DateTime.UtcNow.AddDays(3)),
+            CreateBasicEvent(fifthEventId, beginsAt: DateTime.UtcNow.AddDays(4)), CreateBasicEvent(sixthEventId, beginsAt: DateTime.UtcNow.AddDays(5)));
+
+        var query = new GetEventsQuery
+        {
+            LastFetchedEventId = 0,
+            PageSize = pageSize,
+            SortingOrder = SortingOrder.Descending,
+            SortBy = GetEventsSortBy.BeginsAt
+        };
+
+        var handler = CreateHandler();
+
+        var result = await handler.Handle(query, CancellationToken.None);
+        
+        Assert.AreEqual(Context.Events.Count(), result.Count);
+        Assert.AreEqual(pageSize, result.Events.Count);
+        Assert.IsTrue(result.Events.First().Id == sixthEventId);
+        Assert.IsTrue(result.Events.ElementAt(1).Id == fifthEventId);
+        Assert.IsTrue(result.Events.ElementAt(2).Id == fourthEventId);
+    }
+
+    [Test]
+    public async Task Handle_QueryWithSpecifiedPageParameterAndOmittedPageSizeParameterForPagination_ShouldReturnAllEvents()
     {
         Context.Events = TestHelpers.MockDbSet(CreateBasicEvent(1), CreateBasicEvent(2), CreateBasicEvent(3),
             CreateBasicEvent(4));
@@ -284,6 +350,44 @@ public class GetEventsQueryHandlerTests : TestsBase
         var query = new GetEventsQuery
         {
             Page = 100
+        };
+
+        var handler = CreateHandler();
+
+        var result = await handler.Handle(query, CancellationToken.None);
+        
+        Assert.AreEqual(Context.Events.Count(), result.Count);
+        Assert.AreEqual(Context.Events.Count(), result.Events.Count);
+    }
+    
+    [Test]
+    public async Task Handle_QueryWithSpecifiedLastFetchedEventIdParameterAndOmittedPageSizeParameterForPagination_ShouldReturnAllEvents()
+    {
+        Context.Events = TestHelpers.MockDbSet(CreateBasicEvent(1), CreateBasicEvent(2), CreateBasicEvent(3),
+            CreateBasicEvent(4));
+
+        var query = new GetEventsQuery
+        {
+            LastFetchedEventId = 55
+        };
+
+        var handler = CreateHandler();
+
+        var result = await handler.Handle(query, CancellationToken.None);
+        
+        Assert.AreEqual(Context.Events.Count(), result.Count);
+        Assert.AreEqual(Context.Events.Count(), result.Events.Count);
+    }
+    
+    [Test]
+    public async Task Handle_QueryWithOmittedPageAndLastFetchedEventIdParametersForPagination_ShouldReturnAllEvents()
+    {
+        Context.Events = TestHelpers.MockDbSet(CreateBasicEvent(1), CreateBasicEvent(2), CreateBasicEvent(3),
+            CreateBasicEvent(4));
+
+        var query = new GetEventsQuery
+        {
+            PageSize = 3
         };
 
         var handler = CreateHandler();
