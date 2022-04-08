@@ -29,6 +29,7 @@ Optionally you can change the name of a database for this project in all setting
 
 If you are a Windows user you can set 'Trusted_Connection=True' for bypassing password requirement.
 Otherwise you'll need to add a password of your SQL Server instance to user secrets with the "MainDbPassword" key
+Initialize user secrets in Lagoo.Api project.
 How to do that navigate to https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-6.0
 Also you'll need to add a secret for JWT to user secrets with a "JwtAuth:Secret" key.
 
