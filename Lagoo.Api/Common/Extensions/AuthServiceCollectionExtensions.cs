@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Lagoo.BusinessLogic.Common.AppOptions.Services;
 using Lagoo.BusinessLogic.Common.Services.JwtAuthService;
+using Lagoo.BusinessLogic.Hubs.Events;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
@@ -41,7 +42,7 @@ public static class AuthServiceCollectionExtensions
                 {
                     OnMessageReceived = context =>
                     {
-                        if (context.Request.Path.StartsWithSegments("/events-hub") &&
+                        if (context.Request.Path.StartsWithSegments(EventsHub.Route) &&
                             context.Request.Query.TryGetValue("access_token", out var accessToken) &&
                             !accessToken.IsNullOrEmpty())
                         {

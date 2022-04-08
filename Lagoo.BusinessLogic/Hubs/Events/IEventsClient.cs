@@ -1,6 +1,6 @@
 using Lagoo.BusinessLogic.CommandsAndQueries.Events.Common.Dtos;
 
-namespace Lagoo.Api.Hubs.Events;
+namespace Lagoo.BusinessLogic.Hubs.Events;
 
 public interface IEventsClient
 {

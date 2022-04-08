@@ -1,7 +1,7 @@
 using Lagoo.BusinessLogic.CommandsAndQueries.Events.Common.Dtos;
 using Microsoft.AspNetCore.SignalR;
 
-namespace Lagoo.Api.Hubs.Events;
+namespace Lagoo.BusinessLogic.Hubs.Events;
 
 public class EventsHub : Hub<IEventsClient>
 {
