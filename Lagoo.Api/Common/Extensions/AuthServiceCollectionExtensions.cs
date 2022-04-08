@@ -36,6 +36,21 @@ public static class AuthServiceCollectionExtensions
                     ClockSkew = TimeSpan.Zero,
                     NameClaimType = ClaimTypes.NameIdentifier
                 };
+                
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        if (context.Request.Path.StartsWithSegments("/events-hub") &&
+                            context.Request.Query.TryGetValue("access_token", out var accessToken) &&
+                            !accessToken.IsNullOrEmpty())
+                        {
+                            context.Token = accessToken;
+                        }
+
+                        return Task.CompletedTask;
+                    }
+                };
             });
 
         services.AddAuthorization(options =>

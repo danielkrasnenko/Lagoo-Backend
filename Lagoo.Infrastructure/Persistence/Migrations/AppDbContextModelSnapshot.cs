@@ -152,7 +152,7 @@ namespace Lagoo.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Events");
+                    b.ToTable("Events", (string)null);
                 });
 
             modelBuilder.Entity("Lagoo.Domain.Entities.RefreshToken", b =>
@@ -193,7 +193,7 @@ namespace Lagoo.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("Value");
 
-                    b.ToTable("RefreshTokens");
+                    b.ToTable("RefreshTokens", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
