@@ -1,39 +1,29 @@
-using AutoMapper;
 using Lagoo.BusinessLogic.CommandsAndQueries.Events.Common.Dtos;
 using Lagoo.BusinessLogic.Common.Exceptions.Api;
-using Lagoo.BusinessLogic.Common.ExternalServices.Database;
+using Lagoo.BusinessLogic.Core.Repositories;
 using Lagoo.BusinessLogic.Resources.CommandsAndQueries;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.UpdateEvent;
 
-public class UpdateEventCommandHandler : IRequestHandler<UpdateEventCommand, EventDto>
+public class UpdateEventCommandHandler : IRequestHandler<UpdateEventCommand, ReadEventDto>
 {
-    private readonly IAppDbContext _context;
+    private readonly IEventRepository _eventRepository;
 
-    private readonly IMapper _mapper;
-    
-    public UpdateEventCommandHandler(IAppDbContext context, IMapper mapper)
+    public UpdateEventCommandHandler(IEventRepository eventRepository)
     {
-        _context = context;
-        _mapper = mapper;
+        _eventRepository = eventRepository;
     }
 
-    public async Task<EventDto> Handle(UpdateEventCommand request, CancellationToken cancellationToken)
+    public async Task<ReadEventDto> Handle(UpdateEventCommand request, CancellationToken cancellationToken)
     {
-        var @event = await _context.Events.FirstOrDefaultAsync(e => e.Id == request.Id, cancellationToken);
+        var updatedEvent = await _eventRepository.UpdateAsync(request, cancellationToken);
 
-        if (@event is null)
+        if (updatedEvent is null)
         {
             throw new NotFoundException(EventResources.EventWasNotFound);
         }
         
-        _mapper.Map(request, @event);
-        @event.LastModifiedAt = DateTime.UtcNow;
-        
-        await _context.SaveChangesAsync(CancellationToken.None);
-
-        return _mapper.Map<EventDto>(@event);
+        return updatedEvent;
     }
 }

@@ -32,7 +32,7 @@ public class EventsController : ApiController
     /// <param name="query">ID of an event</param>
     /// <returns>Requested event or not found response</returns>
     [HttpGet("{id:long}")]
-    public Task<EventDto> GetEvent([FromRoute] GetEventQuery query) => Sender.Send(query);
+    public Task<ReadEventDto> GetEvent([FromRoute] GetEventQuery query) => Sender.Send(query);
 
     /// <summary>
     ///   Create an event
@@ -40,7 +40,7 @@ public class EventsController : ApiController
     /// <param name="command">Properties for creating an event</param>
     /// <returns>New event DTO with some default data from database or throws in case of validation failures</returns>
     [HttpPost]
-    public Task<EventDto> CreateEvent([FromBody] CreateEventCommand command) => Sender.Send(command);
+    public Task<ReadEventDto> CreateEvent([FromBody] CreateEventCommand command) => Sender.Send(command);
 
     /// <summary>
     ///   Update an event with the given ID
@@ -49,7 +49,7 @@ public class EventsController : ApiController
     /// <param name="command">Updated event properties</param>
     /// <returns>Updated event DTO or throws in case of validation failures or wrong event ID</returns>
     [HttpPut("{id:long}")]
-    public Task<EventDto> UpdateEvent([FromRoute] long id, [FromBody] UpdateEventCommand command)
+    public Task<ReadEventDto> UpdateEvent([FromRoute] long id, [FromBody] UpdateEventCommand command)
     {
         command.Id = id;
         return Sender.Send(command);
@@ -62,7 +62,7 @@ public class EventsController : ApiController
     /// <param name="command">Some updated event properties</param>
     /// <returns>Updated event DTO or throws in case of validation failures or wrong event ID</returns>
     [HttpPatch("{id:long}")]
-    public Task<EventDto> UpdateEventPartially([FromRoute] long id, [FromBody] UpdateEventPartiallyCommand command)
+    public Task<ReadEventDto> UpdateEventPartially([FromRoute] long id, [FromBody] UpdateEventPartiallyCommand command)
     {
         command.Id = id;
         return Sender.Send(command);

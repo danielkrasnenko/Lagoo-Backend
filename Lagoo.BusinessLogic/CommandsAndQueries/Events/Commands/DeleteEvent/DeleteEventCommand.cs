@@ -4,5 +4,5 @@ namespace Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.DeleteEvent;
 
 public class DeleteEventCommand : IRequest
 {
-    public long Id { get; set; }
+    public long EventId { get; set; }
 }

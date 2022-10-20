@@ -1,30 +1,20 @@
-using AutoMapper;
 using Lagoo.BusinessLogic.CommandsAndQueries.Events.Common.Dtos;
-using Lagoo.BusinessLogic.Common.ExternalServices.Database;
-using Lagoo.Domain.Entities;
+using Lagoo.BusinessLogic.Core.Repositories;
 using MediatR;
 
 namespace Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.CreateEvent;
 
-public class CreateEventCommandHandler : IRequestHandler<CreateEventCommand, EventDto>
+public class CreateEventCommandHandler : IRequestHandler<CreateEventCommand, ReadEventDto>
 {
-    private readonly IAppDbContext _context;
+    private readonly IEventRepository _eventRepository;
 
-    private readonly IMapper _mapper;
-
-    public CreateEventCommandHandler(IAppDbContext context, IMapper mapper)
+    public CreateEventCommandHandler(IEventRepository eventRepository)
     {
-        _context = context;
-        _mapper = mapper;
+        _eventRepository = eventRepository;
     }
 
-    public async Task<EventDto> Handle(CreateEventCommand request, CancellationToken cancellationToken)
+    public Task<ReadEventDto> Handle(CreateEventCommand request, CancellationToken cancellationToken)
     {
-        var newEvent = _mapper.Map<Event>(request);
-
-        _context.Events.Add(newEvent);
-        await _context.SaveChangesAsync(CancellationToken.None);
-
-        return _mapper.Map<EventDto>(newEvent);
+        return _eventRepository.CreateAsync(request, cancellationToken);
     }
 }

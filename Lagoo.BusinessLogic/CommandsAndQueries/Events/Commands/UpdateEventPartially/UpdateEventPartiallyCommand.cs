@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.UpdateEventPartially;
 
-public class UpdateEventPartiallyCommand : IRequest<EventDto>
+public class UpdateEventPartiallyCommand : IRequest<ReadEventDto>
 {
     public long Id { get; set; }
     

@@ -7,7 +7,7 @@ public class EventsHub : Hub<IEventsClient>
 {
     public const string Route = "/events-hub";
     
-    public Task NotifyOthersAboutUpdateAsync(EventDto updatedEventDto)
+    public Task NotifyOthersAboutUpdateAsync(ReadEventDto updatedEventDto)
     {
         return Clients.Others.TakeActionOnUpdate(updatedEventDto);
     }

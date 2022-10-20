@@ -1,11 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Security.Claims;
 using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Common.Dtos;
-using Lagoo.BusinessLogic.Common.ExternalServices.FacebookAuthService;
 using Lagoo.BusinessLogic.Common.Services.JwtAuthService;
 using Lagoo.BusinessLogic.UnitTests.Common.Base;
 using Lagoo.Domain.Entities;
+using Lagoo.Infrastructure.Services.FacebookAuthService;
 using NSubstitute;
 using NUnit.Framework;
 
@@ -94,7 +93,7 @@ public class AccountTestsBase : TestsBase
 
         jwtAuthService.GenerateRefreshToken(new AppUser(), default).ReturnsForAnyArgs(DefaultRefreshToken);
 
-        jwtAuthService.UpdateRefreshToken(new RefreshToken()).ReturnsForAnyArgs(UpdatedDefaultRefreshToken);
+        jwtAuthService.GenerateDataForRefreshTokenUpdate(new RefreshToken()).ReturnsForAnyArgs(UpdatedDefaultRefreshToken);
 
         jwtAuthService.GetPrincipalFromToken("").ReturnsForAnyArgs(DefaultClaimsPrincipal);
 

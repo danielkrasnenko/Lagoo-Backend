@@ -1,32 +1,28 @@
 using Lagoo.BusinessLogic.Common.Exceptions.Api;
-using Lagoo.BusinessLogic.Common.ExternalServices.Database;
+using Lagoo.BusinessLogic.Core.Repositories;
 using Lagoo.BusinessLogic.Resources.CommandsAndQueries;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.DeleteEvent;
 
 public class DeleteEventCommandHandler : IRequestHandler<DeleteEventCommand, Unit>
 {
-    private readonly IAppDbContext _context;
+    private readonly IEventRepository _eventRepository;
 
-    public DeleteEventCommandHandler(IAppDbContext context)
+    public DeleteEventCommandHandler(IEventRepository eventRepository)
     {
-        _context = context;
+        _eventRepository = eventRepository;
     }
 
     public async Task<Unit> Handle(DeleteEventCommand request, CancellationToken cancellationToken)
     {
-        var @event = await _context.Events.FirstOrDefaultAsync(e => e.Id == request.Id, cancellationToken);
+        var deleted = await _eventRepository.DeleteAsync(request.EventId, cancellationToken);
 
-        if (@event is null)
+        if (!deleted)
         {
             throw new NotFoundException(EventResources.EventWasNotFound);
         }
 
-        _context.Events.Remove(@event);
-        await _context.SaveChangesAsync(CancellationToken.None);
-        
         return Unit.Value;
     }
 }

@@ -32,7 +32,7 @@ public class GetEventQueryHandlerTests : TestsBase
     {
         var query = new GetEventQuery
         {
-            Id = DefaultEventId
+            EventId = DefaultEventId
         };
 
         var handler = CreateHandler();
@@ -65,7 +65,7 @@ public class GetEventQueryHandlerTests : TestsBase
     {
         var query = new GetEventQuery
         {
-            Id = long.MaxValue
+            EventId = long.MaxValue
         };
 
         var handler = CreateHandler();

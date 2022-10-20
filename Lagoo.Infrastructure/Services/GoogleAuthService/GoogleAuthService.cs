@@ -1,4 +1,5 @@
-using Lagoo.BusinessLogic.Common.ExternalServices.GoogleAuthService;
+using Lagoo.BusinessLogic.Common.Services.ExternalAuthServicesManager;
+using Lagoo.BusinessLogic.Common.Services.GoogleAuthService;
 using Lagoo.BusinessLogic.Common.Services.HttpService;
 
 namespace Lagoo.Infrastructure.Services.GoogleAuthService;
@@ -17,10 +18,10 @@ public class GoogleAuthService : IGoogleAuthService
         _httpService = httpService;
     }
     
-    public Task<GoogleUserInfo> GetUserInfoAsync(string accessToken)
+    public async Task<IExternalAuthServiceUserInfo> GetUserInfoAsync(string accessToken)
     {
         _httpService.SetBearerToken(accessToken);
 
-        return _httpService.GetAsync<GoogleUserInfo>(UserInfoUrl);
+        return await _httpService.GetAsync<GoogleUserInfo>(UserInfoUrl);
     }
 }

@@ -4,7 +4,7 @@ namespace Lagoo.BusinessLogic.Hubs.Events;
 
 public interface IEventsClient
 {
-    Task TakeActionOnUpdate(EventDto updatedEventDto);
+    Task TakeActionOnUpdate(ReadEventDto updatedEventDto);
 
     Task TakeActionOnDelete(long id);
 }

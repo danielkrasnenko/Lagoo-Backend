@@ -7,8 +7,6 @@ namespace Lagoo.Infrastructure.Persistence;
 
 public class AppDbInitializer
 {
-    private const string InMemoryDbName = "Microsoft.EntityFrameworkCore.InMemory";
-    
     private readonly WebApplication _application;
     
     public AppDbInitializer(WebApplication application)
@@ -24,7 +22,7 @@ public class AppDbInitializer
         {
             var context = scope.ServiceProvider.GetService<AppDbContext>();
 
-            if (context is not null && context.Database.ProviderName != InMemoryDbName)
+            if (context is not null && context.Database.IsSqlServer())
             {
                 await SyncDatabaseAsync(context);
             }

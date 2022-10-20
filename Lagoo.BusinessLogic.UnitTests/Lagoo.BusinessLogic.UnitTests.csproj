@@ -35,6 +35,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Lagoo.BusinessLogic\Lagoo.BusinessLogic.csproj" />
+      <ProjectReference Include="..\Lagoo.Infrastructure\Lagoo.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

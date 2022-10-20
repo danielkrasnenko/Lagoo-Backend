@@ -1,4 +1,3 @@
-using Lagoo.BusinessLogic.Common.ExternalServices.Models;
 using Lagoo.Domain.Entities;
 using Lagoo.Domain.Enums;
 using Microsoft.AspNetCore.Identity;

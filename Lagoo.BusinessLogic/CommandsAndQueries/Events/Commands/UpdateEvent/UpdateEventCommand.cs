@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.UpdateEvent;
 
-public class UpdateEventCommand : IRequest<EventDto>, IMapFrom<Event>
+public class UpdateEventCommand : IRequest<ReadEventDto>, IMapTo<Event>
 {
     public long Id { get; set; }
     

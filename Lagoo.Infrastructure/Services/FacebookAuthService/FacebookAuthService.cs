@@ -1,4 +1,5 @@
-using Lagoo.BusinessLogic.Common.ExternalServices.FacebookAuthService;
+using Lagoo.BusinessLogic.Common.Services.ExternalAuthServicesManager;
+using Lagoo.BusinessLogic.Common.Services.FacebookAuthService;
 using Lagoo.BusinessLogic.Common.Services.HttpService;
 
 namespace Lagoo.Infrastructure.Services.FacebookAuthService;
@@ -17,10 +18,10 @@ public class FacebookAuthService : IFacebookAuthService
         _httpService = httpService;
     }
     
-    public Task<FacebookUserInfo> GetUserInfoAsync(string accessToken)
+    public async Task<IExternalAuthServiceUserInfo> GetUserInfoAsync(string accessToken)
     {
         _httpService.SetBearerToken(accessToken);
 
-        return _httpService.GetAsync<FacebookUserInfo>(UserInfoUrl);
+        return await _httpService.GetAsync<FacebookUserInfo>(UserInfoUrl);
     }
 }

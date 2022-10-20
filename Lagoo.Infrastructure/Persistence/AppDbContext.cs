@@ -1,6 +1,5 @@
 using System.Linq.Expressions;
 using System.Reflection;
-using Lagoo.BusinessLogic.Common.ExternalServices.Database;
 using Lagoo.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -8,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Lagoo.Infrastructure.Persistence;
 
-public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>, IAppDbContext
+public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {

@@ -1,7 +1,6 @@
-using Lagoo.BusinessLogic.Common.AppOptions.Databases;
-using Lagoo.BusinessLogic.Common.ExternalServices.Database;
-using Lagoo.BusinessLogic.Common.UserSecrets;
 using Lagoo.Domain.Entities;
+using Lagoo.Infrastructure.AppOptions;
+using Lagoo.Infrastructure.AppOptions.Databases;
 using Lagoo.Infrastructure.Persistence;
 using Lagoo.Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
@@ -20,12 +19,18 @@ public static class DependencyInjection
 {
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddAppOptions(configuration);
+        
         services.AddDbContext<AppDbContext>(options => options.UseSqlServer(BuildDbConnectionString(configuration),
-            builder => builder.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)));
+            builder =>
+            {
+                builder.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName);
+                builder.UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery);
+            }));
 
         services.AddAspIdentity();
         
-        services.AddScoped<IAppDbContext>(provider => provider.GetService<AppDbContext>() ?? throw new InvalidOperationException("DB context is not provided."));
+        services.AddInfrastructureRepositories();
 
         services.AddInfrastructureServices();
     }
@@ -44,7 +49,7 @@ public static class DependencyInjection
     {
         var sqlConStrBuilder = new SqlConnectionStringBuilder(configuration.GetConnectionString(MainDatabaseOptions.MainDatabaseConnection))
         {
-            Password = configuration[UserSecrets.MainDatabasePassword]
+            Password = configuration[UserSecrets.UserSecrets.MainDatabasePassword]
         };
 
         return sqlConStrBuilder.ConnectionString;

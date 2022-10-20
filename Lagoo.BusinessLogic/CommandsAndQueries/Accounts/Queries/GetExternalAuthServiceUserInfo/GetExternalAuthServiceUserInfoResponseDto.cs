@@ -1,5 +1,5 @@
-using Lagoo.BusinessLogic.Common.ExternalServices.Models;
 using Lagoo.BusinessLogic.Common.Mappings;
+using Lagoo.BusinessLogic.Common.Services.ExternalAuthServicesManager;
 
 namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Queries.GetExternalAuthServiceUserInfo;
 

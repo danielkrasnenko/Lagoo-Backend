@@ -2,12 +2,12 @@ using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.CreateAuthTokens;
 using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Common.Dtos;
 using Lagoo.BusinessLogic.Common.Exceptions.Api;
 using Lagoo.BusinessLogic.Common.Services.ExternalAuthServicesManager;
+using Lagoo.BusinessLogic.Core.Repositories;
 using Lagoo.BusinessLogic.Resources.CommandsAndQueries;
 using Lagoo.Domain.Entities;
 using Lagoo.Domain.Enums;
 using Lagoo.Domain.Types;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 
 namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.RegisterUser;
 
@@ -16,17 +16,18 @@ namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.RegisterUser;
 /// </summary>
 public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, AuthenticationDataDto>
 {
-    private readonly UserManager<AppUser> _userManager;
+    private readonly IUserRepository _userRepository;
 
     private readonly IMediator _mediator;
 
     private readonly IExternalAuthServicesManager _externalAuthServicesManager;
 
-    public RegisterUserCommandHandler(UserManager<AppUser> userManager, IMediator mediator, IExternalAuthServicesManager externalAuthServicesManager)
+    public RegisterUserCommandHandler(IUserRepository userRepository, IMediator mediator,
+        IExternalAuthServicesManager externalAuthServicesManager)
     {
-        _userManager = userManager;
         _mediator = mediator;
         _externalAuthServicesManager = externalAuthServicesManager;
+        _userRepository = userRepository;
     }
 
     public async Task<AuthenticationDataDto> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
@@ -59,7 +60,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
 
     private async Task CreateAccountAsync(AppUser user, string password)
     {
-        var result = await _userManager.CreateAsync(user, password);
+        var result = await _userRepository.CreateAsync(user, password);
 
         if (!result.Succeeded)
         {
@@ -70,7 +71,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
     private async Task CreateAccountWithExternalLoginAsync(AppUser user, ExternalAuthService externalAuthService,
         string accessToken)
     {
-        var result = await _userManager.CreateAsync(user);
+        var result = await _userRepository.CreateAsync(user);
         
         if (!result.Succeeded)
         {
@@ -87,7 +88,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
 
     private async Task AddDefaultRoleToUserAsync(AppUser user)
     {
-        var result = await _userManager.AddToRoleAsync(user, AppUserRole.User);
+        var result = await _userRepository.AddToRoleAsync(user, AppUserRole.User);
 
         if (!result.Succeeded)
         {

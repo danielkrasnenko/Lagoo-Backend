@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Lagoo.BusinessLogic.CommandsAndQueries.Events.Queries.GetEvent;
 
-public class GetEventQuery : IRequest<EventDto>
+public class GetEventQuery : IRequest<ReadEventDto>
 {
-    public long Id { get; set; }
+    public long EventId { get; set; }
 }

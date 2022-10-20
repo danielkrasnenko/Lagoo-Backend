@@ -1,11 +1,12 @@
 using System;
 using AutoMapper;
-using Lagoo.BusinessLogic.Common.ExternalServices.Database;
 using Lagoo.BusinessLogic.Common.Mappings;
 using Lagoo.BusinessLogic.Common.Services.ExternalAuthServicesManager;
 using Lagoo.BusinessLogic.Common.Services.HttpService;
-using Lagoo.BusinessLogic.Common.UserAccessor;
+using Lagoo.BusinessLogic.Common.Services.UserAccessor;
+using Lagoo.BusinessLogic.Core.Repositories;
 using Lagoo.Domain.Entities;
+using Lagoo.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -29,7 +30,13 @@ public class TestsBase
         .AddUserSecrets(UserSecretsId)
         .Build();
 
-    protected IAppDbContext Context = Substitute.For<IAppDbContext>();
+    protected readonly AppDbContext Context = Substitute.For<AppDbContext>();
+    
+    protected IUserRepository UserRepository = Substitute.For<IUserRepository>();
+
+    protected IRefreshTokenRepository RefreshTokenRepository = Substitute.For<IRefreshTokenRepository>();
+    
+    protected IEventRepository EventRepository = Substitute.For<IEventRepository>();
 
     protected IHttpService HttpService = Substitute.For<IHttpService>();
 

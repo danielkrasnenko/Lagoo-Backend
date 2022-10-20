@@ -25,7 +25,7 @@ public class DeleteEventCommandHandlerTests : TestsBase
     [Test]
     public void Handle_EventExists_ShouldDeleteEvent()
     {
-        var command = new DeleteEventCommand { Id = DefaultEventId };
+        var command = new DeleteEventCommand { EventId = DefaultEventId };
 
         var handler = CreateHandler();
         
@@ -35,7 +35,7 @@ public class DeleteEventCommandHandlerTests : TestsBase
     [Test]
     public void Handle_EventDoesNotExist_ShouldThrowNotFoundException()
     {
-        var command = new DeleteEventCommand { Id = 100 };
+        var command = new DeleteEventCommand { EventId = 100 };
 
         var handler = CreateHandler();
 

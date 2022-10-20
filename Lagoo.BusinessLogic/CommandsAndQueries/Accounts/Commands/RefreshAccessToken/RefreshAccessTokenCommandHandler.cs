@@ -1,12 +1,11 @@
 using System.Security.Claims;
 using Lagoo.BusinessLogic.Common.Exceptions.Api;
 using Lagoo.BusinessLogic.Common.Exceptions.Base;
-using Lagoo.BusinessLogic.Common.ExternalServices.Database;
 using Lagoo.BusinessLogic.Common.Services.JwtAuthService;
+using Lagoo.BusinessLogic.Core.Repositories;
 using Lagoo.BusinessLogic.Resources.CommandsAndQueries;
 using Lagoo.Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.RefreshAccessToken;
 
@@ -15,13 +14,13 @@ namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.RefreshAccess
 /// </summary>
 public class RefreshAccessTokenCommandHandler : IRequestHandler<RefreshAccessTokenCommand, RefreshAccessTokenResponseDto>
 {
-    private readonly IAppDbContext _context;
+    private readonly IRefreshTokenRepository _refreshTokenRepository;
 
     private readonly IJwtAuthService _jwtAuthService;
 
-    public RefreshAccessTokenCommandHandler(IAppDbContext context, IJwtAuthService jwtAuthService)
+    public RefreshAccessTokenCommandHandler(IRefreshTokenRepository refreshTokenRepository, IJwtAuthService jwtAuthService)
     {
-        _context = context;
+        _refreshTokenRepository = refreshTokenRepository;
         _jwtAuthService = jwtAuthService;
     }
 
@@ -29,9 +28,8 @@ public class RefreshAccessTokenCommandHandler : IRequestHandler<RefreshAccessTok
     {
         var userId = ExtractUserIdFromAccessToken(request.AccessToken);
 
-        var refreshToken = await _context.RefreshTokens
-            .Include(rt => rt.Owner)
-            .FirstOrDefaultAsync(rt => rt.Value == request.RefreshTokenValue && rt.OwnerId == userId, cancellationToken);
+        var refreshToken = await _refreshTokenRepository.GetWithOwner(
+            request.RefreshTokenValue, userId, cancellationToken);
 
         if (refreshToken is null || refreshToken.ExpiresAt < DateTime.UtcNow)
         {

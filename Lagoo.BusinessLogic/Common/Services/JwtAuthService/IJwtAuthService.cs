@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Common.Dtos;
 using Lagoo.Domain.Entities;
 
 namespace Lagoo.BusinessLogic.Common.Services.JwtAuthService;
@@ -12,7 +13,7 @@ public interface IJwtAuthService
 
     public RefreshToken GenerateRefreshToken(AppUser user, Guid deviceId);
 
-    public RefreshToken UpdateRefreshToken(RefreshToken refreshToken);
+    public UpdateRefreshTokenDto GenerateDataForRefreshTokenUpdate();
 
     public ClaimsPrincipal GetPrincipalFromToken(string token);
 }

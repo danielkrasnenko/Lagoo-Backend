@@ -1,24 +1,23 @@
 using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Common.Dtos;
 using Lagoo.BusinessLogic.Common.Exceptions.Api;
 using Lagoo.BusinessLogic.Common.Exceptions.Base;
-using Lagoo.BusinessLogic.Common.ExternalServices.Database;
 using Lagoo.BusinessLogic.Common.Services.JwtAuthService;
+using Lagoo.BusinessLogic.Core.Repositories;
 using Lagoo.Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.CreateAuthTokens;
 
 public class CreateAuthTokensCommandHandler : IRequestHandler<CreateAuthTokensCommand, AuthenticationDataDto>
 {
-    private readonly IAppDbContext _context;
+    private readonly IRefreshTokenRepository _refreshTokenRepository;
 
     private readonly IJwtAuthService _jwtAuthService;
 
-    public CreateAuthTokensCommandHandler(IAppDbContext context, IJwtAuthService jwtAuthService)
+    public CreateAuthTokensCommandHandler(IJwtAuthService jwtAuthService, IRefreshTokenRepository refreshTokenRepository)
     {
-        _context = context;
         _jwtAuthService = jwtAuthService;
+        _refreshTokenRepository = refreshTokenRepository;
     }
 
     public async Task<AuthenticationDataDto> Handle(CreateAuthTokensCommand request, CancellationToken cancellationToken)
@@ -26,8 +25,6 @@ public class CreateAuthTokensCommandHandler : IRequestHandler<CreateAuthTokensCo
         var (accessToken, accessTokenExpirationDate) = await TryCreateAccessTokenAsync(request.User);
         var refreshToken = await GetRefreshTokenAsync(request.User, request.DeviceId, cancellationToken);
 
-        await _context.SaveChangesAsync(CancellationToken.None);
-        
         return new AuthenticationDataDto
         {
             AccessToken = accessToken,
@@ -50,24 +47,28 @@ public class CreateAuthTokensCommandHandler : IRequestHandler<CreateAuthTokensCo
         }
     }
     
-    private async Task<RefreshToken> GetRefreshTokenAsync(AppUser user, Guid? deviceId, CancellationToken cancellationToken)
+    private async Task<ReadRefreshTokenDto> GetRefreshTokenAsync(AppUser user, Guid? deviceId, CancellationToken cancellationToken)
     {
         if (deviceId is null)
         {
-            return CreateRefreshToken(user);
+            return await CreateRefreshTokenAsync(user);
         }
 
-        var refreshToken = await _context.RefreshTokens
-            .FirstOrDefaultAsync(rt => rt.OwnerId == user.Id && rt.DeviceId == deviceId, cancellationToken);
+        var refreshTokenExists = await _refreshTokenRepository.ExistsAsync(user.Id, deviceId.Value, cancellationToken);
 
-        return refreshToken is null ? CreateRefreshToken(user) : _jwtAuthService.UpdateRefreshToken(refreshToken);
+        if (!refreshTokenExists)
+        {
+            return await CreateRefreshTokenAsync(user);
+        }
+        
+        var dto = _jwtAuthService.GenerateDataForRefreshTokenUpdate();
+        return (await _refreshTokenRepository.UpdateAsync(user.Id, deviceId.Value, dto, cancellationToken))!;
     }
 
-    private RefreshToken CreateRefreshToken(AppUser user)
+    private async Task<ReadRefreshTokenDto> CreateRefreshTokenAsync(AppUser user)
     {
         var newRefreshToken = _jwtAuthService.GenerateRefreshToken(user, Guid.NewGuid());
-        _context.RefreshTokens.Add(newRefreshToken);
         
-        return newRefreshToken;
+        return await _refreshTokenRepository.SaveAsync(newRefreshToken);
     }
 }
