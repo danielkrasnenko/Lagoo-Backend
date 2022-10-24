@@ -5,7 +5,6 @@ using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.CreateAuthTokens;
 using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.LoginUser;
 using Lagoo.BusinessLogic.Common.Exceptions.Api;
 using Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Accounts.Common;
-using Lagoo.Domain.Entities;
 using NSubstitute;
 using NUnit.Framework;
 
@@ -54,8 +53,7 @@ public class LoginUserCommandHandlerTests : AccountTestsBase
     [Test]
     public void Handle_UserManagerCannotUserFindByEmail_ShouldThrowBadRequestException()
     {
-        AppUser? user = null;
-        UserManager.FindByEmailAsync(default).ReturnsForAnyArgs(user);
+        UserRepository.FindByEmailAsync("").ReturnsForAnyArgs(null as object);
 
         var command = GenerateCommandWithValidDefaultData();
 
@@ -67,7 +65,7 @@ public class LoginUserCommandHandlerTests : AccountTestsBase
     [Test]
     public void Handle_CommandWithWrongPassword_ShouldThrowBadRequestException()
     {
-        UserManager.CheckPasswordAsync(DefaultUser, default).ReturnsForAnyArgs(false);
+        UserRepository.CheckPasswordAsync(DefaultUser, "").ReturnsForAnyArgs(false);
         
         var command = GenerateCommandWithValidDefaultData();
         
@@ -76,12 +74,12 @@ public class LoginUserCommandHandlerTests : AccountTestsBase
         Assert.ThrowsAsync<BadRequestException>(() => handler.Handle(command, CancellationToken.None));
     }
     
-    private LoginUserCommandHandler CreateHandler() => new(UserManager, Mediator);
+    private LoginUserCommandHandler CreateHandler() => new(UserRepository, Mediator);
     
     private void SetServicesDefaultBehaviour()
     {
-        UserManager.FindByEmailAsync(default).ReturnsForAnyArgs(DefaultUser);
-        UserManager.CheckPasswordAsync(DefaultUser, default).ReturnsForAnyArgs(true);
+        UserRepository.FindByEmailAsync(default).ReturnsForAnyArgs(DefaultUser);
+        UserRepository.CheckPasswordAsync(DefaultUser, default).ReturnsForAnyArgs(true);
         Mediator.Send(new CreateAuthTokensCommand(DefaultUser)).ReturnsForAnyArgs(GenerateDefaultAuthDataDto(DefaultDeviceId));
     }
     

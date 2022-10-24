@@ -3,11 +3,10 @@ using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.RefreshAccessToken;
+using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Common.Dtos;
 using Lagoo.BusinessLogic.Common.Exceptions.Api;
 using Lagoo.BusinessLogic.Common.Exceptions.Base;
 using Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Accounts.Common;
-using Lagoo.BusinessLogic.UnitTests.Common.Helpers;
-using Lagoo.Domain.Entities;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using NUnit.Framework;
@@ -23,13 +22,13 @@ public class RefreshAccessTokenCommandHandlerTests : AccountTestsBase
     [SetUp]
     public void SetUp()
     {
-        Context.RefreshTokens = TestHelpers.MockDbSet(Array.Empty<RefreshToken>());
+        RefreshTokenRepository.GetAsync(default, default, default).ReturnsForAnyArgs(null as object);
     }
     
     [Test]
     public async Task Handle_CommandContainsValidDataAndRefreshTokenExists_ShouldReturnAccessTokenData()
     {
-        Context.RefreshTokens = TestHelpers.MockDbSet(DefaultRefreshToken);
+        RefreshTokenRepository.GetAsync(default, default, default).ReturnsForAnyArgs(DefaultReadRefreshTokenDto);
 
         var command = GenerateCommandWithValidDefaultData();
 
@@ -90,7 +89,7 @@ public class RefreshAccessTokenCommandHandlerTests : AccountTestsBase
     [Test]
     public void Handle_RefreshTokenWithSpecifiedValueDoesNotExists_ShouldThrowBadRequestException()
     {
-        Context.RefreshTokens = TestHelpers.MockDbSet(DefaultRefreshToken);
+        RefreshTokenRepository.GetAsync(default, default, default).ReturnsForAnyArgs(DefaultReadRefreshTokenDto);
 
         var command = GenerateCommandWithValidDefaultData(refreshTokenValue: "some_refresh_token_value");
         
@@ -102,9 +101,14 @@ public class RefreshAccessTokenCommandHandlerTests : AccountTestsBase
     [Test]
     public void Handle_RefreshTokenExpired_ShouldThrowBadRequestException()
     {
-        var defaultExpiredRefreshToken = GenerateDefaultRefreshToken(DefaultDeviceId, DateTime.MinValue, null);
-
-        Context.RefreshTokens = TestHelpers.MockDbSet(defaultExpiredRefreshToken);
+        RefreshTokenRepository.GetAsync(default, default, default).ReturnsForAnyArgs(new ReadRefreshTokenDto
+        {
+            Id = DefaultRefreshTokenId,
+            Value = DefaultRefreshTokenValue,
+            DeviceId = DefaultDeviceId,
+            ExpiresAt = DateTime.MinValue,
+            OwnerId = DefaultUserId
+        });
 
         var command = GenerateCommandWithValidDefaultData(refreshTokenValue: DefaultRefreshTokenValue);
 
@@ -117,7 +121,7 @@ public class RefreshAccessTokenCommandHandlerTests : AccountTestsBase
     public void Handle_JwtAuthServiceCannotGenerateAccessToken_ShouldThrowBadRequestException()
     {
         JwtAuthService.GenerateAccessTokenAsync(DefaultUser).ThrowsForAnyArgs<BaseArgumentException>();
-        Context.RefreshTokens = TestHelpers.MockDbSet(DefaultRefreshToken);
+        RefreshTokenRepository.GetAsync(default, default, default).ReturnsForAnyArgs(DefaultReadRefreshTokenDto);
 
         var command = GenerateCommandWithValidDefaultData();
 
@@ -126,7 +130,7 @@ public class RefreshAccessTokenCommandHandlerTests : AccountTestsBase
         Assert.ThrowsAsync<BadRequestException>(() => handler.Handle(command, CancellationToken.None));
     }
 
-    private RefreshAccessTokenCommandHandler CreateHandler() => new(Context, JwtAuthService);
+    private RefreshAccessTokenCommandHandler CreateHandler() => new(RefreshTokenRepository, JwtAuthService);
     
     private RefreshAccessTokenCommand GenerateCommandWithValidDefaultData(string accessToken = DefaultAccessToken,
         string refreshTokenValue = DefaultRefreshTokenValue) => new()

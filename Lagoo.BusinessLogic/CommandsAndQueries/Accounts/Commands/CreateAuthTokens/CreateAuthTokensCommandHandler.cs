@@ -14,10 +14,10 @@ public class CreateAuthTokensCommandHandler : IRequestHandler<CreateAuthTokensCo
 
     private readonly IJwtAuthService _jwtAuthService;
 
-    public CreateAuthTokensCommandHandler(IJwtAuthService jwtAuthService, IRefreshTokenRepository refreshTokenRepository)
+    public CreateAuthTokensCommandHandler(IRefreshTokenRepository refreshTokenRepository, IJwtAuthService jwtAuthService)
     {
-        _jwtAuthService = jwtAuthService;
         _refreshTokenRepository = refreshTokenRepository;
+        _jwtAuthService = jwtAuthService;
     }
 
     public async Task<AuthenticationDataDto> Handle(CreateAuthTokensCommand request, CancellationToken cancellationToken)

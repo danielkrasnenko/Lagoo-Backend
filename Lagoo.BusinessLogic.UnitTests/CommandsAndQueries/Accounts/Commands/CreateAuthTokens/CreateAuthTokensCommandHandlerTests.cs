@@ -2,10 +2,10 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.CreateAuthTokens;
+using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Common.Dtos;
 using Lagoo.BusinessLogic.Common.Exceptions.Api;
 using Lagoo.BusinessLogic.Common.Exceptions.Base;
 using Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Accounts.Common;
-using Lagoo.BusinessLogic.UnitTests.Common.Helpers;
 using Lagoo.Domain.Entities;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
@@ -22,13 +22,16 @@ public class CreateAuthTokensCommandHandlerTests : AccountTestsBase
     [SetUp]
     public void SetUp()
     {
-        Context.RefreshTokens = TestHelpers.MockDbSet(Array.Empty<RefreshToken>());
+        RefreshTokenRepository.GetAsync(default, default, default).ReturnsForAnyArgs(null as object);
     }
 
     [Test]
     public async Task Handle_CommandContainsDefaultUserAndAndDeviceId_ShouldReturnAuthTokenDataForExistingDevice()
     {
-        Context.RefreshTokens = TestHelpers.MockDbSet(DefaultRefreshToken);
+        RefreshTokenRepository.ExistsAsync(DefaultUserId, DefaultDeviceId, CancellationToken.None).ReturnsForAnyArgs(true);
+        RefreshTokenRepository
+            .UpdateAsync(DefaultUserId, DefaultDeviceId, new UpdateRefreshTokenDto(), CancellationToken.None)
+            .ReturnsForAnyArgs(DefaultReadRefreshTokenDto);
 
         var command = GenerateCommandWithValidDefaultData(DefaultDeviceId);
 
@@ -39,13 +42,14 @@ public class CreateAuthTokensCommandHandlerTests : AccountTestsBase
         Assert.AreEqual(DefaultAccessToken, result.AccessToken);
         Assert.AreEqual(DefaultAccessTokenExpirationDate, result.AccessTokenExpiresAt);
         Assert.AreEqual(DefaultRefreshTokenValue, result.RefreshTokenValue);
-        Assert.AreEqual(UpdatedDefaultRefreshToken.ExpiresAt, result.RefreshTokenExpiresAt);
+        Assert.AreEqual(DefaultUpdateRefreshTokenDto.ExpiresAt, result.RefreshTokenExpiresAt);
         Assert.AreEqual(DefaultDeviceId, result.DeviceId);
     }
 
     [Test]
     public async Task Handle_CommandContainsOnlyDefaultUser_ShouldReturnAuthTokenDataForNewDevice()
     {
+        RefreshTokenRepository.SaveAsync(new RefreshToken()).ReturnsForAnyArgs(DefaultReadRefreshTokenDto);
         JwtAuthService.GenerateRefreshToken(DefaultUser, default).ReturnsForAnyArgs(DefaultNewRefreshToken);
         
         var command = GenerateCommandWithValidDefaultData();
@@ -61,16 +65,9 @@ public class CreateAuthTokensCommandHandlerTests : AccountTestsBase
     [Test]
     public async Task Handle_CommandContainsNewUserAndDeviceId_ShouldReturnAuthTokenDataForNewUserAndExistingDevice()
     {
+        RefreshTokenRepository.ExistsAsync(DefaultUserId, DefaultDeviceId, CancellationToken.None).Returns(true);
+        RefreshTokenRepository.SaveAsync(new RefreshToken()).ReturnsForAnyArgs(DefaultReadRefreshTokenDto);
         JwtAuthService.GenerateRefreshToken(DefaultUser, default).ReturnsForAnyArgs(DefaultRefreshToken);
-        
-        var user = new AppUser { Id = Guid.NewGuid() };
-        
-        Context.RefreshTokens.Add(new RefreshToken
-        {
-            DeviceId = DefaultDeviceId,
-            Owner = user,
-            OwnerId = user.Id
-        });
 
         var command = GenerateCommandWithValidDefaultData(DefaultDeviceId);
 
@@ -86,7 +83,7 @@ public class CreateAuthTokensCommandHandlerTests : AccountTestsBase
     public void Handle_JwtAuthServiceCannotGenerateAccessToken_ShouldThrowBadRequestException()
     {
         JwtAuthService.GenerateAccessTokenAsync(DefaultUser).ThrowsForAnyArgs<BaseArgumentException>();
-        Context.RefreshTokens = TestHelpers.MockDbSet(DefaultRefreshToken);
+        RefreshTokenRepository.ExistsAsync(default, default, default).ReturnsForAnyArgs(false);
 
         var command = GenerateCommandWithValidDefaultData();
 
@@ -95,7 +92,7 @@ public class CreateAuthTokensCommandHandlerTests : AccountTestsBase
         Assert.ThrowsAsync<BadRequestException>(() => handler.Handle(command, CancellationToken.None));
     }
 
-    private CreateAuthTokensCommandHandler CreateHandler() => new(Context, JwtAuthService);
+    private CreateAuthTokensCommandHandler CreateHandler() => new(RefreshTokenRepository, JwtAuthService);
 
     private CreateAuthTokensCommand GenerateCommandWithValidDefaultData(Guid? deviceId = null) => new(DefaultUser)
     {

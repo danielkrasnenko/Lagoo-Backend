@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -6,9 +7,8 @@ using Lagoo.BusinessLogic.CommandsAndQueries.Events.Queries.GetEvents;
 using Lagoo.BusinessLogic.Common.Enums;
 using Lagoo.BusinessLogic.Common.Exceptions.Api;
 using Lagoo.BusinessLogic.UnitTests.Common.Base;
-using Lagoo.BusinessLogic.UnitTests.Common.Helpers;
-using Lagoo.Domain.Entities;
 using Lagoo.Domain.Enums;
+using NSubstitute;
 using NUnit.Framework;
 
 namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Events.Queries.GetEvents;
@@ -22,10 +22,10 @@ public class GetEventsQueryHandlerTests : TestsBase
     [Test]
     public async Task Handle_ThereAreNoEventsInDatabase_ShouldReturnEmptyList()
     {
-        Context.Events = TestHelpers.MockDbSet(Array.Empty<Event>());
-
         var query = new GetEventsQuery();
 
+        EventRepository.GetAllAsync(query, CancellationToken.None).ReturnsForAnyArgs(new GetEventsResponseDto());
+        
         var handler = CreateHandler();
 
         var result = await handler.Handle(query, CancellationToken.None);
@@ -37,9 +37,13 @@ public class GetEventsQueryHandlerTests : TestsBase
     [Test]
     public async Task Handle_ThereAreEventsInDatabase_ShouldReturnListWithEvents()
     {
-        Context.Events = TestHelpers.MockDbSet(CreateBasicEvent(1), CreateBasicEvent(2));
-
         var query = new GetEventsQuery();
+
+        EventRepository.GetAllAsync(query, CancellationToken.None).ReturnsForAnyArgs(new GetEventsResponseDto
+        {
+            Events = new List<CollectionEventDto> { CreateBasicEvent(1), CreateBasicEvent(2) },
+            Count = 2
+        });
 
         var handler = CreateHandler();
 
@@ -59,16 +63,22 @@ public class GetEventsQueryHandlerTests : TestsBase
     [TestCase(EventType.VirtualEvent)]
     public async Task Handle_QueryContainsFilterByType_ShouldReturnOnlyEventsWithSpecifiedType(EventType type)
     {
-        Context.Events = TestHelpers.MockDbSet(
-            CreateBasicEvent(1, type: EventType.Ceremony), CreateBasicEvent(2, type: EventType.Convention),
-            CreateBasicEvent(3, type: EventType.Festival), CreateBasicEvent(3, type: EventType.Happening),
-            CreateBasicEvent(3, type: EventType.Party), CreateBasicEvent(3, type: EventType.MediaEvent),
-            CreateBasicEvent(3, type: EventType.SportingEvent), CreateBasicEvent(3, type: EventType.VirtualEvent));
-
         var query = new GetEventsQuery
         {
             Type = type
         };
+
+        EventRepository.GetAllAsync(query, CancellationToken.None).ReturnsForAnyArgs(new GetEventsResponseDto
+        {
+            Events = new List<CollectionEventDto>
+            {
+                CreateBasicEvent(1, type: EventType.Ceremony), CreateBasicEvent(2, type: EventType.Convention),
+                CreateBasicEvent(3, type: EventType.Festival), CreateBasicEvent(3, type: EventType.Happening),
+                CreateBasicEvent(3, type: EventType.Party), CreateBasicEvent(3, type: EventType.MediaEvent),
+                CreateBasicEvent(3, type: EventType.SportingEvent), CreateBasicEvent(3, type: EventType.VirtualEvent)
+            },
+            Count = 8
+        });
 
         var handler = CreateHandler();
 
@@ -80,12 +90,16 @@ public class GetEventsQueryHandlerTests : TestsBase
     [Test]
     public async Task Handle_QueryContainsInvalidEventType_ShouldReturnNoneOfEvents()
     {
-        Context.Events = TestHelpers.MockDbSet(CreateBasicEvent(1), CreateBasicEvent(2), CreateBasicEvent(3));
-
         var query = new GetEventsQuery
         {
             Type = (EventType) 100
         };
+
+        EventRepository.GetAllAsync(query, CancellationToken.None).ReturnsForAnyArgs(new GetEventsResponseDto
+        {
+            Events = new List<CollectionEventDto>(),
+            Count = 0
+        });
 
         var handler = CreateHandler();
 
@@ -99,12 +113,17 @@ public class GetEventsQueryHandlerTests : TestsBase
     [TestCase(false)]
     public async Task Handle_QueryContainsFilterByPrivate_ShouldReturnOnlyEventsWithSpecifiedPrivateProperty(bool isPrivate)
     {
-        Context.Events = TestHelpers.MockDbSet(CreateBasicEvent(1, isPrivate: true), CreateBasicEvent(2, isPrivate: false));
-
         var query = new GetEventsQuery
         {
             IsPrivate = isPrivate
         };
+
+        EventRepository.GetAllAsync(query, CancellationToken.None).ReturnsForAnyArgs(new GetEventsResponseDto
+        {
+            Events = new List<CollectionEventDto>
+                { CreateBasicEvent(1, isPrivate: true)},
+            Count = 1
+        });
 
         var handler = CreateHandler();
 
@@ -119,17 +138,25 @@ public class GetEventsQueryHandlerTests : TestsBase
     [TestCase(GetEventsSortBy.CreatedAt)]
     public async Task Handle_QueryContainsSortByParameterAndOtherNeededOnes_ShouldReturnEventsSortedBySpecifiedProperty(GetEventsSortBy sortBy)
     {
-        Context.Events = TestHelpers.MockDbSet(
-            CreateBasicEvent(1, name: "aaa", duration: TimeSpan.FromHours(1), beginsAt: DateTime.UtcNow, createdAt: DateTime.UtcNow),
-            CreateBasicEvent(2, name: "bbb", duration: TimeSpan.FromHours(2), beginsAt: DateTime.UtcNow.AddDays(1), createdAt: DateTime.UtcNow.AddDays(1)),
-            CreateBasicEvent(3, name: "ccc", duration: TimeSpan.FromHours(3), beginsAt: DateTime.UtcNow.AddDays(2), createdAt: DateTime.UtcNow.AddDays(2))
-            );
-
         var query = new GetEventsQuery
         {
             SortBy = sortBy,
             SortingOrder = SortingOrder.Ascending
         };
+
+        EventRepository.GetAllAsync(query, CancellationToken.None).ReturnsForAnyArgs(new GetEventsResponseDto
+        {
+            Events = new List<CollectionEventDto>
+            {
+                CreateBasicEvent(1, name: "aaa", duration: TimeSpan.FromHours(1), beginsAt: DateTime.UtcNow,
+                    createdAt: DateTime.UtcNow),
+                CreateBasicEvent(2, name: "bbb", duration: TimeSpan.FromHours(2), beginsAt: DateTime.UtcNow.AddDays(1),
+                    createdAt: DateTime.UtcNow.AddDays(1)),
+                CreateBasicEvent(3, name: "ccc", duration: TimeSpan.FromHours(3), beginsAt: DateTime.UtcNow.AddDays(2),
+                    createdAt: DateTime.UtcNow.AddDays(2))
+            },
+            Count = 3
+        });
 
         var handler = CreateHandler();
 
@@ -154,14 +181,18 @@ public class GetEventsQueryHandlerTests : TestsBase
     [Test]
     public void Handle_QueryWithInvalidSortByParameter_ShouldThrowBadRequestException()
     {
-        Context.Events = TestHelpers.MockDbSet(Array.Empty<Event>());
-
         var query = new GetEventsQuery
         {
             SortBy = (GetEventsSortBy) 100,
             SortingOrder = SortingOrder.Ascending
         };
 
+        EventRepository.GetAllAsync(query, CancellationToken.None).ReturnsForAnyArgs(new GetEventsResponseDto
+        {
+            Events = new List<CollectionEventDto>(),
+            Count = 0
+        });
+        
         var handler = CreateHandler();
 
         Assert.ThrowsAsync<BadRequestException>(() => handler.Handle(query, CancellationToken.None));
@@ -171,20 +202,25 @@ public class GetEventsQueryHandlerTests : TestsBase
     [TestCase(SortingOrder.Descending)]
     public async Task Handle_QueryContainsSortingOrderAndOtherNeededParameters_ShouldReturnEventsSortedInSpecifiedOrder(SortingOrder sortingOrder)
     {
-        Context.Events = TestHelpers.MockDbSet(
-            CreateBasicEvent(1, name: "aaa", duration: TimeSpan.FromHours(1), beginsAt: DateTime.UtcNow,
-                createdAt: DateTime.UtcNow),
-            CreateBasicEvent(2, name: "bbb", duration: TimeSpan.FromHours(2), beginsAt: DateTime.UtcNow.AddDays(1),
-                createdAt: DateTime.UtcNow.AddDays(1)),
-            CreateBasicEvent(3, name: "ccc", duration: TimeSpan.FromHours(3), beginsAt: DateTime.UtcNow.AddDays(2),
-                createdAt: DateTime.UtcNow.AddDays(2))
-        );
-
         var query = new GetEventsQuery
         {
             SortingOrder = sortingOrder,
             SortBy = GetEventsSortBy.BeginsAt
         };
+        
+        EventRepository.GetAllAsync(query, CancellationToken.None).ReturnsForAnyArgs(new GetEventsResponseDto
+        {
+            Events = new List<CollectionEventDto>
+            {
+                CreateBasicEvent(1, name: "aaa", duration: TimeSpan.FromHours(1), beginsAt: DateTime.UtcNow,
+                    createdAt: DateTime.UtcNow),
+                CreateBasicEvent(2, name: "bbb", duration: TimeSpan.FromHours(2), beginsAt: DateTime.UtcNow.AddDays(1),
+                    createdAt: DateTime.UtcNow.AddDays(1)),
+                CreateBasicEvent(3, name: "ccc", duration: TimeSpan.FromHours(3), beginsAt: DateTime.UtcNow.AddDays(2),
+                    createdAt: DateTime.UtcNow.AddDays(2))
+            },
+            Count = 3
+        });
 
         var handler = CreateHandler();
 
@@ -209,13 +245,17 @@ public class GetEventsQueryHandlerTests : TestsBase
     [Test]
     public void Handle_QueryWithInvalidSortingOrder_ShouldThrowBadRequestException()
     {
-        Context.Events = TestHelpers.MockDbSet(Array.Empty<Event>());
-        
         var query = new GetEventsQuery
         {
             SortingOrder = (SortingOrder) 100,
             SortBy = GetEventsSortBy.Name
         };
+        
+        EventRepository.GetAllAsync(query, CancellationToken.None).ReturnsForAnyArgs(new GetEventsResponseDto
+        {
+            Events = new List<CollectionEventDto>(),
+            Count = 0
+        });
 
         var handler = CreateHandler();
 
@@ -225,22 +265,31 @@ public class GetEventsQueryHandlerTests : TestsBase
     [Test]
     public async Task Handle_QueryWithOneOmittedParameterForSorting_ShouldNotSortEvents()
     {
-        Context.Events = TestHelpers.MockDbSet(CreateBasicEvent(1, beginsAt: DateTime.UtcNow.AddDays(3)),
+        var events = new List<CollectionEventDto>
+        {
+            CreateBasicEvent(1, beginsAt: DateTime.UtcNow.AddDays(3)),
             CreateBasicEvent(2, beginsAt: DateTime.UtcNow.AddDays(-10)),
-            CreateBasicEvent(3, beginsAt: DateTime.UtcNow));
+            CreateBasicEvent(3, beginsAt: DateTime.UtcNow)
+        };
 
         var query = new GetEventsQuery
         {
             SortBy = GetEventsSortBy.BeginsAt
         };
+        
+        EventRepository.GetAllAsync(query, CancellationToken.None).ReturnsForAnyArgs(new GetEventsResponseDto
+        {
+            Events = events,
+            Count = 3
+        });
 
         var handler = CreateHandler();
 
         var result = await handler.Handle(query, CancellationToken.None);
         
-        Assert.AreEqual(Context.Events.First().Id, result.Events.First().Id);
-        Assert.AreEqual(Context.Events.ElementAt(1).Id, result.Events.ElementAt(1).Id);
-        Assert.AreEqual(Context.Events.Last().Id, result.Events.Last().Id);
+        Assert.AreEqual(events.First().Id, result.Events.First().Id);
+        Assert.AreEqual(events.ElementAt(1).Id, result.Events.ElementAt(1).Id);
+        Assert.AreEqual(events.Last().Id, result.Events.Last().Id);
     }
 
     [Test]
@@ -256,21 +305,30 @@ public class GetEventsQueryHandlerTests : TestsBase
         const int page = 2;
         const int pageSize = 3;
 
-        Context.Events = TestHelpers.MockDbSet(CreateBasicEvent(firstEventId), CreateBasicEvent(secondEventId),
+        var events = new List<CollectionEventDto>
+        {
+            CreateBasicEvent(firstEventId), CreateBasicEvent(secondEventId),
             CreateBasicEvent(thirdEventId), CreateBasicEvent(fourthEventId),
-            CreateBasicEvent(fifthEventId), CreateBasicEvent(sixthEventId));
+            CreateBasicEvent(fifthEventId), CreateBasicEvent(sixthEventId)
+        };
 
         var query = new GetEventsQuery
         {
             Page = page,
             PageSize = pageSize
         };
+        
+        EventRepository.GetAllAsync(query, CancellationToken.None).ReturnsForAnyArgs(new GetEventsResponseDto
+        {
+            Events = events,
+            Count = 6
+        });
 
         var handler = CreateHandler();
 
         var result = await handler.Handle(query, CancellationToken.None);
         
-        Assert.AreEqual(Context.Events.Count(), result.Count);
+        Assert.AreEqual(events.Count, result.Count);
         Assert.AreEqual(pageSize, result.Events.Count);
         Assert.IsTrue(result.Events.All(e => e.Id is fourthEventId or fifthEventId or sixthEventId));
     }
@@ -287,9 +345,12 @@ public class GetEventsQueryHandlerTests : TestsBase
 
         const int pageSize = 3;
 
-        Context.Events = TestHelpers.MockDbSet(CreateBasicEvent(firstEventId), CreateBasicEvent(secondEventId),
+        var events = new List<CollectionEventDto>
+        {
+            CreateBasicEvent(firstEventId), CreateBasicEvent(secondEventId),
             CreateBasicEvent(thirdEventId), CreateBasicEvent(fourthEventId),
-            CreateBasicEvent(fifthEventId), CreateBasicEvent(sixthEventId));
+            CreateBasicEvent(fifthEventId), CreateBasicEvent(sixthEventId)
+        };
 
         var query = new GetEventsQuery
         {
@@ -297,11 +358,17 @@ public class GetEventsQueryHandlerTests : TestsBase
             PageSize = pageSize
         };
 
+        EventRepository.GetAllAsync(query, CancellationToken.None).ReturnsForAnyArgs(new GetEventsResponseDto
+        {
+            Events = events,
+            Count = 6
+        });
+        
         var handler = CreateHandler();
 
         var result = await handler.Handle(query, CancellationToken.None);
         
-        Assert.AreEqual(Context.Events.Count(), result.Count);
+        Assert.AreEqual(events.Count, result.Count);
         Assert.AreEqual(pageSize, result.Events.Count);
         Assert.IsTrue(result.Events.All(e => e.Id > thirdEventId));
     }
@@ -318,9 +385,12 @@ public class GetEventsQueryHandlerTests : TestsBase
 
         const int pageSize = 3;
 
-        Context.Events = TestHelpers.MockDbSet(CreateBasicEvent(firstEventId, beginsAt: DateTime.UtcNow), CreateBasicEvent(secondEventId, beginsAt: DateTime.UtcNow.AddDays(1)),
+        var events = new List<CollectionEventDto>
+        {
+            CreateBasicEvent(firstEventId, beginsAt: DateTime.UtcNow), CreateBasicEvent(secondEventId, beginsAt: DateTime.UtcNow.AddDays(1)),
             CreateBasicEvent(thirdEventId, beginsAt: DateTime.UtcNow.AddDays(2)), CreateBasicEvent(fourthEventId, beginsAt: DateTime.UtcNow.AddDays(3)),
-            CreateBasicEvent(fifthEventId, beginsAt: DateTime.UtcNow.AddDays(4)), CreateBasicEvent(sixthEventId, beginsAt: DateTime.UtcNow.AddDays(5)));
+            CreateBasicEvent(fifthEventId, beginsAt: DateTime.UtcNow.AddDays(4)), CreateBasicEvent(sixthEventId, beginsAt: DateTime.UtcNow.AddDays(5))
+        };
 
         var query = new GetEventsQuery
         {
@@ -329,12 +399,18 @@ public class GetEventsQueryHandlerTests : TestsBase
             SortingOrder = SortingOrder.Descending,
             SortBy = GetEventsSortBy.BeginsAt
         };
+        
+        EventRepository.GetAllAsync(query, CancellationToken.None).ReturnsForAnyArgs(new GetEventsResponseDto
+        {
+            Events = events,
+            Count = 6
+        });
 
         var handler = CreateHandler();
 
         var result = await handler.Handle(query, CancellationToken.None);
         
-        Assert.AreEqual(Context.Events.Count(), result.Count);
+        Assert.AreEqual(events.Count, result.Count);
         Assert.AreEqual(pageSize, result.Events.Count);
         Assert.IsTrue(result.Events.First().Id == sixthEventId);
         Assert.IsTrue(result.Events.ElementAt(1).Id == fifthEventId);
@@ -344,70 +420,96 @@ public class GetEventsQueryHandlerTests : TestsBase
     [Test]
     public async Task Handle_QueryWithSpecifiedPageParameterAndOmittedPageSizeParameterForPagination_ShouldReturnAllEvents()
     {
-        Context.Events = TestHelpers.MockDbSet(CreateBasicEvent(1), CreateBasicEvent(2), CreateBasicEvent(3),
-            CreateBasicEvent(4));
+        var events = new List<CollectionEventDto>
+        {
+            CreateBasicEvent(1), CreateBasicEvent(2),
+            CreateBasicEvent(3), CreateBasicEvent(4)
+        };
 
         var query = new GetEventsQuery
         {
             Page = 100
         };
+        
+        EventRepository.GetAllAsync(query, CancellationToken.None).ReturnsForAnyArgs(new GetEventsResponseDto
+        {
+            Events = events,
+            Count = 4
+        });
 
         var handler = CreateHandler();
 
         var result = await handler.Handle(query, CancellationToken.None);
         
-        Assert.AreEqual(Context.Events.Count(), result.Count);
-        Assert.AreEqual(Context.Events.Count(), result.Events.Count);
+        Assert.AreEqual(events.Count, result.Count);
+        Assert.AreEqual(events.Count, result.Events.Count);
     }
     
     [Test]
     public async Task Handle_QueryWithSpecifiedLastFetchedEventIdParameterAndOmittedPageSizeParameterForPagination_ShouldReturnAllEvents()
     {
-        Context.Events = TestHelpers.MockDbSet(CreateBasicEvent(1), CreateBasicEvent(2), CreateBasicEvent(3),
-            CreateBasicEvent(4));
+        var events = new List<CollectionEventDto>
+        {
+            CreateBasicEvent(1), CreateBasicEvent(2),
+            CreateBasicEvent(3), CreateBasicEvent(4)
+        };
 
         var query = new GetEventsQuery
         {
             LastFetchedEventId = 55
         };
+        
+        EventRepository.GetAllAsync(query, CancellationToken.None).ReturnsForAnyArgs(new GetEventsResponseDto
+        {
+            Events = events,
+            Count = 4
+        });
 
         var handler = CreateHandler();
 
         var result = await handler.Handle(query, CancellationToken.None);
         
-        Assert.AreEqual(Context.Events.Count(), result.Count);
-        Assert.AreEqual(Context.Events.Count(), result.Events.Count);
+        Assert.AreEqual(events.Count, result.Count);
+        Assert.AreEqual(events.Count, result.Events.Count);
     }
     
     [Test]
     public async Task Handle_QueryWithOmittedPageAndLastFetchedEventIdParametersForPagination_ShouldReturnAllEvents()
     {
-        Context.Events = TestHelpers.MockDbSet(CreateBasicEvent(1), CreateBasicEvent(2), CreateBasicEvent(3),
-            CreateBasicEvent(4));
+        var events = new List<CollectionEventDto>
+        {
+            CreateBasicEvent(1), CreateBasicEvent(2),
+            CreateBasicEvent(3), CreateBasicEvent(4)
+        };
 
         var query = new GetEventsQuery
         {
             PageSize = 3
         };
+        
+        EventRepository.GetAllAsync(query, CancellationToken.None).ReturnsForAnyArgs(new GetEventsResponseDto
+        {
+            Events = events,
+            Count = 4
+        });
 
         var handler = CreateHandler();
 
         var result = await handler.Handle(query, CancellationToken.None);
         
-        Assert.AreEqual(Context.Events.Count(), result.Count);
-        Assert.AreEqual(Context.Events.Count(), result.Events.Count);
+        Assert.AreEqual(events.Count, result.Count);
+        Assert.AreEqual(events.Count, result.Events.Count);
     }
 
-    private GetEventsQueryHandler CreateHandler() => new(Context, Mapper);
+    private GetEventsQueryHandler CreateHandler() => new(EventRepository);
 
-    private Event CreateBasicEvent(long id, EventType type = EventType.Ceremony, bool isPrivate = false,
+    private CollectionEventDto CreateBasicEvent(long id, EventType type = EventType.Ceremony, bool isPrivate = false,
         string name = "Name", TimeSpan duration = new(), DateTime beginsAt = new(), DateTime createdAt = new()) => new()
     {
         Id = id,
         Name = name,
         Type = type,
         Address = "Long street 60",
-        Comment = "Comment",
         Duration = duration,
         IsPrivate = isPrivate,
         BeginsAt = beginsAt,

@@ -40,7 +40,21 @@ public class AccountTestsBase : TestsBase
 
     protected static readonly RefreshToken DefaultRefreshToken = GenerateDefaultRefreshToken(DefaultDeviceId, DefaultRefreshTokenExpirationDate, null);
 
-    protected static readonly RefreshToken UpdatedDefaultRefreshToken = GenerateDefaultRefreshToken(DefaultDeviceId, DateTime.MaxValue, DateTime.UtcNow);
+    protected static readonly ReadRefreshTokenDto DefaultReadRefreshTokenDto = new ReadRefreshTokenDto
+    {
+        Id = DefaultRefreshTokenId,
+        Value = DefaultRefreshTokenValue,
+        DeviceId = DefaultDeviceId,
+        ExpiresAt = DefaultRefreshTokenExpirationDate,
+        OwnerId = DefaultUserId
+    };
+
+    protected static readonly UpdateRefreshTokenDto DefaultUpdateRefreshTokenDto = new()
+    {
+        Value = DefaultRefreshTokenValue,
+        ExpiresAt = DateTime.MaxValue,
+        LastModifiedAt = DateTime.UtcNow
+    };
 
     protected static readonly RefreshToken DefaultNewRefreshToken = GenerateDefaultRefreshToken(NewDeviceId, DefaultRefreshTokenExpirationDate, null);
 
@@ -93,7 +107,7 @@ public class AccountTestsBase : TestsBase
 
         jwtAuthService.GenerateRefreshToken(new AppUser(), default).ReturnsForAnyArgs(DefaultRefreshToken);
 
-        jwtAuthService.GenerateDataForRefreshTokenUpdate(new RefreshToken()).ReturnsForAnyArgs(UpdatedDefaultRefreshToken);
+        jwtAuthService.GenerateDataForRefreshTokenUpdate().ReturnsForAnyArgs(DefaultUpdateRefreshTokenDto);
 
         jwtAuthService.GetPrincipalFromToken("").ReturnsForAnyArgs(DefaultClaimsPrincipal);
 

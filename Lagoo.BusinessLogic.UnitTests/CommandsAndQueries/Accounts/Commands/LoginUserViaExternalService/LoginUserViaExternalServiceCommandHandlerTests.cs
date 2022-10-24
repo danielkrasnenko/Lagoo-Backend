@@ -5,7 +5,6 @@ using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.CreateAuthTokens;
 using Lagoo.BusinessLogic.CommandsAndQueries.Accounts.Commands.LoginUserViaExternalService;
 using Lagoo.BusinessLogic.Common.Exceptions.Api;
 using Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Accounts.Common;
-using Lagoo.Domain.Entities;
 using Lagoo.Domain.Enums;
 using NSubstitute;
 using NUnit.Framework;
@@ -55,8 +54,7 @@ public class LoginUserViaExternalServiceCommandHandlerTests : AccountTestsBase
     [Test]
     public void Handle_UserManagerCannotFindUserByLogin_ShouldThrowBadRequestException()
     {
-        AppUser? user = null;
-        UserManager.FindByLoginAsync("", default).ReturnsForAnyArgs(user);
+        UserRepository.FindByLoginAsync("", default).ReturnsForAnyArgs(null as object);
         
         var command = GenerateCommandWithValidDefaultData();
 
@@ -65,7 +63,7 @@ public class LoginUserViaExternalServiceCommandHandlerTests : AccountTestsBase
         Assert.ThrowsAsync<BadRequestException>(() => handler.Handle(command, CancellationToken.None));
     }
     
-    private LoginUserViaExternalServiceCommandHandler CreateHandler() => new(ExternalAuthServicesManager, UserManager, Mediator);
+    private LoginUserViaExternalServiceCommandHandler CreateHandler() => new(UserRepository, ExternalAuthServicesManager, Mediator);
 
     private LoginUserViaExternalServiceCommand GenerateCommandWithValidDefaultData(
         ExternalAuthService externalAuthService = ExternalAuthService.Google,
@@ -78,7 +76,7 @@ public class LoginUserViaExternalServiceCommandHandlerTests : AccountTestsBase
     
     private void SetServicesDefaultBehaviour()
     {
-        UserManager.FindByLoginAsync("", default).ReturnsForAnyArgs(DefaultUser);
+        UserRepository.FindByLoginAsync("", default).ReturnsForAnyArgs(DefaultUser);
         Mediator.Send(new CreateAuthTokensCommand(DefaultUser)).ReturnsForAnyArgs(GenerateDefaultAuthDataDto(DefaultDeviceId));
     }
 }

@@ -136,13 +136,13 @@ public class RegisterUserCommandHandlerTests : AccountTestsBase
         Assert.ThrowsAsync<BadRequestException>(() => handler.Handle(command, CancellationToken.None));
     }
 
-    private RegisterUserCommandHandler CreateHandler() => new(UserManager, Mediator, ExternalAuthServicesManager);
+    private RegisterUserCommandHandler CreateHandler() => new(UserRepository, Mediator, ExternalAuthServicesManager);
 
     private void SetServicesDefaultBehaviour()
     {
-        UserManager.CreateAsync(DefaultUser).ReturnsForAnyArgs(IdentityResult.Success);
-        UserManager.CreateAsync(DefaultUser, "").ReturnsForAnyArgs(IdentityResult.Success);
-        UserManager.AddToRoleAsync(DefaultUser, default).ReturnsForAnyArgs(IdentityResult.Success);
+        UserRepository.CreateAsync(DefaultUser).ReturnsForAnyArgs(IdentityResult.Success);
+        UserRepository.CreateAsync(DefaultUser, "").ReturnsForAnyArgs(IdentityResult.Success);
+        UserRepository.AddToRoleAsync(DefaultUser, default).ReturnsForAnyArgs(IdentityResult.Success);
         ExternalAuthServicesManager.BindUserAsync(DefaultUser, default, "").ReturnsForAnyArgs(IdentityResult.Success);
         Mediator.Send(new CreateAuthTokensCommand(DefaultUser)).ReturnsForAnyArgs(GenerateDefaultAuthDataDto(DefaultDeviceId));
     }

@@ -4,6 +4,7 @@ using Lagoo.BusinessLogic.Common.Exceptions.Api;
 using Lagoo.BusinessLogic.UnitTests.Common.Base;
 using Lagoo.BusinessLogic.UnitTests.Common.Helpers;
 using Lagoo.Domain.Entities;
+using NSubstitute;
 using NUnit.Framework;
 
 namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Events.Commands.DeleteEvent;
@@ -16,15 +17,11 @@ public class DeleteEventCommandHandlerTests : TestsBase
 {
     private const long DefaultEventId = 1;
     
-    [SetUp]
-    public void SetUp()
-    {
-        Context.Events = TestHelpers.MockDbSet(new Event { Id = DefaultEventId });
-    }
-    
     [Test]
     public void Handle_EventExists_ShouldDeleteEvent()
     {
+        EventRepository.DeleteAsync(DefaultEventId, CancellationToken.None).ReturnsForAnyArgs(true);
+        
         var command = new DeleteEventCommand { EventId = DefaultEventId };
 
         var handler = CreateHandler();
@@ -35,6 +32,8 @@ public class DeleteEventCommandHandlerTests : TestsBase
     [Test]
     public void Handle_EventDoesNotExist_ShouldThrowNotFoundException()
     {
+        EventRepository.DeleteAsync(DefaultEventId, CancellationToken.None).ReturnsForAnyArgs(false);
+        
         var command = new DeleteEventCommand { EventId = 100 };
 
         var handler = CreateHandler();
@@ -42,5 +41,5 @@ public class DeleteEventCommandHandlerTests : TestsBase
         Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, CancellationToken.None));
     }
 
-    private DeleteEventCommandHandler CreateHandler() => new(Context);
+    private DeleteEventCommandHandler CreateHandler() => new(EventRepository);
 }

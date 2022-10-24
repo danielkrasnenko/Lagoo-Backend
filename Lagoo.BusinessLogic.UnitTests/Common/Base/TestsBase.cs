@@ -30,8 +30,6 @@ public class TestsBase
         .AddUserSecrets(UserSecretsId)
         .Build();
 
-    protected readonly AppDbContext Context = Substitute.For<AppDbContext>();
-    
     protected IUserRepository UserRepository = Substitute.For<IUserRepository>();
 
     protected IRefreshTokenRepository RefreshTokenRepository = Substitute.For<IRefreshTokenRepository>();

@@ -1,12 +1,12 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Lagoo.BusinessLogic.CommandsAndQueries.Events.Common.Dtos;
 using Lagoo.BusinessLogic.CommandsAndQueries.Events.Queries.GetEvent;
 using Lagoo.BusinessLogic.Common.Exceptions.Api;
 using Lagoo.BusinessLogic.UnitTests.Common.Base;
-using Lagoo.BusinessLogic.UnitTests.Common.Helpers;
-using Lagoo.Domain.Entities;
 using Lagoo.Domain.Enums;
+using NSubstitute;
 using NUnit.Framework;
 
 namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Events.Queries.GetEvent;
@@ -19,12 +19,12 @@ public class GetEventQueryHandlerTests : TestsBase
 {
     private const long DefaultEventId = 1;
 
-    private readonly Event _defaultEvent;
+    private readonly ReadEventDto _defaultReadEventDto;
 
     public GetEventQueryHandlerTests()
     {
-        _defaultEvent = CreateDefaultEvent();
-        Context.Events = TestHelpers.MockDbSet(_defaultEvent);
+        _defaultReadEventDto = CreateDefaultReadEventDto();
+        EventRepository.GetAsync(DefaultEventId, CancellationToken.None).ReturnsForAnyArgs(_defaultReadEventDto);
     }
     
     [Test]
@@ -40,23 +40,23 @@ public class GetEventQueryHandlerTests : TestsBase
         var result = await handler.Handle(query, CancellationToken.None);
 
         Assert.AreEqual(DefaultEventId, result.Id);
-        Assert.AreEqual(_defaultEvent.Name, result.Name);
-        Assert.AreEqual(_defaultEvent.Type, result.Type);
-        Assert.AreEqual(_defaultEvent.Address, result.Address);
-        Assert.AreEqual(_defaultEvent.Comment, result.Comment);
-        Assert.AreEqual(_defaultEvent.Duration, result.Duration);
-        Assert.AreEqual(_defaultEvent.IsPrivate, result.IsPrivate);
-        Assert.AreEqual(_defaultEvent.BeginsAt, result.BeginsAt);
-        Assert.AreEqual(_defaultEvent.CreatedAt, result.CreatedAt);
+        Assert.AreEqual(_defaultReadEventDto.Name, result.Name);
+        Assert.AreEqual(_defaultReadEventDto.Type, result.Type);
+        Assert.AreEqual(_defaultReadEventDto.Address, result.Address);
+        Assert.AreEqual(_defaultReadEventDto.Comment, result.Comment);
+        Assert.AreEqual(_defaultReadEventDto.Duration, result.Duration);
+        Assert.AreEqual(_defaultReadEventDto.IsPrivate, result.IsPrivate);
+        Assert.AreEqual(_defaultReadEventDto.BeginsAt, result.BeginsAt);
+        Assert.AreEqual(_defaultReadEventDto.CreatedAt, result.CreatedAt);
 
-        if (_defaultEvent.LastModifiedAt is null)
+        if (_defaultReadEventDto.LastModifiedAt is null)
         {
             Assert.Null(result.LastModifiedAt);
         }
         else
         {
             Assert.NotNull(result.LastModifiedAt);
-            Assert.AreEqual(_defaultEvent.LastModifiedAt, result.LastModifiedAt ?? default);
+            Assert.AreEqual(_defaultReadEventDto.LastModifiedAt, result.LastModifiedAt ?? default);
         }
     }
     
@@ -73,9 +73,9 @@ public class GetEventQueryHandlerTests : TestsBase
         Assert.ThrowsAsync<NotFoundException>( () => handler.Handle(query, CancellationToken.None));
     }
 
-    private GetEventQueryHandler CreateHandler() => new (Context, Mapper);
+    private GetEventQueryHandler CreateHandler() => new (EventRepository);
 
-    private Event CreateDefaultEvent() => new()
+    private ReadEventDto CreateDefaultReadEventDto() => new()
     {
         Id = DefaultEventId,
         Name = "Last Night",

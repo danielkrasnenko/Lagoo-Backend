@@ -2,10 +2,10 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.CreateEvent;
+using Lagoo.BusinessLogic.CommandsAndQueries.Events.Common.Dtos;
 using Lagoo.BusinessLogic.UnitTests.Common.Base;
-using Lagoo.BusinessLogic.UnitTests.Common.Helpers;
-using Lagoo.Domain.Entities;
 using Lagoo.Domain.Enums;
+using NSubstitute;
 using NUnit.Framework;
 
 namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Events.Commands.CreateEvent;
@@ -16,12 +16,6 @@ namespace Lagoo.BusinessLogic.UnitTests.CommandsAndQueries.Events.Commands.Creat
 [TestFixture]
 public class CreateEventCommandHandlerTests : TestsBase
 {
-    [SetUp]
-    public void SetUp()
-    {
-        Context.Events = TestHelpers.MockDbSet(Array.Empty<Event>());
-    }
-    
     [Test]
     public async Task Handle_CommandContainsValidDataForNewEvent_ShouldCreateNewEvent()
     {
@@ -36,6 +30,17 @@ public class CreateEventCommandHandlerTests : TestsBase
             IsPrivate = true
         };
 
+        EventRepository.CreateAsync(command, CancellationToken.None).ReturnsForAnyArgs(new ReadEventDto
+        {
+            Name = command.Name,
+            Type = command.Type,
+            Address = command.Address,
+            Comment = command.Comment,
+            Duration = command.Duration,
+            BeginsAt = command.BeginsAt,
+            IsPrivate = command.IsPrivate
+        });
+        
         var handler = CreateHandler();
 
         var result = await handler.Handle(command, CancellationToken.None);
@@ -52,5 +57,5 @@ public class CreateEventCommandHandlerTests : TestsBase
         Assert.IsNull(result.LastModifiedAt);
     }
 
-    private CreateEventCommandHandler CreateHandler() => new(Context, Mapper);
+    private CreateEventCommandHandler CreateHandler() => new(EventRepository);
 }
