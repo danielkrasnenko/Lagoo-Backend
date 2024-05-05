@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
@@ -11,43 +11,44 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Lagoo.Domain\Lagoo.Domain.csproj" />
+        <ProjectReference Include="..\Lagoo.Domain\Lagoo.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
-      <PackageReference Include="MediatR.Extensions.FluentValidation.AspNetCore" Version="1.2.0" />
-      <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
-      <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.15.0" />
-      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.15.0" />
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+        <PackageReference Include="MediatR" Version="12.2.0" />
+        <PackageReference Include="MediatR.Extensions.FluentValidation.AspNetCore" Version="5.1.0" />
+        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
+        <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.5.1" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.5.1" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Resources\Common" />
+        <Folder Include="Resources\Common" />
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Update="Resources\CommandsAndQueries\AccountResources.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>AccountResources.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Resources\CommandsAndQueries\EventResources.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>EventResources.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
+        <EmbeddedResource Update="Resources\CommandsAndQueries\AccountResources.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>AccountResources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\CommandsAndQueries\EventResources.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>EventResources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Resources\CommandsAndQueries\AccountResources.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>AccountResources.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Resources\CommandsAndQueries\EventResources.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>EventResources.resx</DependentUpon>
-      </Compile>
+        <Compile Update="Resources\CommandsAndQueries\AccountResources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>AccountResources.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Resources\CommandsAndQueries\EventResources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>EventResources.resx</DependentUpon>
+        </Compile>
     </ItemGroup>
 
 </Project>

@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using System.Reflection;
 using Lagoo.Domain.Entities;
+using Lagoo.Domain.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -41,8 +42,17 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        base.OnModelCreating(builder);
+        builder.Entity<AppUser>().ToTable("asp_net_users");
+        builder.Entity<IdentityRole<Guid>>().ToTable("asp_net_roles");
+        builder.Entity<IdentityUserRole<Guid>>().ToTable("asp_net_user_roles").HasKey(ur => new { ur.RoleId, ur.UserId });
+        builder.Entity<IdentityUserToken<Guid>>().ToTable("asp_net_user_tokens").HasKey(ut => new { ut.UserId, ut.LoginProvider });
+        builder.Entity<IdentityUserLogin<Guid>>().ToTable("asp_net_user_logins").HasKey(l => new { l.LoginProvider, l.ProviderKey });
+        builder.Entity<IdentityUserClaim<Guid>>().ToTable("asp_net_user_claims");
+        builder.Entity<IdentityRoleClaim<Guid>>().ToTable("asp_net_role_claims");
+
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+        builder.HasPostgresEnum<EventType>();
     }
 
     private void OnBeforeSaving()

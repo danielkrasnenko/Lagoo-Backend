@@ -1,14 +1,15 @@
 using Lagoo.Domain.Entities;
+using Lagoo.Domain.Enums;
 using Lagoo.Infrastructure.AppOptions;
 using Lagoo.Infrastructure.AppOptions.Databases;
 using Lagoo.Infrastructure.Persistence;
 using Lagoo.Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Npgsql;
 
 namespace Lagoo.Infrastructure;
 
@@ -21,12 +22,25 @@ public static class DependencyInjection
     {
         services.AddAppOptions(configuration);
         
-        services.AddDbContext<AppDbContext>(options => options.UseSqlServer(BuildDbConnectionString(configuration),
-            builder =>
-            {
-                builder.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName);
-                builder.UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery);
-            }));
+        var dataSourceBuilder = new NpgsqlDataSourceBuilder(BuildDbConnectionString(configuration));
+
+        dataSourceBuilder.EnableDynamicJson();
+        dataSourceBuilder.MapEnums();
+
+        var dataSource = dataSourceBuilder.Build();
+
+        services.AddDbContext<AppDbContext>(options =>
+                options
+                    .UseNpgsql(dataSource,
+                        builder =>
+                        {
+                            builder.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName);
+                            builder.UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery);
+                        })
+                    .UseSnakeCaseNamingConvention()
+            )
+            .AddHealthChecks()
+            .AddDbContextCheck<AppDbContext>();
 
         services.AddAspIdentity();
         
@@ -35,23 +49,28 @@ public static class DependencyInjection
         services.AddInfrastructureServices();
     }
 
+    private static void MapEnums(this NpgsqlDataSourceBuilder dataSourceBuilder)
+    {
+        dataSourceBuilder.MapEnum<EventType>();
+    }
+
     private static void AddAspIdentity(this IServiceCollection services)
     {
         services
             .AddIdentity<AppUser, IdentityRole<Guid>>(options => options.User.RequireUniqueEmail = true)
             .AddEntityFrameworkStores<AppDbContext>()
-            .AddUserStore<UserStore<AppUser, IdentityRole<Guid>, AppDbContext, Guid>>()
-            .AddRoleStore<RoleStore<IdentityRole<Guid>, AppDbContext, Guid>>()
+            .AddUserStore<UserStore<AppUser, IdentityRole<Guid>, AppDbContext, Guid, IdentityUserClaim<Guid>,
+                IdentityUserRole<Guid>, IdentityUserLogin<Guid>, IdentityUserToken<Guid>, IdentityRoleClaim<Guid>>>()
+            .AddRoleStore<RoleStore<IdentityRole<Guid>, AppDbContext, Guid, IdentityUserRole<Guid>,
+                IdentityRoleClaim<Guid>>>()
             .AddDefaultTokenProviders();
     }
 
     private static string BuildDbConnectionString(IConfiguration configuration)
     {
-        var sqlConStrBuilder = new SqlConnectionStringBuilder(configuration.GetConnectionString(MainDatabaseOptions.MainDatabaseConnection))
-        {
-            Password = configuration[UserSecrets.UserSecrets.MainDatabasePassword]
-        };
+        var postgresStringBuilder = new NpgsqlConnectionStringBuilder(
+            configuration.GetConnectionString(MainDatabaseOptions.MainDatabaseConnection));
 
-        return sqlConStrBuilder.ConnectionString;
+        return postgresStringBuilder.ConnectionString;
     }
 }

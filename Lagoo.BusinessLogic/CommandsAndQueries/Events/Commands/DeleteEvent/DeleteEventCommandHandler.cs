@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.DeleteEvent;
 
-public class DeleteEventCommandHandler : IRequestHandler<DeleteEventCommand, Unit>
+public class DeleteEventCommandHandler : IRequestHandler<DeleteEventCommand>
 {
     private readonly IEventRepository _eventRepository;
 
@@ -14,7 +14,7 @@ public class DeleteEventCommandHandler : IRequestHandler<DeleteEventCommand, Uni
         _eventRepository = eventRepository;
     }
 
-    public async Task<Unit> Handle(DeleteEventCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteEventCommand request, CancellationToken cancellationToken)
     {
         var deleted = await _eventRepository.DeleteAsync(request.EventId, cancellationToken);
 
@@ -22,7 +22,5 @@ public class DeleteEventCommandHandler : IRequestHandler<DeleteEventCommand, Uni
         {
             throw new NotFoundException(EventResources.EventWasNotFound);
         }
-
-        return Unit.Value;
     }
 }

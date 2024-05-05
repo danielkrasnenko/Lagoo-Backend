@@ -27,6 +27,6 @@ public class EventConfiguration : IEntityTypeConfiguration<Event>
 
         builder
             .Property(e => e.CreatedAt)
-            .HasDefaultValueSql("getutcdate()");
+            .HasDefaultValueSql("now()");
     }
 }

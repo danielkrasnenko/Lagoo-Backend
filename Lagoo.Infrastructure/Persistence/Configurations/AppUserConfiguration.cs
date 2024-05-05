@@ -23,6 +23,6 @@ public class AppUserConfiguration : IEntityTypeConfiguration<AppUser>
 
         builder
             .Property(u => u.RegisteredAt)
-            .HasDefaultValueSql("getutcdate()");
+            .HasDefaultValueSql("now()");
     }
 }

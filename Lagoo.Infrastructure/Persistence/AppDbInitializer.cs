@@ -22,7 +22,7 @@ public class AppDbInitializer
         {
             var context = scope.ServiceProvider.GetService<AppDbContext>();
 
-            if (context is not null && context.Database.IsSqlServer())
+            if (context is not null && context.Database.IsNpgsql())
             {
                 await SyncDatabaseAsync(context);
             }

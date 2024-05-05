@@ -1,22 +1,24 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Lagoo.BusinessLogic\Lagoo.BusinessLogic.csproj" />
-      <ProjectReference Include="..\Lagoo.Domain\Lagoo.Domain.csproj" />
+        <ProjectReference Include="..\Lagoo.BusinessLogic\Lagoo.BusinessLogic.csproj" />
+        <ProjectReference Include="..\Lagoo.Domain\Lagoo.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.0" />
+        <PackageReference Include="EFCore.NamingConventions" Version="8.0.3" />
+        <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="8.0.4" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Persistence\Migrations" />
+        <Folder Include="Persistence\Migrations" />
     </ItemGroup>
 
 </Project>

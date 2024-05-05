@@ -13,14 +13,14 @@ namespace Lagoo.BusinessLogic;
 /// </summary>
 public static class DependencyInjection
 {
-    public static void AddBusinessLogic(this IServiceCollection services, IConfiguration configuration)
+    public static void AddBusinessLogic(this IServiceCollection services)
     {
         services.AddSingleton(GenerateMapper());
 
         var currentAssembly = Assembly.GetExecutingAssembly();
 
-        services.AddMediatR(currentAssembly);
-        services.AddFluentValidation(new []{ currentAssembly });
+        services.AddMediatR(c => c.RegisterServicesFromAssembly(currentAssembly));
+        services.AddFluentValidation(new[] { currentAssembly });
 
         services.AddHttpContextAccessor();
     }

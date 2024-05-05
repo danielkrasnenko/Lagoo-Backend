@@ -22,6 +22,6 @@ public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshToken>
 
         builder
             .Property(rt => rt.CreatedAt)
-            .HasDefaultValueSql("getutcdate()");
+            .HasDefaultValueSql("now()");
     }
 }
