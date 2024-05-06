@@ -9,7 +9,7 @@ namespace Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.UpdateEvent;
 
 public class UpdateEventCommand : IRequest<ReadEventDto>, IMapTo<Event>
 {
-    public long Id { get; set; }
+    public long EventId { get; set; }
     
     public string Name { get; set; } = string.Empty;
 

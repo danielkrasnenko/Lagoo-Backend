@@ -31,7 +31,7 @@ public class EventsController : ApiController
     /// </summary>
     /// <param name="query">ID of an event</param>
     /// <returns>Requested event or not found response</returns>
-    [HttpGet("{id:long}")]
+    [HttpGet("{eventId:long}")]
     public Task<ReadEventDto> GetEvent([FromRoute] GetEventQuery query) => Sender.Send(query);
 
     /// <summary>
@@ -45,26 +45,26 @@ public class EventsController : ApiController
     /// <summary>
     ///   Update an event with the given ID
     /// </summary>
-    /// <param name="id">ID of needful event</param>
+    /// <param name="eventId">ID of needful event</param>
     /// <param name="command">Updated event properties</param>
     /// <returns>Updated event DTO or throws in case of validation failures or wrong event ID</returns>
-    [HttpPut("{id:long}")]
-    public Task<ReadEventDto> UpdateEvent([FromRoute] long id, [FromBody] UpdateEventCommand command)
+    [HttpPut("{eventId:long}")]
+    public Task<ReadEventDto> UpdateEvent([FromRoute] long eventId, [FromBody] UpdateEventCommand command)
     {
-        command.Id = id;
+        command.EventId = eventId;
         return Sender.Send(command);
     }
 
     /// <summary>
     ///   Update an event with the given ID partially
     /// </summary>
-    /// <param name="id">ID of needful event</param>
+    /// <param name="eventId">ID of needful event</param>
     /// <param name="command">Some updated event properties</param>
     /// <returns>Updated event DTO or throws in case of validation failures or wrong event ID</returns>
-    [HttpPatch("{id:long}")]
-    public Task<ReadEventDto> UpdateEventPartially([FromRoute] long id, [FromBody] UpdateEventPartiallyCommand command)
+    [HttpPatch("{eventId:long}")]
+    public Task<ReadEventDto> UpdateEventPartially([FromRoute] long eventId, [FromBody] UpdateEventPartiallyCommand command)
     {
-        command.Id = id;
+        command.EventId = eventId;
         return Sender.Send(command);
     }
 
@@ -72,6 +72,6 @@ public class EventsController : ApiController
     ///   Delete an event with the given ID
     /// </summary>
     /// <param name="command">ID of needful event</param>
-    [HttpDelete("{id:long}")]
+    [HttpDelete("{eventId:long}")]
     public Task DeleteEvent([FromRoute] DeleteEventCommand command) => Sender.Send(command);
 }

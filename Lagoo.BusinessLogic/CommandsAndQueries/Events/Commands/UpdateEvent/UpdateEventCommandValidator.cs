@@ -8,7 +8,7 @@ public class UpdateEventCommandValidator : AbstractValidator<UpdateEventCommand>
 {
     public UpdateEventCommandValidator()
     {
-        RuleFor(uec => uec.Id)
+        RuleFor(uec => uec.EventId)
             .GreaterThan(0).WithMessage(EventResources.InvalidId);
 
         RuleFor(uec => uec.Name)

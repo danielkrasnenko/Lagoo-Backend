@@ -24,7 +24,7 @@ public class UpdateEventCommandHandlerTests : TestsBase
         
         var command = new UpdateEventCommand
         {
-            Id = eventId,
+            EventId = eventId,
             Name = "New name",
             Type = EventType.Festival,
             Address = "New address",
@@ -66,7 +66,7 @@ public class UpdateEventCommandHandlerTests : TestsBase
     {
         EventRepository.UpdateAsync(new UpdateEventCommand(), CancellationToken.None).ReturnsForAnyArgs(null as object);
 
-        var command = new UpdateEventCommand { Id = 1 };
+        var command = new UpdateEventCommand { EventId = 1 };
 
         var handler = CreateHandler();
 

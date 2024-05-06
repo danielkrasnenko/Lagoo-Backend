@@ -25,7 +25,7 @@ public class UpdateEventPartiallyCommandHandlerTests : TestsBase
 
         var command = new UpdateEventPartiallyCommand
         {
-            Id = eventId,
+            EventId = eventId,
             Name = "New name",
             Type = EventType.MediaEvent,
             Address = "New address",
@@ -67,7 +67,7 @@ public class UpdateEventPartiallyCommandHandlerTests : TestsBase
     {
         EventRepository.UpdateAsync(new UpdateEventCommand(), CancellationToken.None).ReturnsForAnyArgs(null as object);
 
-        var command = new UpdateEventPartiallyCommand { Id = 1 };
+        var command = new UpdateEventPartiallyCommand { EventId = 1 };
 
         var handler = CreateHandler();
 

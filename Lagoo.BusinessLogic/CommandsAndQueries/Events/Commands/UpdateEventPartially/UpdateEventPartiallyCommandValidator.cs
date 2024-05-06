@@ -8,7 +8,7 @@ public class UpdateEventPartiallyCommandValidator : AbstractValidator<UpdateEven
 {
     public UpdateEventPartiallyCommandValidator()
     {
-        RuleFor(uepc => uepc.Id)
+        RuleFor(uepc => uepc.EventId)
             .GreaterThan(0).WithMessage(EventResources.InvalidId);
 
         RuleFor(uepc => uepc.Name)

@@ -69,7 +69,7 @@ public class EventRepository : RepositoryBase, IEventRepository
 
     public async Task<ReadEventDto?> UpdateAsync(UpdateEventCommand updateEventDto, CancellationToken cancellationToken)
     {
-        var @event = await Context.Events.FirstOrDefaultAsync(e => e.Id == updateEventDto.Id, cancellationToken);
+        var @event = await Context.Events.FirstOrDefaultAsync(e => e.Id == updateEventDto.EventId, cancellationToken);
 
         if (@event is null)
         {
@@ -86,7 +86,7 @@ public class EventRepository : RepositoryBase, IEventRepository
 
     public async Task<ReadEventDto?> UpdateAsync(UpdateEventPartiallyCommand updateEventPartiallyDto, CancellationToken cancellationToken)
     {
-        var @event = await Context.Events.FirstOrDefaultAsync(e => e.Id == updateEventPartiallyDto.Id, cancellationToken);
+        var @event = await Context.Events.FirstOrDefaultAsync(e => e.Id == updateEventPartiallyDto.EventId, cancellationToken);
 
         if (@event == null)
         {

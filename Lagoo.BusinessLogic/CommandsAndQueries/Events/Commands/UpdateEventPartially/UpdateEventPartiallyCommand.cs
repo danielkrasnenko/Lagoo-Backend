@@ -6,7 +6,7 @@ namespace Lagoo.BusinessLogic.CommandsAndQueries.Events.Commands.UpdateEventPart
 
 public class UpdateEventPartiallyCommand : IRequest<ReadEventDto>
 {
-    public long Id { get; set; }
+    public long EventId { get; set; }
     
     public string? Name { get; set; }
 

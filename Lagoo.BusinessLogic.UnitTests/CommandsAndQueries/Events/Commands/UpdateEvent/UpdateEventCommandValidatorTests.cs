@@ -121,7 +121,7 @@ public class UpdateEventCommandValidatorTests : TestsBase
         bool isPrivate = false, TimeSpan? duration = null, DateTime? beginsAt = null
     ) => new()
     {
-        Id = id,
+        EventId = id,
         Name = name,
         Type = type,
         Address = address,

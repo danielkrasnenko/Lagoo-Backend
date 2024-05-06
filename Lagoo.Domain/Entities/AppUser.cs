@@ -20,11 +20,6 @@ public class AppUser : IdentityUser<Guid>
         set => _registeredAtBackingField = value.ConvertToUtc();
     }
     private DateTime _registeredAtBackingField;
-    
-    public IList<RefreshToken> RefreshTokens
-    {
-        get => _refreshTokensBackingField ?? throw new InvalidOperationException("Uninitialized property: " + nameof(RefreshTokens));
-        set => _refreshTokensBackingField = value;
-    }
-    private IList<RefreshToken>? _refreshTokensBackingField;
+
+    public IList<RefreshToken> RefreshTokens { get; set; } = null!;
 }
