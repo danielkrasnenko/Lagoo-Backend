@@ -1,0 +1,22 @@
+﻿version: '3.9'
+
+networks:
+  default:
+    name: lagoo-network
+    external: true
+
+services:
+  lemphry_db:
+    image: bitnami/postgresql:16.2.0
+    container_name: lemphry_db
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    ports:
+      - "5432:5432"
+    healthcheck: &pg_health
+      test: [ "CMD-SHELL", "sh -c 'pg_isready -U postgres -d postgres'" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s

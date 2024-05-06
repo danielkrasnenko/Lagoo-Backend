@@ -1,21 +1,26 @@
-# PhotoMarketplace BackEnd
+# Lagoo Backend
 Server part for Lagoo project.
-Client part you can found here: https://github.com/Zilfatto/Lagoo-Frontend
+Client part you can found here: https://github.com/danielkrasnenko/Lagoo-Frontend
+
 ## Project stack
-* MS SQL Server
-* .NET 6
+* PostgreSQL
+* .NET 8
 * ASP.NET Core
-* C# 10
+* C# 12
+
 ## Note
-You shouldn't create a database in MSSQL Server. A database will be created automatically.
-## Setup
-Install MSSQL Server.
-Clone this repository to a folder.
-For development mode create `appsettings.Development.json` in Lagoo.Api project with the following content:
+You shouldn't create a database in Postgres. The database will be created automatically.
+
+## Getting started
+
+- Create `appsettings.Development.json` file and paste it into `Lagoo.Api` project. Then add the following content into it.
 ```
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Server=localhost;Database=Lagoo;User Id=<<YOUR_ACCOUNT_ID>>;Trusted_Connection=True;MultipleActiveResultSets=True;"
+    "DefaultConnection": "Server=localhost;Port=5432;Database=lagoo_db;User Id=postgres;Password=postgres;Include Error Detail=True;"
+  },
+  "JwtAuth": {
+    "Secret": "<GENERATED-SECRET>"
   },
   "Serilog": {
     "MinimumLevel": {
@@ -24,14 +29,8 @@ For development mode create `appsettings.Development.json` in Lagoo.Api project 
   }
 }
 ```
-You'll need to change SQL Server instance name if it defers with the one specified in all settings.
-Optionally you can change the name of a database for this project in all settings
 
-If you are a Windows user you can set 'Trusted_Connection=True' for bypassing password requirement.
-Otherwise you'll need to add a password of your SQL Server instance to user secrets with the "MainDbPassword" key
-Initialize user secrets in Lagoo.Api project.
-How to do that navigate to https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-6.0
-Also you'll need to add a secret for JWT to user secrets with a "JwtAuth:Secret" key.
-
-Finally, run this project.
-And then run the frontend project.
+## How to launch the app
+1. Generate Secret for JWT
+2. Spin up infrastructure by executing **run.infra.cmd**
+3. Now you can run the app itself.

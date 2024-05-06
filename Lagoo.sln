@@ -12,6 +12,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{EABE411B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lagoo.BusinessLogic.UnitTests", "Lagoo.BusinessLogic.UnitTests\Lagoo.BusinessLogic.UnitTests.csproj", "{97760708-15C3-483C-BA97-1F102ECA1572}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{E4AE9E6C-E650-40B9-8E5A-10197734F16E}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		global.json = global.json
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{95E696BF-C235-4540-BEA9-5084C9E858BD}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.infra.yml = docker-compose.infra.yml
+		run.infra.cmd = run.infra.cmd
+		run.infra.sh = run.infra.sh
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,5 +55,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{97760708-15C3-483C-BA97-1F102ECA1572} = {EABE411B-51FF-4A97-940A-D477AF3D69FA}
+		{95E696BF-C235-4540-BEA9-5084C9E858BD} = {E4AE9E6C-E650-40B9-8E5A-10197734F16E}
 	EndGlobalSection
 EndGlobal
