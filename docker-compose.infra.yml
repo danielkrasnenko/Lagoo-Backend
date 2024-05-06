@@ -6,9 +6,9 @@ networks:
     external: true
 
 services:
-  lemphry_db:
+  lagoo_db:
     image: bitnami/postgresql:16.2.0
-    container_name: lemphry_db
+    container_name: lagoo_db
     environment:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
